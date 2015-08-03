@@ -61,8 +61,8 @@ public class ZhLinearLayout extends ViewGroup {
     @Retention(RetentionPolicy.SOURCE)
     public @interface OrientationMode {}
 
-    public static final int HORIZONTAL = 0;
-    public static final int VERTICAL = 1;
+    public static final int HORIZONTAL = 0;//横向
+    public static final int VERTICAL = 1;//纵向
 
     /** @hide */
     @Retention(RetentionPolicy.SOURCE)
@@ -74,20 +74,24 @@ public class ZhLinearLayout extends ViewGroup {
     public static final int SHOW_DIVIDER_NONE = 0;
     /**
      * Show a divider at the beginning of the group.
+     * //在LinearLayout顶部（左部）只显示一个分割线
      */
     public static final int SHOW_DIVIDER_BEGINNING = 1;
     /**
      * Show dividers between each item in the group.
+     * 在LinearLayout中每个子视图之间显示一个分割线
      */
     public static final int SHOW_DIVIDER_MIDDLE = 2;
     /**
      * Show a divider at the end of the group.
+     * 在LinearLayout底部（右部）只显示一个分割线
      */
     public static final int SHOW_DIVIDER_END = 4;
 
     /**
      * Whether the children of this layout are baseline aligned.  Only applicable
      * if {@link #mOrientation} is horizontal.
+     * 所有的子视图是否基线对齐；只支持水平布局模式的LinearLayout
      */
     @ViewDebug.ExportedProperty(category = "layout")
     private boolean mBaselineAligned = true;
@@ -110,6 +114,7 @@ public class ZhLinearLayout extends ViewGroup {
     @ViewDebug.ExportedProperty(category = "measurement")
     private int mBaselineChildTop = 0;
 
+    //LinearLayout的布局模式
     @ViewDebug.ExportedProperty(category = "measurement")
     private int mOrientation;
 
@@ -151,6 +156,7 @@ public class ZhLinearLayout extends ViewGroup {
     private int mTotalLength;
 
     @ViewDebug.ExportedProperty(category = "layout")
+    //具有权重的子视图的总数量
     private float mWeightSum;
 
     @ViewDebug.ExportedProperty(category = "layout")
@@ -200,21 +206,21 @@ public class ZhLinearLayout extends ViewGroup {
             setGravity(index);
         }
 
-        boolean baselineAligned = true;
+        boolean baselineAligned = a.getBoolean(com.android.internal.R.styleable.LinearLayout_baselineAligned, true);
         if (!baselineAligned) {
             setBaselineAligned(baselineAligned);
         }
 
-        mWeightSum = -0.1f;//a.getFloat(R.styleable.LinearLayout_weightSum, -1.0f);
+        mWeightSum = a.getFloat(com.android.internal.R.styleable.LinearLayout_weightSum, -1.0f);
 
         mBaselineAlignedChildIndex =
                 a.getInt(com.android.internal.R.styleable.LinearLayout_baselineAlignedChildIndex, -1);
 
-        mUseLargestChild = false;//a.getBoolean(R.styleable.LinearLayout_measureWithLargestChild, false);
+        mUseLargestChild = a.getBoolean(com.android.internal.R.styleable.LinearLayout_measureWithLargestChild, false);
 
         setDividerDrawable(a.getDrawable(R.color.black));
-        mShowDividers = 0;//a.getInt(R.styleable.LinearLayout_showDividers, SHOW_DIVIDER_NONE);
-        mDividerPadding = 0;//a.getDimensionPixelSize(R.styleable.LinearLayout_dividerPadding, 0);
+        mShowDividers = a.getInt(com.android.internal.R.styleable.LinearLayout_showDividers, SHOW_DIVIDER_NONE);
+        mDividerPadding = a.getDimensionPixelSize(com.android.internal.R.styleable.LinearLayout_dividerPadding, 0);
 
         a.recycle();
     }
