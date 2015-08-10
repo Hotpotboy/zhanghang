@@ -32,10 +32,10 @@ import android.graphics.BitmapFactory;
  * back with a decoded Bitmap.
  */
 public class ImageRequest extends Request<Bitmap> {
-    /** Socket timeout in milliseconds for image requests Í¼Æ¬ÇëÇóµÄ³¬Ê±Ê±¼ä*/
+    /** Socket timeout in milliseconds for image requests å›¾ç‰‡è¯·æ±‚çš„è¶…æ—¶æ—¶é—´*/
     private static final int IMAGE_TIMEOUT_MS = 1000;
 
-    /** Default number of retries for image requests Ä¬ÈÏÖØÊÔ´ÎÊı*/
+    /** Default number of retries for image requests é»˜è®¤é‡è¯•æ¬¡æ•°*/
     private static final int IMAGE_MAX_RETRIES = 2;
 
     /** Default backoff multiplier for image requests */
@@ -67,9 +67,9 @@ public class ImageRequest extends Request<Bitmap> {
      * @param errorListener Error listener, or null to ignore errors
      */
     public ImageRequest(String url, Response.Listener<Bitmap> listener, int maxWidth, int maxHeight,
-            Config decodeConfig, Response.ErrorListener errorListener) {
+                        Config decodeConfig, Response.ErrorListener errorListener) {
         super(Method.GET, url, errorListener);
-        setRetryPolicy(new DefaultRetryPolicy(IMAGE_TIMEOUT_MS, IMAGE_MAX_RETRIES, IMAGE_BACKOFF_MULT));//ÉèÖÃÖØÊÔ²ßÂÔ
+        setRetryPolicy(new DefaultRetryPolicy(IMAGE_TIMEOUT_MS, IMAGE_MAX_RETRIES, IMAGE_BACKOFF_MULT));//è®¾ç½®é‡è¯•ç­–ç•¥
         mListener = listener;
         mDecodeConfig = decodeConfig;
         mMaxWidth = maxWidth;
@@ -83,17 +83,17 @@ public class ImageRequest extends Request<Bitmap> {
 
     /**
      * Scales one side of a rectangle to fit aspect ratio.
-     * Ëõ·Å¾ØĞÎµÄÒ»±ß£¬ÒÔ´ËÀ´Æ¥ÅäÆÁÄ»¸ß¿í±ÈÀı
+     * ç¼©æ”¾çŸ©å½¢çš„ä¸€è¾¹ï¼Œä»¥æ­¤æ¥åŒ¹é…å±å¹•é«˜å®½æ¯”ä¾‹
      * @param maxPrimary Maximum size of the primary dimension (i.e. width for
      *        max width), or zero to maintain aspect ratio with secondary
-     *        dimension Ô­Ê¼³ß´çµÄ×î´óÖµ£¬»òÕßÎª0£¨Îª0Ôò±íÊ¾Í¨¹ıµÚ¶ş³ß´çÀ´±£³ÖÆÁÄ»¸ß¿í±ÈÀı£©
+     *        dimension åŸå§‹å°ºå¯¸çš„æœ€å¤§å€¼ï¼Œæˆ–è€…ä¸º0ï¼ˆä¸º0åˆ™è¡¨ç¤ºé€šè¿‡ç¬¬äºŒå°ºå¯¸æ¥ä¿æŒå±å¹•é«˜å®½æ¯”ä¾‹ï¼‰
      * @param maxSecondary Maximum size of the secondary dimension, or zero to
-     *        maintain aspect ratio with primary dimension µÚ¶ş³ß´çµÄ×î´óÖµ£¬»òÕßÎª0£¨Îª0Ôò±íÊ¾Í¨¹ıÔ­Ê¼³ß´çÀ´±£³ÖÆÁÄ»¸ß¿í±ÈÀı£©
-     * @param actualPrimary Actual size of the primary dimension Ô­Ê¼³ß´çµÄÊµ¼ÊÖµ
-     * @param actualSecondary Actual size of the secondary dimensionµÚ¶ş³ß´çµÄÊµ¼ÊÖµ
+     *        maintain aspect ratio with primary dimension ç¬¬äºŒå°ºå¯¸çš„æœ€å¤§å€¼ï¼Œæˆ–è€…ä¸º0ï¼ˆä¸º0åˆ™è¡¨ç¤ºé€šè¿‡åŸå§‹å°ºå¯¸æ¥ä¿æŒå±å¹•é«˜å®½æ¯”ä¾‹ï¼‰
+     * @param actualPrimary Actual size of the primary dimension åŸå§‹å°ºå¯¸çš„å®é™…å€¼
+     * @param actualSecondary Actual size of the secondary dimensionç¬¬äºŒå°ºå¯¸çš„å®é™…å€¼
      */
     private static int getResizedDimension(int maxPrimary, int maxSecondary, int actualPrimary,
-            int actualSecondary) {
+                                           int actualSecondary) {
         // If no dominant value at all, just return the actual.
         if (maxPrimary == 0 && maxSecondary == 0) {
             return actualPrimary;
@@ -158,9 +158,9 @@ public class ImageRequest extends Request<Bitmap> {
             // TODO(ficus): Do we need this or is it okay since API 8 doesn't support it?
             // decodeOptions.inPreferQualityOverSpeed = PREFER_QUALITY_OVER_SPEED;
             decodeOptions.inSampleSize =
-                findBestSampleSize(actualWidth, actualHeight, desiredWidth, desiredHeight);
+                    findBestSampleSize(actualWidth, actualHeight, desiredWidth, desiredHeight);
             Bitmap tempBitmap =
-                BitmapFactory.decodeByteArray(data, 0, data.length, decodeOptions);
+                    BitmapFactory.decodeByteArray(data, 0, data.length, decodeOptions);
 
             // If necessary, scale down to the maximal acceptable size.
             if (tempBitmap != null && (tempBitmap.getWidth() > desiredWidth ||

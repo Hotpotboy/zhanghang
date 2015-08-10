@@ -26,6 +26,7 @@ import java.io.UnsupportedEncodingException;
 
 /**
  * A canned request for retrieving the response body at a given URL as a String.
+ * 一个Request子类，将一个给定URL的response body作为一串字符串处理
  */
 public class StringRequest extends Request<String> {
     private final Listener<String> mListener;
@@ -39,7 +40,7 @@ public class StringRequest extends Request<String> {
      * @param errorListener Error listener, or null to ignore errors
      */
     public StringRequest(int method, String url, Listener<String> listener,
-            ErrorListener errorListener) {
+                         ErrorListener errorListener) {
         super(method, url, errorListener);
         mListener = listener;
     }
@@ -56,9 +57,7 @@ public class StringRequest extends Request<String> {
     }
 
     @Override
-    protected void deliverResponse(String response) {
-        mListener.onResponse(response);
-    }
+    protected void deliverResponse(String response) {mListener.onResponse(response);}
 
     @Override
     protected Response<String> parseNetworkResponse(NetworkResponse response) {

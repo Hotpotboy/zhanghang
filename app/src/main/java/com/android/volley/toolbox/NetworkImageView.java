@@ -28,28 +28,28 @@ import com.android.volley.toolbox.ImageLoader.ImageListener;
 /**
  * Handles fetching an image from a URL as well as the life-cycle of the
  * associated request.
- * ´¦ÀíÒ»¸öÀ´×ÔURLµÄÍ¼Æ¬£¬ÒÔ¼°Õâ¸öÏà¹ØÇëÇóµÄÉúÃüÖÜÆÚ£¬¼¯³Éimageview
+ * å¤„ç†ä¸€ä¸ªæ¥è‡ªURLçš„å›¾ç‰‡ï¼Œä»¥åŠè¿™ä¸ªç›¸å…³è¯·æ±‚çš„ç”Ÿå‘½å‘¨æœŸï¼Œé›†æˆimageview
  */
 public class NetworkImageView extends ImageView {
-    /** The URL of the network image to load ÓÃÀ´¼ÓÔØµÄÍøÂçÍ¼Æ¬URL*/
+    /** The URL of the network image to load ç”¨æ¥åŠ è½½çš„ç½‘ç»œå›¾ç‰‡URL*/
     private String mUrl;
 
     /**
      * Resource ID of the image to be used as a placeholder until the network image is loaded.
-     * Ä¬ÈÏÍ¼Æ¬×ÊÔ´ID£¬Ä¬ÈÏÍ¼Æ¬ÊÇÒ»¸öÌæ´úÎï£¬ÖªµÀÍøÂçÍ¼Æ¬±»ÍêÈ«¼ÓÔØ
+     * é»˜è®¤å›¾ç‰‡èµ„æºIDï¼Œé»˜è®¤å›¾ç‰‡æ˜¯ä¸€ä¸ªæ›¿ä»£ç‰©ï¼ŒçŸ¥é“ç½‘ç»œå›¾ç‰‡è¢«å®Œå…¨åŠ è½½
      */
     private int mDefaultImageId;
 
     /**
      * Resource ID of the image to be used if the network response fails.
-     * ÍøÂçÍ¼Æ¬¼ÓÔØÊ§°ÜÊ±£¬Õ¹Ê¾µÄÍ¼Æ¬
+     * ç½‘ç»œå›¾ç‰‡åŠ è½½å¤±è´¥æ—¶ï¼Œå±•ç¤ºçš„å›¾ç‰‡
      */
     private int mErrorImageId;
 
-    /** Local copy of the ImageLoader.ImageLoaderµÄ±¾µØÒıÓÃ */
+    /** Local copy of the ImageLoader.ImageLoaderçš„æœ¬åœ°å¼•ç”¨ */
     private ImageLoader mImageLoader;
 
-    /** Current ImageContainer. (either in-flight or finished) Í¼Æ¬ÇëÇóÊı¾İµÄ·â×°*/
+    /** Current ImageContainer. (either in-flight or finished) å›¾ç‰‡è¯·æ±‚æ•°æ®çš„å°è£…*/
     private ImageContainer mImageContainer;
 
     public NetworkImageView(Context context) {
@@ -79,7 +79,7 @@ public class NetworkImageView extends ImageView {
     public void setImageUrl(String url, ImageLoader imageLoader) {
         mUrl = url;
         mImageLoader = imageLoader;
-        // The URL has potentially£¨¿ÉÄÜ£© changed. See if we need to load it.
+        // The URL has potentiallyï¼ˆå¯èƒ½ï¼‰ changed. See if we need to load it.
         loadImageIfNecessary(false);
     }
 
@@ -101,14 +101,14 @@ public class NetworkImageView extends ImageView {
 
     /**
      * Loads the image for the view if it isn't already loaded.
-     * Èç¹ûÍ¼Æ¬²¢Î´¼ÓÔØ£¬¼ÓÔØÍ¼Æ¬
+     * å¦‚æœå›¾ç‰‡å¹¶æœªåŠ è½½ï¼ŒåŠ è½½å›¾ç‰‡
      * @param isInLayoutPass True if this was invoked from a layout pass, false otherwise.
-     *                       true±íÊ¾¸Ã·½·¨ÊÇÔÚonlayoutÖ®ÖĞµ÷ÓÃµÄ
+     *                       trueè¡¨ç¤ºè¯¥æ–¹æ³•æ˜¯åœ¨onlayoutä¹‹ä¸­è°ƒç”¨çš„
      */
     private void loadImageIfNecessary(final boolean isInLayoutPass) {
         int width = getWidth();
         int height = getHeight();
-        //ÊÇ·ñÌî³äÂúÄÚÈİ
+        //æ˜¯å¦å¡«å……æ»¡å†…å®¹
         boolean isFullyWrapContent = getLayoutParams() != null
                 && getLayoutParams().height == LayoutParams.WRAP_CONTENT
                 && getLayoutParams().width == LayoutParams.WRAP_CONTENT;
@@ -130,12 +130,12 @@ public class NetworkImageView extends ImageView {
         }
 
         // if there was an old request in this view, check if it needs to be canceled.
-        // Èç¹ûÖ®Ç°ÓĞÇëÇó£¬Ôò¼ì²âÊÇ·ñĞèÒªĞèÇó¸ÃÇëÇó
+        // å¦‚æœä¹‹å‰æœ‰è¯·æ±‚ï¼Œåˆ™æ£€æµ‹æ˜¯å¦éœ€è¦éœ€æ±‚è¯¥è¯·æ±‚
         if (mImageContainer != null && mImageContainer.getRequestUrl() != null) {
-            if (mImageContainer.getRequestUrl().equals(mUrl)) {//Èç¹ûÓëÖ®Ç°ÇëÇóµÄURLÒ»ÖÂ£¬ÔòÖ±½Ó·µ»Ø
+            if (mImageContainer.getRequestUrl().equals(mUrl)) {//å¦‚æœä¸ä¹‹å‰è¯·æ±‚çš„URLä¸€è‡´ï¼Œåˆ™ç›´æ¥è¿”å›
                 // if the request is from the same URL, return.
                 return;
-            } else {//Èç¹ûÖ®Ç°µÄÇëÇóURLÓëµ±Ç°µÄURL²»Ò»ÖÂ£¬ÔòÈ¡ÏûÖ®Ç°µÄÇëÇó
+            } else {//å¦‚æœä¹‹å‰çš„è¯·æ±‚URLä¸å½“å‰çš„URLä¸ä¸€è‡´ï¼Œåˆ™å–æ¶ˆä¹‹å‰çš„è¯·æ±‚
                 // if there is a pre-existing request, cancel it if it's fetching a different URL.
                 mImageContainer.cancelRequest();
                 setImageBitmap(null);

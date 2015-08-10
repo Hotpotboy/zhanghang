@@ -44,21 +44,21 @@ public class ImageLoader {
     /** RequestQueue for dispatching ImageRequests onto. */
     private final RequestQueue mRequestQueue;
 
-    /** Amount of time to wait after first response arrives before delivering all responses. µÚÒ»¸öÏìÓ¦´ïµ½Ö®ºó£¬µ½´«µİËùÓĞÏìÓ¦Ö®Ç°£¬ĞèÒªµÈ´ı¶àÉÙÃë*/
+    /** Amount of time to wait after first response arrives before delivering all responses. ç¬¬ä¸€ä¸ªå“åº”è¾¾åˆ°ä¹‹åï¼Œåˆ°å¤„ç†æ­¤æ‰¹å“åº”ä¹‹å‰ï¼Œéœ€è¦ç­‰å¾…å¤šå°‘ç§’*/
     private int mBatchResponseDelayMs = 100;
 
-    /** The cache implementation to be used as an L1 cache before calling into volley. ÇëÇóÍøÂçÖ®Ç°µÄÒ»¼¶»º´æ*/
+    /** The cache implementation to be used as an L1 cache before calling into volley. è¯·æ±‚ç½‘ç»œä¹‹å‰çš„ä¸€çº§ç¼“å­˜*/
     private final ImageCache mCache;
 
     /**
      * HashMap of Cache keys -> BatchedImageRequest used to track in-flight requests so
      * that we can coalesce multiple requests to the same URL into a single network request.
-     * ºÏ²¢¼¸¸ö¾ßÓĞÏàÍ¬URLµÄÇëÇóµ½Ò»¸öµ¥¶ÀµÄÍøÂçÇëÇóÖ®ÖĞ
+     * åˆå¹¶å‡ ä¸ªå…·æœ‰ç›¸åŒURLçš„è¯·æ±‚åˆ°ä¸€ä¸ªå•ç‹¬çš„ç½‘ç»œè¯·æ±‚ä¹‹ä¸­
      */
     private final HashMap<String, BatchedImageRequest> mInFlightRequests =
             new HashMap<String, BatchedImageRequest>();
 
-    /** HashMap of the currently pending responses (waiting to be delivered). µÈ´ıÏìÓ¦´«µİµÄÅú´ÎÁ¿ÇëÇó*/
+    /** HashMap of the currently pending responses (waiting to be delivered). ç­‰å¾…å“åº”ä¼ é€’çš„æ‰¹æ¬¡é‡è¯·æ±‚*/
     private final HashMap<String, BatchedImageRequest> mBatchedResponses =
             new HashMap<String, BatchedImageRequest>();
 
@@ -81,7 +81,7 @@ public class ImageLoader {
     /**
      * Constructs a new ImageLoader.
      * @param queue The RequestQueue to use for making image requests.
-     * @param imageCache The cache to use as an L1 cache.Ò»¼¶»º´æ
+     * @param imageCache The cache to use as an L1 cache.ä¸€çº§ç¼“å­˜
      */
     public ImageLoader(RequestQueue queue, ImageCache imageCache) {
         mRequestQueue = queue;
@@ -97,7 +97,7 @@ public class ImageLoader {
      * @param errorImageResId Error image resource ID to use, or 0 if it doesn't exist.
      */
     public static ImageListener getImageListener(final ImageView view,
-            final int defaultImageResId, final int errorImageResId) {
+                                                 final int defaultImageResId, final int errorImageResId) {
         return new ImageListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -185,34 +185,34 @@ public class ImageLoader {
      *     the currently available image (default if remote is not loaded).
      */
     public ImageContainer get(String requestUrl, ImageListener imageListener,
-            int maxWidth, int maxHeight) {
+                              int maxWidth, int maxHeight) {
         // only fulfill requests that were initiated from the main thread.
-        throwIfNotOnMainThread();
+        throwIfNotOnMainThread();//æ£€æµ‹æ˜¯å¦ä¸ºä¸»çº¿ç¨‹
 
         final String cacheKey = getCacheKey(requestUrl, maxWidth, maxHeight);
 
         // Try to look up the request in the cache of remote images.
         Bitmap cachedBitmap = mCache.getBitmap(cacheKey);
-        if (cachedBitmap != null) {//ÏÈ´Ó»º´æÖ®ÖĞ»ñÈ¡Î»Í¼
+        if (cachedBitmap != null) {//å…ˆä»ç¼“å­˜ä¹‹ä¸­è·å–ä½å›¾
             // Return the cached bitmap.
             ImageContainer container = new ImageContainer(cachedBitmap, requestUrl, null, null);
             imageListener.onResponse(container, true);
             return container;
         }
 
-        // The bitmap did not exist in the cache, fetch(»ñÈ¡) it!
+        // The bitmap did not exist in the cache, fetch(è·å–) it!
         ImageContainer imageContainer =
                 new ImageContainer(null, requestUrl, cacheKey, imageListener);
 
         // Update the caller to let them know that they should use the default bitmap.
-        // Òì²½»úÖÆ£¬ÏÈÕ¹Ê¾Ä¬ÈÏÍ¼Æ¬£¬ÔÙÇëÇóÍøÂçÍ¼Æ¬
+        // å¼‚æ­¥æœºåˆ¶ï¼Œå…ˆå±•ç¤ºé»˜è®¤å›¾ç‰‡ï¼Œå†è¯·æ±‚ç½‘ç»œå›¾ç‰‡
         imageListener.onResponse(imageContainer, true);
 
-        // Check to see if a request is already in-flight.ÏàÍ¬µÄÇëÇóÒÑ¾­ÔÚÇëÇóÁË
+        // Check to see if a request is already in-flight.ç›¸åŒçš„è¯·æ±‚å·²ç»åœ¨è¯·æ±‚äº†
         BatchedImageRequest request = mInFlightRequests.get(cacheKey);
         if (request != null) {
-            // If it is, add this request to the list of listeners.¶Ô¸ÃÇëÇó¸ÒĞËÈ¤µÄËùÓĞImageContainer
-            //½«¼¸¸ö¾ßÓĞÏàÍ¬URLµÄÇëÇóºÏ²¢ÎªÒ»¸öÇëÇó
+            // If it is, add this request to the list of listeners.å¯¹è¯¥è¯·æ±‚æ•¢å…´è¶£çš„æ‰€æœ‰ImageContainer
+            //å°†å‡ ä¸ªå…·æœ‰ç›¸åŒURLçš„è¯·æ±‚åˆå¹¶ä¸ºä¸€ä¸ªè¯·æ±‚
             request.addContainer(imageContainer);
             return imageContainer;
         }
@@ -220,18 +220,18 @@ public class ImageLoader {
         // The request is not already in flight. Send the new request to the network and
         // track it.
         Request<?> newRequest =
-            new ImageRequest(requestUrl, new Listener<Bitmap>() {
-                @Override
-                public void onResponse(Bitmap response) {
-                    onGetImageSuccess(cacheKey, response);//³É¹¦»ñÈ¡Í¼Æ¬Ö®ºó£¬»Øµ÷µÄ·½·¨
-                }
-            }, maxWidth, maxHeight,
-            Config.RGB_565, new ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    onGetImageError(cacheKey, error);//»ñÈ¡Í¼Æ¬Ê§°Üºó£¬»Øµ÷µÄ·½·¨
-                }
-            });
+                new ImageRequest(requestUrl, new Listener<Bitmap>() {
+                    @Override
+                    public void onResponse(Bitmap response) {
+                        onGetImageSuccess(cacheKey, response);//æˆåŠŸè·å–å›¾ç‰‡ä¹‹åï¼Œå›è°ƒçš„æ–¹æ³•
+                    }
+                }, maxWidth, maxHeight,
+                        Config.RGB_565, new ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        onGetImageError(cacheKey, error);//è·å–å›¾ç‰‡å¤±è´¥åï¼Œå›è°ƒçš„æ–¹æ³•
+                    }
+                });
 
         mRequestQueue.add(newRequest);
         mInFlightRequests.put(cacheKey,
@@ -250,9 +250,9 @@ public class ImageLoader {
 
     /**
      * Handler for when an image was successfully loaded.
-     * 1¡¢»º´æ»ñÈ¡µÄÍ¼Æ¬£»
-     * 2¡¢´ÓÕıÔÚÔËĞĞµÄÇëÇóÁĞ±íÖĞÉ¾³ı¶ÔÓ¦µÄÇëÇó£»
-     * 3¡¢Åú´ÎÁ¿ÏàÓ¦¡£
+     * 1ã€ç¼“å­˜è·å–çš„å›¾ç‰‡ï¼›
+     * 2ã€ä»æ­£åœ¨è¿è¡Œçš„è¯·æ±‚åˆ—è¡¨ä¸­åˆ é™¤å¯¹åº”çš„è¯·æ±‚ï¼›
+     * 3ã€æ‰¹æ¬¡é‡ç›¸åº”ã€‚
      * @param cacheKey The cache key that is associated with the image request.
      * @param response The bitmap that was returned from the network.
      */
@@ -292,8 +292,8 @@ public class ImageLoader {
 
     /**
      * Container object for all of the data surrounding an image request.
-     * °üº¬ËùÓĞÓëÍ¼Æ¬ÇëÇóÏà¹ØµÄÊı¾İ£¬Ö÷ÒªÓĞËÄÖÖ£º³É¹¦¼ÓÔØµÄÍ¼Æ¬£¬¼ÓÔØ³É¹¦£¨Ê§°Ü£©µÄ¼àÌıÆ÷£¬
-     * Í¼Æ¬ÇëÇóµÄ»º´ækey£¬Í¼Æ¬ÇëÇóµÄURL
+     * åŒ…å«æ‰€æœ‰ä¸å›¾ç‰‡è¯·æ±‚å“åº”ç›¸å…³çš„æ•°æ®ï¼Œä¸»è¦æœ‰å››ç§ï¼šæˆåŠŸåŠ è½½çš„å›¾ç‰‡ï¼ŒåŠ è½½æˆåŠŸï¼ˆå¤±è´¥ï¼‰çš„ç›‘å¬å™¨ï¼Œ
+     * å›¾ç‰‡è¯·æ±‚çš„ç¼“å­˜keyï¼Œå›¾ç‰‡è¯·æ±‚çš„URL
      */
     public class ImageContainer {
         /**
@@ -304,10 +304,10 @@ public class ImageLoader {
 
         private final ImageListener mListener;
 
-        /** The cache key that was associated with the request ÓÃÀ´¹ØÁªÇëÇó*/
+        /** The cache key that was associated with the request ç”¨æ¥å…³è”è¯·æ±‚*/
         private final String mCacheKey;
 
-        /** The request URL that was specified ±»Ö¸¶¨µÄÇëÇóURL */
+        /** The request URL that was specified è¢«æŒ‡å®šçš„è¯·æ±‚URL */
         private final String mRequestUrl;
 
         /**
@@ -317,7 +317,7 @@ public class ImageLoader {
          * @param cacheKey The cache key that identifies the requested URL for this container.
          */
         public ImageContainer(Bitmap bitmap, String requestUrl,
-                String cacheKey, ImageListener listener) {
+                              String cacheKey, ImageListener listener) {
             mBitmap = bitmap;
             mRequestUrl = requestUrl;
             mCacheKey = cacheKey;
@@ -368,7 +368,7 @@ public class ImageLoader {
     /**
      * Wrapper class used to map a Request to the set of active ImageContainer objects that are
      * interested in its results.
-     * ÓÃÀ´·â×°Ò»¸öÇëÇóºÍËùÓĞ¶Ô¸ÃÇëÇó¸ÃĞËÈ¤µÄImageContainer¼¯ºÏµÄÓ³Éä
+     * ç”¨æ¥å°è£…ä¸€ä¸ªè¯·æ±‚å’Œæ‰€æœ‰å¯¹è¯¥è¯·æ±‚è¯¥å…´è¶£çš„ImageContaineré›†åˆçš„æ˜ å°„
      */
     private class BatchedImageRequest {
         /** The request being tracked */
@@ -381,7 +381,7 @@ public class ImageLoader {
         private VolleyError mError;
 
         /** List of all of the active ImageContainers that are interested in the request
-         * ËùÓĞ¶ÔÇëÇó¸ÃĞËÈ¤µÄImageContainersÁĞ±í*/
+         * æ‰€æœ‰å¯¹è¯·æ±‚è¯¥å…´è¶£çš„ImageContainersåˆ—è¡¨*/
         private final LinkedList<ImageContainer> mContainers = new LinkedList<ImageContainer>();
 
         /**
@@ -434,20 +434,22 @@ public class ImageLoader {
 
     /**
      * Starts the runnable for batched delivery of responses if it is not already started.
-     * Èç¹û»¹Î´¿ªÊ¼ÏìÓ¦´«µİ£¬ÔòÉú³ÉÒ»¸ö´«µİµÄÏìÓ¦µÄRunnable
-     * @param cacheKey The cacheKey of the response being delivered.½«±»´«µİµÄÏìÓ¦µÄ»º´ækey
+     * å¦‚æœè¿˜æœªå¼€å§‹å“åº”ä¼ é€’ï¼Œåˆ™ç”Ÿæˆä¸€ä¸ªä¼ é€’çš„å“åº”çš„Runnable
+     * @param cacheKey The cacheKey of the response being delivered.å°†è¢«ä¼ é€’çš„å“åº”çš„ç¼“å­˜key
      * @param request The BatchedImageRequest to be delivered.
      */
     private void batchResponse(String cacheKey, BatchedImageRequest request) {
-        mBatchedResponses.put(cacheKey, request);
+        mBatchedResponses.put(cacheKey, request);//å°†æœ¬æ¬¡Requestè¯·æ±‚æ·»åŠ åˆ°æ‰¹é‡è¯·æ±‚é›†åˆä¹‹ä¸­
         // If we don't already have a batch delivery runnable in flight, make a new one.
         // Note that this will be used to deliver responses to all callers in mBatchedResponses.
+        //å¦‚æœæˆ‘ä»¬è¿˜æ²¡æœ‰ä¸€ä¸ªç”¨æ¥å¤„ç†æ‰¹é‡è¯·æ±‚çš„å›è°ƒæ–¹æ³•ï¼Œåˆ›å»ºä¸€ä¸ªã€‚
+        //æ³¨æ„æ­¤å›è°ƒæ–¹æ³•å°†ç”¨æ¥å¤„ç†å“åº”è¯·æ±‚ä¸­æ¯ä¸€ä¸ªè¯·æ±‚ã€‚
         if (mRunnable == null) {
             mRunnable = new Runnable() {
                 @Override
                 public void run() {
                     for (BatchedImageRequest bir : mBatchedResponses.values()) {
-                        for (ImageContainer container : bir.mContainers) {
+                        for (ImageContainer container : bir.mContainers) {//å¤„ç†ä¸€ä¸ªè¯·æ±‚æ‰€æœ‰çš„å…´è¶£ç‚¹
                             // If one of the callers in the batched request canceled the request
                             // after the response was received but before it was delivered,
                             // skip them.
@@ -456,18 +458,20 @@ public class ImageLoader {
                             }
                             if (bir.getError() == null) {
                                 container.mBitmap = bir.mResponseBitmap;
-                                container.mListener.onResponse(container, false);//»Øµ÷ÏìÓ¦·½·¨£¡
+                                container.mListener.onResponse(container, false);//å›è°ƒå…´è¶£ç‚¹çš„æ–¹æ³•ï¼
                             } else {
                                 container.mListener.onErrorResponse(bir.getError());
                             }
                         }
                     }
-                    mBatchedResponses.clear();
-                    mRunnable = null;
+                    mBatchedResponses.clear();//åŒæ‰¹æ¬¡çš„è¯·æ±‚çš†è¢«å¤„ç†ï¼Œæ¸…ç©º
+                    mRunnable = null;//å¼€å§‹ä¸€åœºæ–°çš„æ‰¹é‡å¤„ç†ä»»åŠ¡
                 }
 
             };
             // Post the runnable.
+            //åˆ›å»ºæ¶ˆæ¯åmBatchResponseDelayMsæ¯«ç§’åï¼Œå†æ‰§è¡Œæ¶ˆæ¯
+            //mBatchResponseDelayæ—¶é—´å†…ï¼Œæ·»åŠ åˆ°mBatchedResponsesä¹‹ä¸­çš„æ‰€æœ‰Requestå¯¹è±¡ï¼Œè§†ä¸ºåŒæ‰¹æ¬¡çš„è¯·æ±‚
             mHandler.postDelayed(mRunnable, mBatchResponseDelayMs);
         }
     }

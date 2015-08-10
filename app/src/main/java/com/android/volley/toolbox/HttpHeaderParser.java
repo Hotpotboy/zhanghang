@@ -41,8 +41,8 @@ public class HttpHeaderParser {
 
         Map<String, String> headers = response.headers;
 
-        long serverDate = 0;
-        long serverExpires = 0;
+        long serverDate = 0;//服务端发送该响应的时间
+        long serverExpires = 0;//响应失效时间
         long softExpire = 0;
         long maxAge = 0;
         boolean hasCacheControl = false;

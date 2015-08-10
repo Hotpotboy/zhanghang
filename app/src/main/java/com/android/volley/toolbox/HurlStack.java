@@ -99,11 +99,11 @@ public class HurlStack implements HttpStack {
             url = rewritten;
         }
         URL parsedUrl = new URL(url);
-        HttpURLConnection connection = openConnection(parsedUrl, request);//��ȡ����
+        HttpURLConnection connection = openConnection(parsedUrl, request);//获取连接
         for (String headerName : map.keySet()) {
             connection.addRequestProperty(headerName, map.get(headerName));
         }
-        setConnectionParametersForRequest(connection, request);//�������󷽷�
+        setConnectionParametersForRequest(connection, request);//设置请求方法
         // Initialize HttpResponse with data from the HttpURLConnection.
         ProtocolVersion protocolVersion = new ProtocolVersion("HTTP", 1, 1);
         int responseCode = connection.getResponseCode();
@@ -177,12 +177,15 @@ public class HurlStack implements HttpStack {
 
     @SuppressWarnings("deprecation")
     /* package */ static void setConnectionParametersForRequest(HttpURLConnection connection,
-            Request<?> request) throws IOException, AuthFailureError {
+                                                                Request<?> request) throws IOException, AuthFailureError {
         switch (request.getMethod()) {
             case Method.DEPRECATED_GET_OR_POST:
-                // This is the deprecated way that needs to be handled for backwards compatibility.
-                // If the request's post body is null, then the assumption is that the request is
+                // This is the deprecated way that needs to be handled for backwards compatibility(向后兼容).
+                // If the request's post body is null, then the assumption（假设） is that the request is
                 // GET.  Otherwise, it is assumed that the request is a POST.
+                // 如果这个请求的传递body是空，则假定请求的方法为get（此处并没有明确的代码，
+                // 是因为HttpUrlConnection默认的请求方法为GET）。如果请求的传递body不为空，
+                // 则假定请求的方法为POST
                 byte[] postBody = request.getPostBody();
                 if (postBody != null) {
                     // Prepare output. There is no need to set Content-Length explicitly,
@@ -199,7 +202,7 @@ public class HurlStack implements HttpStack {
                 break;
             case Method.GET:
                 // Not necessary to set the request method because connection defaults to GET but
-                // being explicit here.
+                // being explicit（明确） here.
                 connection.setRequestMethod("GET");
                 break;
             case Method.DELETE:

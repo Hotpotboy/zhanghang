@@ -103,22 +103,22 @@ public class DiskBasedCache implements Cache {
      */
     @Override
     public synchronized Entry get(String key) {
-        CacheHeader entry = mEntries.get(key);
+        CacheHeader entry = mEntries.get(key);//获取摘要
         // if the entry does not exist, return.
         if (entry == null) {
             return null;
         }
 
-        File file = getFileForKey(key);
+        File file = getFileForKey(key);//获取文件
         CountingInputStream cis = null;
         try {
             cis = new CountingInputStream(new FileInputStream(file));
-            CacheHeader.readHeader(cis); // eat header
-            byte[] data = streamToBytes(cis, (int) (file.length() - cis.bytesRead));
-            return entry.toCacheEntry(data);
+            CacheHeader.readHeader(cis); // eat header文件的具体内容在摘要之后，所有先读取摘要，将当前读取位置移动到摘要之后
+            byte[] data = streamToBytes(cis, (int) (file.length() - cis.bytesRead));//当前位置移动到摘要之后，读取缓存内容
+            return entry.toCacheEntry(data);//根据读取的缓存内容，结合缓存摘要，生成Cache.Entry对象
         } catch (IOException e) {
             VolleyLog.d("%s: %s", file.getAbsolutePath(), e.toString());
-            remove(key);
+            remove(key);//发生异常则删除异常缓存
             return null;
         } finally {
             if (cis != null) {
@@ -137,7 +137,7 @@ public class DiskBasedCache implements Cache {
      */
     @Override
     public synchronized void initialize() {
-        if (!mRootDirectory.exists()) {
+        if (!mRootDirectory.exists()) {//如果根目录不存在，创建根目录
             if (!mRootDirectory.mkdirs()) {
                 VolleyLog.e("Unable to create cache dir %s", mRootDirectory.getAbsolutePath());
             }
@@ -148,6 +148,7 @@ public class DiskBasedCache implements Cache {
         if (files == null) {
             return;
         }
+        //遍历所有的文件，将文件转换为CacheHeader对象，并将其添加到缓存集合之中
         for (File file : files) {
             FileInputStream fis = null;
             try {
@@ -157,7 +158,7 @@ public class DiskBasedCache implements Cache {
                 putEntry(entry.key, entry);
             } catch (IOException e) {
                 if (file != null) {
-                   file.delete();
+                    file.delete();//如果存在异常则删除异常文件
                 }
             } finally {
                 try {
@@ -193,14 +194,14 @@ public class DiskBasedCache implements Cache {
     @Override
     public synchronized void put(String key, Entry entry) {
         pruneIfNeeded(entry.data.length);
-        File file = getFileForKey(key);
+        File file = getFileForKey(key);//根据key找到缓存文件
         try {
             FileOutputStream fos = new FileOutputStream(file);
-            CacheHeader e = new CacheHeader(key, entry);
-            e.writeHeader(fos);
-            fos.write(entry.data);
+            CacheHeader e = new CacheHeader(key, entry);//通过Cache.Entry生成一个摘要（CacheHeader）
+            e.writeHeader(fos);//将摘要写入缓存文件之中
+            fos.write(entry.data);//将内容写入缓存文件之中
             fos.close();
-            putEntry(key, e);
+            putEntry(key, e);//将摘要添加到缓存集合之中
             return;
         } catch (IOException e) {
         }
@@ -232,7 +233,7 @@ public class DiskBasedCache implements Cache {
         int firstHalfLength = key.length() / 2;
         String localFilename = String.valueOf(key.substring(0, firstHalfLength).hashCode());
         localFilename += String.valueOf(key.substring(firstHalfLength).hashCode());
-        return localFilename;
+        return localFilename+".txt";
     }
 
     /**
@@ -248,6 +249,7 @@ public class DiskBasedCache implements Cache {
      */
     private void pruneIfNeeded(int neededSpace) {
         if ((mTotalSize + neededSpace) < mMaxCacheSizeInBytes) {
+            //未超过缓存最大值限制，直接返回
             return;
         }
         if (VolleyLog.DEBUG) {
@@ -259,20 +261,26 @@ public class DiskBasedCache implements Cache {
         long startTime = SystemClock.elapsedRealtime();
 
         Iterator<Map.Entry<String, CacheHeader>> iterator = mEntries.entrySet().iterator();
+        //遍历缓存集合
         while (iterator.hasNext()) {
             Map.Entry<String, CacheHeader> entry = iterator.next();
+            //删除缓存集合头部CacheHeader对象对应的缓存文件，
             CacheHeader e = entry.getValue();
             boolean deleted = getFileForKey(e.key).delete();
             if (deleted) {
-                mTotalSize -= e.size;
+                mTotalSize -= e.size;//删除头部元素后当前缓存的大小
             } else {
-               VolleyLog.d("Could not delete cache entry for key=%s, filename=%s",
-                       e.key, getFilenameForKey(e.key));
+                VolleyLog.d("Could not delete cache entry for key=%s, filename=%s",
+                        e.key, getFilenameForKey(e.key));
             }
-            iterator.remove();
+            iterator.remove();//删除缓存集合头部CacheHeader对象
             prunedFiles++;
 
             if ((mTotalSize + neededSpace) < mMaxCacheSizeInBytes * HYSTERESIS_FACTOR) {
+                //mTotalSize：当前缓存的大小
+                //neededSpace：即将添加到缓存文件之中原始响应内容的大小
+                //mMaxCacheSizeInBytes：缓存最大值限制
+                //HYSTERESIS_FACTOR：缓存最高水准线（mMaxCacheSizeInBytes的百分之多少，其默认值为0.9）
                 break;
             }
         }
@@ -331,7 +339,7 @@ public class DiskBasedCache implements Cache {
     // Visible for testing.
     static class CacheHeader {
         /** The size of the data identified by this CacheHeader. (This is not
-         * serialized to disk. */
+         * serialized to disk. 原始响应内容的长度*/
         public long size;
 
         /** The key that identifies the cache entry. */
@@ -371,6 +379,7 @@ public class DiskBasedCache implements Cache {
 
         /**
          * Reads the header off of an InputStream and returns a CacheHeader object.
+         * 文件转换成CacheHeader
          * @param is The InputStream to read from.
          * @throws IOException
          */
@@ -395,6 +404,7 @@ public class DiskBasedCache implements Cache {
 
         /**
          * Creates a cache entry for the specified data.
+         * CacheHeader到Cache.Entry的转换
          */
         public Entry toCacheEntry(byte[] data) {
             Entry e = new Entry();
@@ -410,6 +420,7 @@ public class DiskBasedCache implements Cache {
 
         /**
          * Writes the contents of this CacheHeader to the specified OutputStream.
+         * CacheHeader转换成文件
          */
         public boolean writeHeader(OutputStream os) {
             try {

@@ -87,7 +87,7 @@ public class BasicNetwork implements Network {
             byte[] responseContents = null;
             Map<String, String> responseHeaders = new HashMap<String, String>();
             try {
-                // Gather headers.ÊÕ¼¯header
+                // Gather headers.æ”¶é›†header
                 Map<String, String> headers = new HashMap<String, String>();
                 addCacheHeaders(headers, request.getCacheEntry());
                 httpResponse = mHttpStack.performRequest(request, headers);
@@ -103,11 +103,11 @@ public class BasicNetwork implements Network {
 
                 // Some responses such as 204s do not have content.  We must check.
                 if (httpResponse.getEntity() != null) {
-                  responseContents = entityToBytes(httpResponse.getEntity());
+                    responseContents = entityToBytes(httpResponse.getEntity());
                 } else {
-                  // Add 0 byte response as a way of honestly representing a
-                  // no-content request.
-                  responseContents = new byte[0];
+                    // Add 0 byte response as a way of honestly representing a
+                    // no-content request.
+                    responseContents = new byte[0];
                 }
 
                 // if the request is slow, log it.
@@ -155,10 +155,10 @@ public class BasicNetwork implements Network {
      * Logs requests that took over SLOW_REQUEST_THRESHOLD_MS to complete.
      */
     private void logSlowRequests(long requestLifetime, Request<?> request,
-            byte[] responseContents, StatusLine statusLine) {
+                                 byte[] responseContents, StatusLine statusLine) {
         if (DEBUG || requestLifetime > SLOW_REQUEST_THRESHOLD_MS) {
             VolleyLog.d("HTTP response for request=<%s> [lifetime=%d], [size=%s], " +
-                    "[rc=%d], [retryCount=%s]", request, requestLifetime,
+                            "[rc=%d], [retryCount=%s]", request, requestLifetime,
                     responseContents != null ? responseContents.length : "null",
                     statusLine.getStatusCode(), request.getRetryPolicy().getCurrentRetryCount());
         }
@@ -170,7 +170,7 @@ public class BasicNetwork implements Network {
      * @param request The request to use.
      */
     private static void attemptRetryOnException(String logPrefix, Request<?> request,
-            VolleyError exception) throws VolleyError {
+                                                VolleyError exception) throws VolleyError {
         RetryPolicy retryPolicy = request.getRetryPolicy();
         int oldTimeout = request.getTimeoutMs();
 
