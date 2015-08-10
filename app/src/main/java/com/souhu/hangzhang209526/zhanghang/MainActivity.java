@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -13,6 +14,8 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 import com.souhu.hangzhang209526.zhanghang.adpter.ImageAdapter;
 import com.souhu.hangzhang209526.zhanghang.utils.ImageCache;
+import com.souhu.hangzhang209526.zhanghang.widget.ZhLinearLayout;
+import com.souhu.hangzhang209526.zhanghang.widget.ZhListView;
 
 import java.util.ArrayList;
 
@@ -21,9 +24,10 @@ import static com.souhu.hangzhang209526.zhanghang.adpter.ImageAdapter.*;
 
 public class MainActivity extends Activity {
 //    NetworkImageView imageView;
-    ListView imageList;
+    ZhLinearLayout imageList;
     ImageAdapter adapter;
     private static ArrayList<String> list;
+    LinearLayout linearLayout;
     static{
         list = new ArrayList<>();
         list.add("http://p3.qhimg.com/t0167a9dbb748dbff77.jpg");
@@ -38,13 +42,13 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        imageView = (NetworkImageView) findViewById(R.id.net_work_image);
-//        //≥ı ºªØÕº∆¨º”‘ÿ∆˜
+//        //ÂàùÂßãÂåñÂõæÁâáÂä†ËΩΩÂô®
 //        ImageLoader imageLoader = new ImageLoader(Volley.newRequestQueue(this), new ImageCache(8*1024*1024));
 //        imageView.setDefaultImageResId(R.drawable.deafult);
 //        imageView.setImageUrl("http://p3.qhimg.com/t0167a9dbb748dbff77.jpg11", imageLoader);
-        imageList = (ListView)findViewById(R.id.imageList);
-        adapter = new ImageAdapter(this,list);
-        imageList.setAdapter(adapter);
+        imageList = (ZhLinearLayout)findViewById(R.id.imageList);
+//        adapter = new ImageAdapter(this,list);
+//        imageList.setAdapter(adapter);
     }
 
     @Override

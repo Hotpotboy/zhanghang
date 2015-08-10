@@ -28,7 +28,7 @@ public class ImageAdapter extends BaseAdapter{
         datas = _datas;
         mContext = context;
 
-        //³õÊ¼»¯Í¼Æ¬¼ÓÔØÆ÷
+        //åˆå§‹åŒ–å›¾ç‰‡åŠ è½½å™¨
         imageLoader = new ImageLoader(Volley.newRequestQueue(mContext), new ImageCache(8*1024*1024));
     }
 

@@ -16,10 +16,11 @@
 
 package com.souhu.hangzhang209526.zhanghang.widget;
 
-import android.R;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -30,6 +31,8 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.LinearLayout;
 import android.widget.RemoteViews.RemoteView;
+
+import com.souhu.hangzhang209526.zhanghang.R;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -191,36 +194,36 @@ public class ZhLinearLayout extends ViewGroup {
     }
 
     public ZhLinearLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
+        super(context, attrs, defStyleAttr);
 
         final TypedArray a = context.obtainStyledAttributes(
-                attrs, com.android.internal.R.styleable.LinearLayout, defStyleAttr, defStyleRes);
+                attrs, R.styleable.ZhLinearLayout, defStyleAttr, defStyleRes);
 
-        int index = a.getInt(com.android.internal.R.styleable.LinearLayout_orientation, -1);
+        int index = a.getInt(R.styleable.ZhLinearLayout_orientation_zh, -1);
         if (index >= 0) {
             setOrientation(index);
         }
 
-        index = a.getInt(com.android.internal.R.styleable.LinearLayout_gravity, -1);
+        index = a.getInt(R.styleable.ZhLinearLayout_gravity_zh, -1);
         if (index >= 0) {
             setGravity(index);
         }
 
-        boolean baselineAligned = a.getBoolean(com.android.internal.R.styleable.LinearLayout_baselineAligned, true);
+        boolean baselineAligned = a.getBoolean(R.styleable.ZhLinearLayout_baselineAligned_zh, true);
         if (!baselineAligned) {
             setBaselineAligned(baselineAligned);
         }
 
-        mWeightSum = a.getFloat(com.android.internal.R.styleable.LinearLayout_weightSum, -1.0f);
+        mWeightSum = a.getFloat(R.styleable.ZhLinearLayout_weightSum_zh, -1.0f);
 
         mBaselineAlignedChildIndex =
-                a.getInt(com.android.internal.R.styleable.LinearLayout_baselineAlignedChildIndex, -1);
+                a.getInt(R.styleable.ZhLinearLayout_baselineAlignedChildIndex_zh, -1);
 
-        mUseLargestChild = a.getBoolean(com.android.internal.R.styleable.LinearLayout_measureWithLargestChild, false);
+        mUseLargestChild = a.getBoolean(R.styleable.ZhLinearLayout_measureWithLargestChild_zh, false);
 
-        setDividerDrawable(a.getDrawable(R.color.black));
-        mShowDividers = a.getInt(com.android.internal.R.styleable.LinearLayout_showDividers, SHOW_DIVIDER_NONE);
-        mDividerPadding = a.getDimensionPixelSize(com.android.internal.R.styleable.LinearLayout_dividerPadding, 0);
+        setDividerDrawable(new ColorDrawable(Color.BLACK));
+        mShowDividers = a.getInt(R.styleable.ZhLinearLayout_showDividers_zh, SHOW_DIVIDER_NONE);
+        mDividerPadding = a.getDimensionPixelSize(R.styleable.ZhLinearLayout_dividerPadding_zh, 0);
 
         a.recycle();
     }
@@ -521,7 +524,7 @@ public class ZhLinearLayout extends ViewGroup {
             }
         }
 
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) child.getLayoutParams();
+        ZhLinearLayout.LayoutParams lp = (ZhLinearLayout.LayoutParams) child.getLayoutParams();
         return childTop + lp.topMargin + childBaseline;
     }
 
@@ -822,7 +825,7 @@ public class ZhLinearLayout extends ViewGroup {
                     continue;
                 }
 
-                final LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)
+                final ZhLinearLayout.LayoutParams lp = (ZhLinearLayout.LayoutParams)
                         child.getLayoutParams();
                 // Account for negative margins
                 final int totalLength = mTotalLength;
@@ -864,7 +867,7 @@ public class ZhLinearLayout extends ViewGroup {
                     continue;
                 }
 
-                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) child.getLayoutParams();
+                ZhLinearLayout.LayoutParams lp = (ZhLinearLayout.LayoutParams) child.getLayoutParams();
 
                 float childExtra = lp.weight;//权重
                 if (childExtra > 0) {//具有权重
@@ -893,7 +896,7 @@ public class ZhLinearLayout extends ViewGroup {
                                 MeasureSpec.makeMeasureSpec(childHeight, MeasureSpec.EXACTLY));
                     } else {
                         // child was skipped in the loop above.
-                        // Measure for this first time here      
+                        // Measure for this first time here
                         child.measure(childWidthMeasureSpec,
                                 MeasureSpec.makeMeasureSpec(share > 0 ? share : 0,
                                         MeasureSpec.EXACTLY));
@@ -939,8 +942,8 @@ public class ZhLinearLayout extends ViewGroup {
                         continue;
                     }
 
-                    final LinearLayout.LayoutParams lp =
-                            (LinearLayout.LayoutParams) child.getLayoutParams();
+                    final ZhLinearLayout.LayoutParams lp =
+                            (ZhLinearLayout.LayoutParams) child.getLayoutParams();
 
                     float childExtra = lp.weight;
                     if (childExtra > 0) {
@@ -978,7 +981,7 @@ public class ZhLinearLayout extends ViewGroup {
         for (int i = 0; i< count; ++i) {
             final View child = getVirtualChildAt(i);
             if (child.getVisibility() != GONE) {
-                LinearLayout.LayoutParams lp = ((LinearLayout.LayoutParams)child.getLayoutParams());
+                ZhLinearLayout.LayoutParams lp = ((ZhLinearLayout.LayoutParams)child.getLayoutParams());
 
                 if (lp.width == LayoutParams.MATCH_PARENT) {
                     // Temporarily force children to reuse their old measured height
@@ -1058,7 +1061,7 @@ public class ZhLinearLayout extends ViewGroup {
                 mTotalLength += mDividerWidth;
             }
 
-            final LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)
+            final ZhLinearLayout.LayoutParams lp = (ZhLinearLayout.LayoutParams)
                     child.getLayoutParams();
 
             totalWeight += lp.weight;
@@ -1207,7 +1210,7 @@ public class ZhLinearLayout extends ViewGroup {
                     continue;
                 }
 
-                final LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)
+                final ZhLinearLayout.LayoutParams lp = (ZhLinearLayout.LayoutParams)
                         child.getLayoutParams();
                 if (isExactly) {
                     mTotalLength += largestChildWidth + lp.leftMargin + lp.rightMargin +
@@ -1252,8 +1255,8 @@ public class ZhLinearLayout extends ViewGroup {
                     continue;
                 }
 
-                final LinearLayout.LayoutParams lp =
-                        (LinearLayout.LayoutParams) child.getLayoutParams();
+                final ZhLinearLayout.LayoutParams lp =
+                        (ZhLinearLayout.LayoutParams) child.getLayoutParams();
 
                 float childExtra = lp.weight;
                 if (childExtra > 0) {
@@ -1359,8 +1362,8 @@ public class ZhLinearLayout extends ViewGroup {
                         continue;
                     }
 
-                    final LinearLayout.LayoutParams lp =
-                            (LinearLayout.LayoutParams) child.getLayoutParams();
+                    final ZhLinearLayout.LayoutParams lp =
+                            (ZhLinearLayout.LayoutParams) child.getLayoutParams();
 
                     float childExtra = lp.weight;
                     if (childExtra > 0) {
@@ -1400,7 +1403,7 @@ public class ZhLinearLayout extends ViewGroup {
         for (int i = 0; i < count; ++i) {
             final View child = getVirtualChildAt(i);
             if (child.getVisibility() != GONE) {
-                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) child.getLayoutParams();
+                ZhLinearLayout.LayoutParams lp = (ZhLinearLayout.LayoutParams) child.getLayoutParams();
 
                 if (lp.height == LayoutParams.MATCH_PARENT) {
                     // Temporarily force children to reuse their old measured width
@@ -1578,8 +1581,8 @@ public class ZhLinearLayout extends ViewGroup {
                 final int childWidth = child.getMeasuredWidth();
                 final int childHeight = child.getMeasuredHeight();
 
-                final LinearLayout.LayoutParams lp =
-                        (LinearLayout.LayoutParams) child.getLayoutParams();
+                final ZhLinearLayout.LayoutParams lp =
+                        (ZhLinearLayout.LayoutParams) child.getLayoutParams();
 
                 int gravity = lp.gravity;
                 if (gravity < 0) {
@@ -1690,8 +1693,8 @@ public class ZhLinearLayout extends ViewGroup {
                 final int childHeight = child.getMeasuredHeight();
                 int childBaseline = -1;
 
-                final LinearLayout.LayoutParams lp =
-                        (LinearLayout.LayoutParams) child.getLayoutParams();
+                final ZhLinearLayout.LayoutParams lp =
+                        (ZhLinearLayout.LayoutParams) child.getLayoutParams();
 
                 if (baselineAligned && lp.height != LayoutParams.MATCH_PARENT) {
                     childBaseline = child.getBaseline();
@@ -1823,8 +1826,8 @@ public class ZhLinearLayout extends ViewGroup {
     }
 
     @Override
-    public LinearLayout.LayoutParams generateLayoutParams(AttributeSet attrs) {
-        return new LinearLayout.LayoutParams(getContext(), attrs);
+    public ZhLinearLayout.LayoutParams generateLayoutParams(AttributeSet attrs) {
+        return new ZhLinearLayout.LayoutParams(getContext(), attrs);
     }
 
     /**
@@ -1854,7 +1857,7 @@ public class ZhLinearLayout extends ViewGroup {
     // Override to allow type-checking of LayoutParams.
     @Override
     protected boolean checkLayoutParams(ViewGroup.LayoutParams p) {
-        return p instanceof LinearLayout.LayoutParams;
+        return p instanceof ZhLinearLayout.LayoutParams;
     }
 
     @Override
@@ -1914,10 +1917,10 @@ public class ZhLinearLayout extends ViewGroup {
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
             TypedArray a =
-                    c.obtainStyledAttributes(attrs, com.android.internal.R.styleable.LinearLayout_Layout);
+                    c.obtainStyledAttributes(attrs, R.styleable.ZhLinearLayout_Layout);
 
-            weight = a.getFloat(com.android.internal.R.styleable.LinearLayout_Layout_layout_weight, 0);
-            gravity = a.getInt(com.android.internal.R.styleable.LinearLayout_Layout_layout_gravity, -1);
+            weight = a.getFloat(R.styleable.ZhLinearLayout_Layout_layout_weight_zh, 0);
+            gravity = a.getInt(R.styleable.ZhLinearLayout_Layout_layout_gravity_zh, -1);
 
             a.recycle();
         }
