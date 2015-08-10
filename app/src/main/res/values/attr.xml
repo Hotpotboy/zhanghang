@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ZhLinearLayout">
+        <attr name="orientation_zh" format="integer">
+            <enum name="vertical_zh" value="1"/>
+            <enum name="horizontal_zh" value="0"/>
+        </attr>
+        <attr name="gravity_zh" format="integer"/>
+        <attr name="baselineAligned_zh" format="boolean"/>
+        <attr name="weightSum_zh" format="float"/>
+        <attr name="baselineAlignedChildIndex_zh" format="integer"/>
+        <attr name="measureWithLargestChild_zh" format="boolean" />
+        <attr name="showDividers_zh" format="integer" />
+        <attr name="dividerPadding_zh" format="integer"/>
+    </declare-styleable>
+    <declare-styleable name="ZhLinearLayout_Layout">
+        <attr name="layout_gravity_zh" format="integer"/>
+        <attr name="layout_weight_zh" format="integer" />
+    </declare-styleable>
+</resources>
