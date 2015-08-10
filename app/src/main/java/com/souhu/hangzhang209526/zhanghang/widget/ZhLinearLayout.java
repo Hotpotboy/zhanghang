@@ -61,8 +61,8 @@ public class ZhLinearLayout extends ViewGroup {
     @Retention(RetentionPolicy.SOURCE)
     public @interface OrientationMode {}
 
-    public static final int HORIZONTAL = 0;//����
-    public static final int VERTICAL = 1;//����
+    public static final int HORIZONTAL = 0;//横向
+    public static final int VERTICAL = 1;//纵向
 
     /** @hide */
     @Retention(RetentionPolicy.SOURCE)
@@ -74,24 +74,24 @@ public class ZhLinearLayout extends ViewGroup {
     public static final int SHOW_DIVIDER_NONE = 0;
     /**
      * Show a divider at the beginning of the group.
-     * //��LinearLayout�������󲿣�ֻ��ʾһ���ָ���
+     * //在LinearLayout顶部（左部）只显示一个分割线
      */
     public static final int SHOW_DIVIDER_BEGINNING = 1;
     /**
      * Show dividers between each item in the group.
-     * ��LinearLayout��ÿ������ͼ֮����ʾһ���ָ���
+     * 在LinearLayout中每个子视图之间显示一个分割线
      */
     public static final int SHOW_DIVIDER_MIDDLE = 2;
     /**
      * Show a divider at the end of the group.
-     * ��LinearLayout�ײ����Ҳ���ֻ��ʾһ���ָ���
+     * 在LinearLayout底部（右部）只显示一个分割线
      */
     public static final int SHOW_DIVIDER_END = 4;
 
     /**
      * Whether the children of this layout are baseline aligned.  Only applicable
      * if {@link #mOrientation} is horizontal.
-     * ���е�����ͼ�Ƿ���߶��룻ֻ֧��ˮƽ����ģʽ��LinearLayout
+     * 所有的子视图是否基线对齐；只支持水平布局模式的LinearLayout
      */
     @ViewDebug.ExportedProperty(category = "layout")
     private boolean mBaselineAligned = true;
@@ -114,7 +114,7 @@ public class ZhLinearLayout extends ViewGroup {
     @ViewDebug.ExportedProperty(category = "measurement")
     private int mBaselineChildTop = 0;
 
-    //LinearLayout�Ĳ���ģʽ
+    //LinearLayout的布局模式
     @ViewDebug.ExportedProperty(category = "measurement")
     private int mOrientation;
 
@@ -156,7 +156,7 @@ public class ZhLinearLayout extends ViewGroup {
     private int mTotalLength;
 
     @ViewDebug.ExportedProperty(category = "layout")
-    //����Ȩ�ص�����ͼ��������
+    //具有权重的子视图的总数量
     private float mWeightSum;
 
     @ViewDebug.ExportedProperty(category = "layout")
@@ -612,9 +612,13 @@ public class ZhLinearLayout extends ViewGroup {
 
     /**
      * Determines where to position dividers between children.
-     *
+     * 决定子视图之间分割线的位置
+     * 一下三种情况中的一种是需要显示指定视图之前的分割线：
+     * 指定视图为第一个子视图，且分割线显示的模式为SHOW_DEVIDER_BEGINNING；
+     * 指定视图为最后一个视图，且分割线显示的模式为SHOW_DEVIDER_END;
+     * 分割线显示模式为SHOW_DEVIDER_MIDDLE
      * @param childIndex Index of child to check for preceding divider
-     * @return true if there should be a divider before the child at childIndex
+     * @return true if there should be a divider before the child at childIndex 如果返回true，则表示在指定位置的子视图前方应该有一个分割线
      * @hide Pending API consideration. Currently only used internally by the system.
      */
     protected boolean hasDividerBeforeChildAt(int childIndex) {
@@ -638,9 +642,9 @@ public class ZhLinearLayout extends ViewGroup {
     /**
      * Measures the children when the orientation of this LinearLayout is set
      * to {@link #VERTICAL}.
-     *
-     * @param widthMeasureSpec Horizontal space requirements as imposed by the parent.
-     * @param heightMeasureSpec Vertical space requirements as imposed by the parent.
+     * 当LinearLayout为垂直模式时，对其子视图进行测量的方法
+     * @param widthMeasureSpec Horizontal space requirements as imposed by the parent.水平空间需求，其受父视图影响
+     * @param heightMeasureSpec Vertical space requirements as imposed by the parent.垂直空间需求，其受父视图影响
      *
      * @see #getOrientation()
      * @see #setOrientation(int)
@@ -650,15 +654,15 @@ public class ZhLinearLayout extends ViewGroup {
         mTotalLength = 0;
         int maxWidth = 0;
         int childState = 0;
-        int alternativeMaxWidth = 0;
-        int weightedMaxWidth = 0;
+        int alternativeMaxWidth = 0;//所有子视图中的最大宽度
+        int weightedMaxWidth = 0;//所有权重子视图中的最大宽度
         boolean allFillParent = true;
-        float totalWeight = 0;
+        float totalWeight = 0;//总权重
 
         final int count = getVirtualChildCount();
 
-        final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        final int widthMode = MeasureSpec.getMode(widthMeasureSpec);//宽度模式
+        final int heightMode = MeasureSpec.getMode(heightMeasureSpec);//高度模式
 
         boolean matchWidth = false;
         boolean skippedMeasure = false;
@@ -669,6 +673,10 @@ public class ZhLinearLayout extends ViewGroup {
         int largestChildHeight = Integer.MIN_VALUE;
 
         // See how tall everyone is. Also remember max width.
+        //计算每个子视图有多高，并记住最大的宽度
+        //计算LinearLayout中需要的高度和需要的宽度
+        //需要的宽度就是所有子视图中最大的宽度，需要的高度就是所有子视图高度的和
+        //高度和不包括具有权重的视图的高度
         for (int i = 0; i < count; ++i) {
             final View child = getVirtualChildAt(i);
 
@@ -682,22 +690,23 @@ public class ZhLinearLayout extends ViewGroup {
                 continue;
             }
 
-            if (hasDividerBeforeChildAt(i)) {
+            if (hasDividerBeforeChildAt(i)) {//如果需要展示分割线则总高度需要加上分割线的高度
                 mTotalLength += mDividerHeight;
             }
 
-            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) child.getLayoutParams();
+            ZhLinearLayout.LayoutParams lp = (ZhLinearLayout.LayoutParams) child.getLayoutParams();
 
-            totalWeight += lp.weight;
+            totalWeight += lp.weight;//添加权重
 
             if (heightMode == MeasureSpec.EXACTLY && lp.height == 0 && lp.weight > 0) {
                 // Optimization: don't bother measuring children who are going to use
                 // leftover space. These views will get measured again down below if
                 // there is any leftover space.
+                //不要打扰即将使用剩余空间进行测量的子视图。这些视图将过会儿被测量，如果还存在剩余空间
                 final int totalLength = mTotalLength;
                 mTotalLength = Math.max(totalLength, totalLength + lp.topMargin + lp.bottomMargin);
                 skippedMeasure = true;
-            } else {
+            } else {//需要测量子视图
                 int oldHeight = Integer.MIN_VALUE;
 
                 if (lp.height == 0 && lp.weight > 0) {
@@ -705,6 +714,8 @@ public class ZhLinearLayout extends ViewGroup {
                     // child wanted to stretch to fill available space.
                     // Translate that to WRAP_CONTENT so that it does not end up
                     // with a height of 0
+                    //如果高度模式不是EXACTLY模式，子视图则期望拉伸填满整个可用空间。
+                    //将子视图的高度转变为WRAP_CONTENT以使得该子视图不会因为height为0而停止
                     oldHeight = 0;
                     lp.height = LayoutParams.WRAP_CONTENT;
                 }
@@ -713,6 +724,9 @@ public class ZhLinearLayout extends ViewGroup {
                 // previous children have given a weight, then we allow it to
                 // use all available space (and we will shrink things later
                 // if needed).
+                //决定子视图将变得多大。如果这个或者上一个子视图被给予了一个权重，
+                //我们将允许他们使用所有可用的空间，如果需要我们也将收缩。
+                //测量子视图
                 measureChildBeforeLayout(
                         child, i, widthMeasureSpec, 0, heightMeasureSpec,
                         totalWeight == 0 ? mTotalLength : 0);
@@ -721,12 +735,13 @@ public class ZhLinearLayout extends ViewGroup {
                     lp.height = oldHeight;
                 }
 
-                final int childHeight = child.getMeasuredHeight();
+                final int childHeight = child.getMeasuredHeight();//子视图高度
                 final int totalLength = mTotalLength;
+                //更新高度和
                 mTotalLength = Math.max(totalLength, totalLength + childHeight + lp.topMargin +
                         lp.bottomMargin + getNextLocationOffset(child));
 
-                if (useLargestChild) {
+                if (useLargestChild) {//更新最大高度的子视图
                     largestChildHeight = Math.max(childHeight, largestChildHeight);
                 }
             }
@@ -734,6 +749,7 @@ public class ZhLinearLayout extends ViewGroup {
             /**
              * If applicable, compute the additional offset to the child's baseline
              * we'll need later when asked {@link #getBaseline}.
+             * 如果可用，计算出距离此视图的基准线的增加偏移量，我们将在getBaseline方法中使用
              */
             if ((baselineChildIndex >= 0) && (baselineChildIndex == i + 1)) {
                 mBaselineChildTop = mTotalLength;
@@ -742,6 +758,7 @@ public class ZhLinearLayout extends ViewGroup {
             // if we are trying to use a child index for our baseline, the above
             // book keeping only works if there are no children above it with
             // weight.  fail fast to aid the developer.
+            //作为基准线的视图的上方不能存在具有权重的视图
             if (i < baselineChildIndex && lp.weight > 0) {
                 throw new RuntimeException("A child of LinearLayout with index "
                         + "less than mBaselineAlignedChildIndex has weight > 0, which "
@@ -755,6 +772,8 @@ public class ZhLinearLayout extends ViewGroup {
                 // child said it wanted to match our width. Set a flag
                 // indicating that we need to remeasure at least that view when
                 // we know our width.
+                //如果LinearLayout的宽度需要测量，并且至少有一个子视图需要这个测量的宽度。
+                //设置一个标识用以说明我们需要重新测量这个需要LinearLayout宽度的子视图。
                 matchWidth = true;
                 matchWidthLocally = true;
             }
@@ -762,13 +781,14 @@ public class ZhLinearLayout extends ViewGroup {
             final int margin = lp.leftMargin + lp.rightMargin;
             final int measuredWidth = child.getMeasuredWidth() + margin;
             maxWidth = Math.max(maxWidth, measuredWidth);
-            childState = combineMeasuredStates(childState, child.getMeasuredState());
+            childState = combineMeasuredStates(childState, child.getMeasuredState());//合并子视图的的宽度模式与高度模式
 
-            allFillParent = allFillParent && lp.width == LayoutParams.MATCH_PARENT;
-            if (lp.weight > 0) {
+            allFillParent = allFillParent && lp.width == LayoutParams.MATCH_PARENT;//当前子视图是否需要完全匹配父视图的宽度
+            if (lp.weight > 0) {//如果具有权重
                 /*
                  * Widths of weighted Views are bogus if we end up
                  * remeasuring, so keep them separate.
+                 * 如果我们结束重新测量，则权重视图的宽度是伪造的，并保持他们的分离
                  */
                 weightedMaxWidth = Math.max(weightedMaxWidth,
                         matchWidthLocally ? margin : measuredWidth);
@@ -784,6 +804,7 @@ public class ZhLinearLayout extends ViewGroup {
             mTotalLength += mDividerHeight;
         }
 
+        //使得所有子视图的高度与子视图中最大的高度一致
         if (useLargestChild &&
                 (heightMode == MeasureSpec.AT_MOST || heightMode == MeasureSpec.UNSPECIFIED)) {
             mTotalLength = 0;
@@ -815,21 +836,24 @@ public class ZhLinearLayout extends ViewGroup {
         int mPaddingBottom = getPaddingBottom();
         mTotalLength += mPaddingTop + mPaddingBottom;
 
-        int heightSize = mTotalLength;
+        int heightSize = mTotalLength;//真正期望的高度
 
         // Check against our minimum height
         heightSize = Math.max(heightSize, getSuggestedMinimumHeight());
 
         // Reconcile our calculated size with the heightMeasureSpec
+        //计算出最终的高度
         int heightSizeAndState = resolveSizeAndState(heightSize, heightMeasureSpec, 0);
         heightSize = heightSizeAndState & MEASURED_SIZE_MASK;
 
         // Either expand children with weight to take up available space or
         // shrink them if they extend beyond our current bounds. If we skipped
         // measurement on any children, we need to measure them now.
+        //扩展具有权重的子视图，使他们占领子可用空间，或者收缩他们，如果他们已经超过了当前的范围。
+        //如果我们有跳过测量一些子视图，那么在这里我们将测量他们
         int delta = heightSize - mTotalLength;
         if (skippedMeasure || delta != 0 && totalWeight > 0.0f) {
-            float weightSum = mWeightSum > 0.0f ? mWeightSum : totalWeight;
+            float weightSum = mWeightSum > 0.0f ? mWeightSum : totalWeight;//总权重数
 
             mTotalLength = 0;
 
@@ -842,8 +866,8 @@ public class ZhLinearLayout extends ViewGroup {
 
                 LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) child.getLayoutParams();
 
-                float childExtra = lp.weight;
-                if (childExtra > 0) {
+                float childExtra = lp.weight;//权重
+                if (childExtra > 0) {//具有权重
                     // Child said it could absorb extra space -- give him his share
                     int share = (int) (childExtra * delta / weightSum);
                     weightSum -= childExtra;
@@ -1395,7 +1419,7 @@ public class ZhLinearLayout extends ViewGroup {
     /**
      * <p>Returns the number of children to skip after measuring/laying out
      * the specified child.</p>
-     *
+     * 当指定的视图被测量（或者布局）之后，应该忽略的子视图的数量，LinearLayout之中返回0
      * @param child the child after which we want to skip children
      * @param index the index of the child after which we want to skip children
      * @return the number of children to skip, 0 by default
@@ -1407,7 +1431,7 @@ public class ZhLinearLayout extends ViewGroup {
     /**
      * <p>Returns the size (width or height) that should be occupied by a null
      * child.</p>
-     *
+     * 返回一个空的子视图能够占用的宽度或高度值，LinearLayout之中返回0
      * @param childIndex the index of the null child
      * @return the width or height of the child depending on the orientation
      */
@@ -1420,19 +1444,51 @@ public class ZhLinearLayout extends ViewGroup {
      * method should be overriden by subclasses to force the sizing of
      * children. This method is called by {@link #measureVertical(int, int)} and
      * {@link #measureHorizontal(int, int)}.</p>
-     *
-     * @param child the child to measure
-     * @param childIndex the index of the child in this view
+     *  根据父视图的测量规格，对指定子视图进行测量；这个方法应该被子类重写，用以强迫测量子视图的大小。
+     * @param child the child to measure  用以测量的子视图
+     * @param childIndex the index of the child in this view 用以测量的子视图的位置
      * @param widthMeasureSpec horizontal space requirements as imposed by the parent
-     * @param totalWidth extra space that has been used up by the parent horizontally
+     * @param totalWidth extra space that has been used up by the parent horizontally已经被LinearLayout使用的宽度
      * @param heightMeasureSpec vertical space requirements as imposed by the parent
-     * @param totalHeight extra space that has been used up by the parent vertically
+     * @param totalHeight extra space that has been used up by the parent vertically已经被LinearLayout使用的高度
      */
     void measureChildBeforeLayout(View child, int childIndex,
                                   int widthMeasureSpec, int totalWidth, int heightMeasureSpec,
                                   int totalHeight) {
         measureChildWithMargins(child, widthMeasureSpec, totalWidth,
                 heightMeasureSpec, totalHeight);
+    }
+
+    /**
+     * 该方法重写了ViewGroup之中的方法，并且与ViewGroup之中的一致
+     * Ask one of the children of this view to measure itself, taking into
+     * account both the MeasureSpec requirements for this view and its padding
+     * and margins. The child must have MarginLayoutParams The heavy lifting is
+     * done in getChildMeasureSpec.
+     * 让指定的子视图测量自己，并且同时考虑该子视图需要的测量规格和该子视图的padding与margins.
+     * 生成指定子视图的测量规格（测量模式及测量数值，并测量）
+     * @param child The child to measure
+     * @param parentWidthMeasureSpec The width requirements for this view
+     * @param widthUsed Extra space that has been used up by the parent
+     *        horizontally (possibly by other children of the parent)
+     * @param parentHeightMeasureSpec The height requirements for this view
+     * @param heightUsed Extra space that has been used up by the parent
+     *        vertically (possibly by other children of the parent)
+     */
+    @Override
+    protected void measureChildWithMargins(View child,
+                                           int parentWidthMeasureSpec, int widthUsed,
+                                           int parentHeightMeasureSpec, int heightUsed) {
+        final MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
+
+        final int childWidthMeasureSpec = getChildMeasureSpec(parentWidthMeasureSpec,
+                getPaddingLeft() + getPaddingRight() + lp.leftMargin + lp.rightMargin
+                        + widthUsed, lp.width);
+        final int childHeightMeasureSpec = getChildMeasureSpec(parentHeightMeasureSpec,
+                getPaddingTop() + getPaddingBottom() + lp.topMargin + lp.bottomMargin
+                        + heightUsed, lp.height);
+
+        child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
     }
 
     /**
