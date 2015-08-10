@@ -46,7 +46,7 @@ public abstract class Request<T> implements Comparable<Request<T>> {
      * Supported request methods.
      */
     public interface Method {
-        int DEPRECATED_GET_OR_POST = -1;
+        int DEPRECATED_GET_OR_POST = -1;//根据POST BODY是否为空来判断是使用GET方法?还是使用POST方法？
         int GET = 0;
         int POST = 1;
         int PUT = 2;

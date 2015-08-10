@@ -82,44 +82,45 @@ public class CacheDispatcher extends Thread {
         Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
 
         // Make a blocking call to initialize the cache.
-        mCache.initialize();
+        mCache.initialize();//初始化缓存
 
         while (true) {
             try {
                 // Get a request from the cache triage queue, blocking until
                 // at least one is available.
-                final Request request = mCacheQueue.take();
+                final Request request = mCacheQueue.take();//获取请求
                 request.addMarker("cache-queue-take");
 
                 // If the request has been canceled, don't bother dispatching it.
-                if (request.isCanceled()) {
+                if (request.isCanceled()) {//取消
                     request.finish("cache-discard-canceled");
                     continue;
                 }
 
                 // Attempt to retrieve this item from cache.
-                Cache.Entry entry = mCache.get(request.getCacheKey());
+                Cache.Entry entry = mCache.get(request.getCacheKey());//获取缓存
                 if (entry == null) {
                     request.addMarker("cache-miss");
                     // Cache miss; send off to the network dispatcher.
-                    mNetworkQueue.put(request);
+                    mNetworkQueue.put(request);//无缓存，添加到网络请求队列之中
                     continue;
                 }
 
                 // If it is completely expired, just send it to the network.
-                if (entry.isExpired()) {
+                if (entry.isExpired()) {//缓存过期
                     request.addMarker("cache-hit-expired");
                     request.setCacheEntry(entry);
-                    mNetworkQueue.put(request);
+                    mNetworkQueue.put(request);//添加到缓存之中
                     continue;
                 }
 
                 // We have a cache hit; parse its data for delivery back to the request.
+                //解析缓存中的响应内容及响应头参数
                 request.addMarker("cache-hit");
                 Response<?> response = request.parseNetworkResponse(
                         new NetworkResponse(entry.data, entry.responseHeaders));
                 request.addMarker("cache-hit-parsed");
-
+                //传递响应
                 if (!entry.refreshNeeded()) {
                     // Completely unexpired cache hit. Just deliver the response.
                     mDelivery.postResponse(request, response);

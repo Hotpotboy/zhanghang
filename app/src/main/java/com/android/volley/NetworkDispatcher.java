@@ -32,9 +32,9 @@ import java.util.concurrent.BlockingQueue;
  */
 @SuppressWarnings("rawtypes")
 public class NetworkDispatcher extends Thread {
-    /** The queue of requests to service. 请求队列*/
+    /** The queue of requests to service. ???????*/
     private final BlockingQueue<Request> mQueue;
-    /** The network interface for processing requests. 处理请求的网络接口*/
+    /** The network interface for processing requests. ???????????????*/
     private final Network mNetwork;
     /** The cache to write to. */
     private final Cache mCache;
@@ -77,7 +77,7 @@ public class NetworkDispatcher extends Thread {
         while (true) {
             try {
                 // Take a request from the queue.
-                request = mQueue.take();//如果没有元素则阻塞
+                request = mQueue.take();//???????????????
             } catch (InterruptedException e) {
                 // We may have been interrupted because it was time to quit.
                 if (mQuit) {
@@ -125,7 +125,7 @@ public class NetworkDispatcher extends Thread {
 
                 // Post the response back.
                 request.markDelivered();
-                mDelivery.postResponse(request, response);//向UI线程传递结果
+                mDelivery.postResponse(request, response);//??UI????????
             } catch (VolleyError volleyError) {
                 parseAndDeliverNetworkError(request, volleyError);
             } catch (Exception e) {

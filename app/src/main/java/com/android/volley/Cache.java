@@ -25,6 +25,7 @@ import java.util.Map;
 public interface Cache {
     /**
      * Retrieves an entry from the cache.
+     * //从缓存中获取一个实体
      * @param key Cache key
      * @return An {@link Entry} or null in the event of a cache miss
      */
@@ -32,6 +33,7 @@ public interface Cache {
 
     /**
      * Adds or replaces an entry to the cache.
+     * 添加或者替换缓存中的一个实体
      * @param key Cache key
      * @param entry Data to store and metadata for cache coherency, TTL, etc.
      */
@@ -40,11 +42,13 @@ public interface Cache {
     /**
      * Performs any potentially long-running actions needed to initialize the cache;
      * will be called from a worker thread.
+     * 在工作线程中执行一系列可能耗时的动作，用以初始化缓存
      */
     public void initialize();
 
     /**
      * Invalidates an entry in the cache.
+     * 使缓存中的某一个实体失效
      * @param key Cache key
      * @param fullExpire True to fully expire the entry, false to soft expire
      */
@@ -52,43 +56,46 @@ public interface Cache {
 
     /**
      * Removes an entry from the cache.
+     * 从缓存中删除一个实体
      * @param key Cache key
      */
     public void remove(String key);
 
     /**
      * Empties the cache.
+     * 清空缓存
      */
     public void clear();
 
     /**
      * Data and metadata for an entry returned by the cache.
+     * 从缓存中返回的数据实体或者元数据实体
      */
     public static class Entry {
-        /** The data returned from cache.�ӻ����ļ��з��ص����� */
+        /** The data returned from cache.从缓存文件中返回的数据 */
         public byte[] data;
 
-        /** ETag for cache coherency.����һ���� */
+        /** ETag for cache coherency.缓存一致性 */
         public String etag;
 
-        /** Date of this response as reported by the server.�������������Ӧ��ʱ�� */
+        /** Date of this response as reported by the server.服务器报告该响应的时间 */
         public long serverDate;
 
-        /** TTL for this record.����¼������ʱ��ֵ */
+        /** TTL for this record.本记录的生存时间值 */
         public long ttl;
 
-        /** Soft TTL for this record. ����¼����������ʱ��ֵ*/
+        /** Soft TTL for this record. 本记录的软件生存时间值*/
         public long softTtl;
 
-        /** Immutable response headers as received from server; must be non-null. �ӷ���˽��յĲ��ɸı����Ӧͷ������Ϊ��*/
+        /** Immutable response headers as received from server; must be non-null. 从服务端接收的不可改变的响应头，不能为空*/
         public Map<String, String> responseHeaders = Collections.emptyMap();
 
-        /** True if the entry is expired. �Ƿ����*/
+        /** True if the entry is expired. 是否过期*/
         public boolean isExpired() {
             return this.ttl < System.currentTimeMillis();
         }
 
-        /** True if a refresh is needed from the original data source. �Ƿ���Ҫˢ��*/
+        /** True if a refresh is needed from the original data source. 是否需要刷新*/
         public boolean refreshNeeded() {
             return this.softTtl < System.currentTimeMillis();
         }

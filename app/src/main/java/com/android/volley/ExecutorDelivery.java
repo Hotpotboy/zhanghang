@@ -33,6 +33,7 @@ public class ExecutorDelivery implements ResponseDelivery {
      */
     public ExecutorDelivery(final Handler handler) {
         // Make an Executor that just wraps the handler.
+        //���һ����װ��handler��Executor
         mResponsePoster = new Executor() {
             @Override
             public void execute(Runnable command) {
@@ -89,13 +90,15 @@ public class ExecutorDelivery implements ResponseDelivery {
         @Override
         public void run() {
             // If this request has canceled, finish it and don't deliver.
+            //�������ȡ���ˣ�����finish����
             if (mRequest.isCanceled()) {
                 mRequest.finish("canceled-at-delivery");
                 return;
             }
 
-            // Deliver a normal response or error, depending.
+            // Deliver a normal response or error, depending
             if (mResponse.isSuccess()) {
+                //������Ӧ���һ��deliveryResponse����֮�ж�����ĳ���������ķ�����������ģʽ��
                 mRequest.deliverResponse(mResponse.result);
             } else {
                 mRequest.deliverError(mResponse.error);
@@ -106,7 +109,7 @@ public class ExecutorDelivery implements ResponseDelivery {
             if (mResponse.intermediate) {
                 mRequest.addMarker("intermediate-response");
             } else {
-                mRequest.finish("done");
+                mRequest.finish("done");//�����������
             }
 
             // If we have been provided a post-delivery runnable, run it.

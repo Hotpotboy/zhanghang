@@ -61,30 +61,30 @@ public class RequestQueue {
      */
     private final Set<Request> mCurrentRequests = new HashSet<Request>();
 
-    /** The cache triage queue. �����������*/
+    /** The cache triage queue. 缓存分流队列*/
     private final PriorityBlockingQueue<Request> mCacheQueue =
-        new PriorityBlockingQueue<Request>();
+            new PriorityBlockingQueue<Request>();
 
-    /** The queue of requests that are actually going out to the network.�������������������� */
+    /** The queue of requests that are actually going out to the network.正在请求网络的请求队列 */
     private final PriorityBlockingQueue<Request> mNetworkQueue =
-        new PriorityBlockingQueue<Request>();
+            new PriorityBlockingQueue<Request>();
 
-    /** Number of network request dispatcher threads to start.��������߿�ʼ���߳�����Ĭ��Ϊ4�� */
+    /** Number of network request dispatcher threads to start.网络分配者开始的线程数，默认为4个 */
     private static final int DEFAULT_NETWORK_THREAD_POOL_SIZE = 4;
 
-    /** Cache interface for retrieving and storing respones. ��ȡ���ߴ洢��Ӧ�Ļ���*/
+    /** Cache interface for retrieving and storing respones. 获取或者存储相应的缓存*/
     private final Cache mCache;
 
-    /** Network interface for performing requests.ִ�������������������ӿ� */
+    /** Network interface for performing requests.执行网络请求操作的网络接口 */
     private final Network mNetwork;
 
-    /** Response delivery mechanism. ��Ӧ���ݻ���*/
+    /** Response delivery mechanism. 响应传递机制*/
     private final ResponseDelivery mDelivery;
 
-    /** The network dispatchers.���������*/
+    /** The network dispatchers.网络分配者*/
     private NetworkDispatcher[] mDispatchers;
 
-    /** The cache dispatcher.��������� */
+    /** The cache dispatcher.缓存分配者 */
     private CacheDispatcher mCacheDispatcher;
 
     /**
@@ -96,7 +96,7 @@ public class RequestQueue {
      * @param delivery A ResponseDelivery interface for posting responses and errors
      */
     public RequestQueue(Cache cache, Network network, int threadPoolSize,
-            ResponseDelivery delivery) {
+                        ResponseDelivery delivery) {
         mCache = cache;
         mNetwork = network;
         mDispatchers = new NetworkDispatcher[threadPoolSize];
@@ -129,12 +129,16 @@ public class RequestQueue {
      * Starts the dispatchers in this queue.
      */
     public void start() {
-        stop();  // Make sure any currently running dispatchers are stopped.
+        // Make sure any currently running dispatchers are stopped.
+        //确保当前所有运行的子线程线程都要被停止
+        stop();
         // Create the cache dispatcher and start it.
+        //创建一个缓存调度器，并运行其对应的线程
         mCacheDispatcher = new CacheDispatcher(mCacheQueue, mNetworkQueue, mCache, mDelivery);
         mCacheDispatcher.start();
 
         // Create network dispatchers (and corresponding threads) up to the pool size.
+        //创建制定个数的网络调度器，运行相应的子线程
         for (int i = 0; i < mDispatchers.length; i++) {
             NetworkDispatcher networkDispatcher = new NetworkDispatcher(mNetworkQueue, mNetwork,
                     mCache, mDelivery);
@@ -216,31 +220,31 @@ public class RequestQueue {
      */
     public Request add(Request request) {
         // Tag the request as belonging to this queue and add it to the set of current requests.
-        request.setRequestQueue(this);
+        request.setRequestQueue(this);//将该RequestQueue对象映射到Request对象之中
         synchronized (mCurrentRequests) {
-            mCurrentRequests.add(request);
+            mCurrentRequests.add(request);//添加到总队列之中
         }
 
         // Process requests in the order they are added.
-        request.setSequence(getSequenceNumber());
+        request.setSequence(getSequenceNumber());//生成请求唯一码
         request.addMarker("add-to-queue");
 
         // If the request is uncacheable, skip the cache queue and go straight to the network.
-        if (!request.shouldCache()) {
+        if (!request.shouldCache()) {//如果该请求不用缓存，则添加到需要网络线程处理的列表之中，并返回
             mNetworkQueue.add(request);
             return request;
         }
 
         // Insert request into stage if there's already a request with the same cache key in flight.
         synchronized (mWaitingRequests) {
-            String cacheKey = request.getCacheKey();
-            if (mWaitingRequests.containsKey(cacheKey)) {
+            String cacheKey = request.getCacheKey();//Request的缓存key就是该Request对象对应的URL
+            if (mWaitingRequests.containsKey(cacheKey)) {//该请求是否存在重复请求
                 // There is already a request in flight. Queue up.
                 Queue<Request> stagedRequests = mWaitingRequests.get(cacheKey);
                 if (stagedRequests == null) {
                     stagedRequests = new LinkedList<Request>();
                 }
-                stagedRequests.add(request);
+                stagedRequests.add(request);//如果存在则将该请求添加到等待队列之中
                 mWaitingRequests.put(cacheKey, stagedRequests);
                 if (VolleyLog.DEBUG) {
                     VolleyLog.v("Request for cacheKey=%s is in flight, putting on hold.", cacheKey);
@@ -249,7 +253,7 @@ public class RequestQueue {
                 // Insert 'null' queue for this cacheKey, indicating there is now a request in
                 // flight.
                 mWaitingRequests.put(cacheKey, null);
-                mCacheQueue.add(request);
+                mCacheQueue.add(request);//如果不存在则直接将该Request对象添加缓存线程处理的队列之中
             }
             return request;
         }
