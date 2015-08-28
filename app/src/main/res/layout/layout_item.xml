@@ -6,7 +6,6 @@
         android:id="@+id/net_image"
         android:layout_width="match_parent"
         android:layout_height="184.5dp"
-        android:background="@android:color/holo_blue_light"
         android:scaleType="centerInside"
         android:src="@drawable/deafult"
         />
