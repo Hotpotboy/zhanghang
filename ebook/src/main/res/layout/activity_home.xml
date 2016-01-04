@@ -1,0 +1,97 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/bar_button_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/shujia_gai"
+        android:orientation="horizontal"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" />
+
+        <FrameLayout
+            android:id="@+id/books_button"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:background="@drawable/bar_button_bg">
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/fen_button" />
+        </FrameLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" />
+
+        <FrameLayout
+            android:id="@+id/read_button"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:background="@drawable/bar_button_bg">
+            <Button
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:background="@drawable/mo_button" />
+        </FrameLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" />
+
+        <FrameLayout
+            android:id="@+id/login_button"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:background="@drawable/bar_button_bg">
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/deng_button" />
+        </FrameLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" />
+
+        <FrameLayout
+            android:id="@+id/squar_button"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:background="@drawable/bar_button_bg">
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/chang_button" />
+        </FrameLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/sperator1"
+        android:layout_width="fill_parent"
+        android:layout_height="7dp"
+        android:layout_above="@id/bar_button_layout"
+        android:background="@drawable/shujia_bottom" />
+
+    <FrameLayout
+        android:id="@+id/fragment_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/sperator1" />
+</RelativeLayout>
