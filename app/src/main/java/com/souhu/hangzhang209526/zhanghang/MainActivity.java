@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
@@ -58,24 +59,25 @@ public class MainActivity extends Activity {
 //        imageList = (ZhLinearLayout)findViewById(R.id.imageList);
 //        adapter = new ImageAdapter(this,list);
 //        imageList.setAdapter(adapter);
-        String[] data = {"标题1","标题2","标题3","标题4","标题5","标题6","标题7","标题1","标题2","标题3","标题4","标题5","标题6","标题7"};
+        String[] data = {"标题1","标题2","标题3","标题4","标题5","标题6","标题7","标题8","标题9","标题10","标题11","标题12","标题13","标题14","标题1","标题2","标题3","标题4","标题5","标题6","标题7","标题8","标题9","标题10","标题11","标题12","标题13","标题14","标题1","标题2","标题3","标题4","标题5","标题6","标题7","标题8","标题9","标题10","标题11","标题12","标题13","标题14","标题1","标题2","标题3","标题4","标题5","标题6","标题7","标题8","标题9","标题10","标题11","标题12","标题13","标题14","标题1","标题2","标题3","标题4","标题5","标题6","标题7","标题8","标题9","标题10","标题11","标题12","标题13","标题14","标题1","标题2","标题3","标题4","标题5","标题6","标题7","标题8","标题9","标题10","标题11","标题12","标题13","标题14","标题1","标题2","标题3","标题4","标题5","标题6","标题7","标题8","标题9","标题10","标题11","标题12","标题13","标题14","标题1","标题2","标题3","标题4","标题5","标题6","标题7","标题8","标题9","标题10","标题11","标题12","标题13","标题14","标题1","标题2","标题3","标题4","标题5","标题6","标题7","标题8","标题9","标题10","标题11","标题12","标题13","标题14","标题1","标题2","标题3","标题4","标题5","标题6","标题7","标题8","标题9","标题10","标题11","标题12","标题13","标题14","标题1","标题2","标题3","标题4","标题5","标题6","标题7","标题8","标题9","标题10","标题11","标题12","标题13","标题14","标题1","标题2","标题3","标题4","标题5","标题6","标题7","标题8","标题9","标题10","标题11","标题12","标题13","标题14","标题1","标题2","标题3","标题4","标题5","标题6","标题7","标题8","标题9","标题10","标题11","标题12","标题13","标题14","标题1","标题2","标题3","标题4","标题5","标题6","标题7","标题8","标题9","标题10","标题11","标题12","标题13","标题14"};
         ArrayAdapter adapter = new ArrayAdapter(getBaseContext(),R.layout.layout_item1,R.id.title,data);
 
         //HorizontalListView测试
-        HorizontalListView listView = new HorizontalListView(getBaseContext());
-        setContentView(listView,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        listView.setAdapter(adapter);
+//        HorizontalListView listView = new HorizontalListView(getBaseContext());
+//        listView.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+//        setContentView(listView,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+//        listView.setAdapter(adapter);
 
         //ZhListView测试
-//        mListView = new ZhListView(getBaseContext());
-//        setContentView(mListView,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-//        mListView.setAdapter(adapter);
+        mListView = new ZhListView(getBaseContext());
+        setContentView(mListView,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        mListView.setAdapter(adapter);
 //        mListView.setOnTouchListener(new View.OnTouchListener() {
 //            @Override
 //            public boolean onTouch(View v, MotionEvent event) {
 ////                lookTouchMode();
 //                if(event.getAction()==MotionEvent.ACTION_UP){
-//                    mListView.requestLayout();
+//                    Toast.makeText(MainActivity.this, mListView.getScrollY() + "", Toast.LENGTH_LONG).show();
 //                }
 //                return false;
 //            }
