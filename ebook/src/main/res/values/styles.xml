@@ -4,5 +4,9 @@
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <!-- Customize your theme here. -->
     </style>
+    <declare-styleable name="BookView">
+        <attr name="book_name" format="string"/>
+        <attr name="book_title_background" format="reference"/>
+    </declare-styleable>
 
 </resources>
