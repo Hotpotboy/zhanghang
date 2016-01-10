@@ -3,9 +3,8 @@ apply plugin: 'android-library'
 android {
     compileSdkVersion 21
     buildToolsVersion "22.0.1"
-
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 10
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -15,6 +14,8 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    productFlavors {
     }
 }
 

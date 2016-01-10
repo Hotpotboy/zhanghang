@@ -54,8 +54,10 @@ public class BookView extends View {
         super(context, attrs);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BookView);
         //获取书名背景的资源ID
-        int titleDrawableId = a.getResourceId(R.styleable.BookView_book_title_background,R.drawable.book_face_title_bg);
-        mTitleDrawable = context.getDrawable(titleDrawableId);
+        mTitleDrawable = a.getDrawable(R.styleable.BookView_book_title_background);
+        if(mTitleDrawable==null){
+            throw new Exception("必须在xml文件中，指定BookView:book_title_background!");
+        }
         //其范围默认为其内在范围
         mTitleDrawableBounds = new Rect(0,0,mTitleDrawable.getIntrinsicWidth(),mTitleDrawable.getIntrinsicHeight());
         mTitleDrawable.setBounds(mTitleDrawableBounds);
@@ -77,9 +79,9 @@ public class BookView extends View {
     private void initTextPaint(){
         mPaint.density = getResources().getDisplayMetrics().density;
         mPaint.setColor(Color.BLACK);
-        mPaint.setTextSize(25f*mPaint.density);
+        mPaint.setTextSize(20f*mPaint.density);
         Typeface xinshu = Typeface.createFromAsset(getContext().getAssets(), "fonts/YourCustomFont.ttf");
-//        mPaint.setTypeface(xinshu);//设置字体
+        mPaint.setTypeface(xinshu);//设置字体
         padding = (int) (PADDING*mPaint.density);
     }
 
@@ -92,20 +94,17 @@ public class BookView extends View {
             int maxTitleHeight = getMeasuredHeight()*2/3;//书籍背景的最大值
             mOneTextWidth = textRect.width();//一个文字的宽度
             //初始化一个布局
-            mLayout = new StaticLayout(mBookName,mPaint,mOneTextWidth, Layout.Alignment.ALIGN_NORMAL,1.5f,0f,false);
+            mLayout = new StaticLayout(mBookName,mPaint,mOneTextWidth, Layout.Alignment.ALIGN_CENTER,1f,0f,false);
             int num = mBookName.length();//文字个数
             mAllTextHeight = 0;
-            int all = mLayout.getHeight();
             for(int i = 0;i<num;i++){
-                mPaint.getTextBounds(mBookName.toString(), i, i+1,textRect);
-                int oneTextHeight = textRect.height();//当前文字的高度
-                if(mAllTextHeight+oneTextHeight+padding*2>maxTitleHeight){//如果超过书籍的背景高度则停止
+                mAllTextHeight = mLayout.getLineTop(i+1);//获取第0列到第i+1列的高度
+                if(mAllTextHeight+padding*2>maxTitleHeight){//如果超过书籍的背景高度则停止
                     CharSequence tmp = mBookName.subSequence(0,i++);
                     mBookName = tmp;
                     mTitleDrawableBounds.bottom = maxTitleHeight;
                     break;
                 }
-                mAllTextHeight+= oneTextHeight;
                 if(i==num-1)
                     mTitleDrawableBounds.bottom = mAllTextHeight+padding*2;
             }
