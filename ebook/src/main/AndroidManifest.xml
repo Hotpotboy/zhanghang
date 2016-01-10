@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.my.hangzhang.ebook">
-
+    <uses-sdk android:minSdkVersion="12"
+        android:targetSdkVersion="19"/>
     <application
         android:name="com.souhu.hangzhang209526.zhanghang.base.BaseApplication"
         android:allowBackup="true"
