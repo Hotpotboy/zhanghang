@@ -20,7 +20,7 @@ public final static int DEAFULT_EXCEPTION_HANDLER = 0;
     /**将异常写入文件之中*/
     public final static int FILE_EXCEPTION_HANDLER = 1;
     /**未捕获异常的处理方式*/
-    private int mExceptionHanlderType = DEAFULT_EXCEPTION_HANDLER;
+    private int mExceptionHanlderType = FILE_EXCEPTION_HANDLER;
 
     private BaseApplication mBaseApplication;
 
@@ -76,13 +76,21 @@ public final static int DEAFULT_EXCEPTION_HANDLER = 0;
             String fileName = SystemClock.elapsedRealtimeNanos()+".txt";
             String company = mBaseApplication.getMetaData("company");
             if(TextUtils.isEmpty(company)) company = "deafult";
-            filePath.append(File.separator).append(company).append(File.separator).append(fileName);
+            filePath.append(File.separator).append(company).append(File.separator);
             File file = new File(filePath.toString());
-            if(!file.exists()) file.mkdirs();
+            if(!file.exists()) {
+                file.mkdirs();
+            }
             FileOutputStream fos = null;
             try {
+                file = new File(file.getAbsolutePath()+File.separator+fileName);
+                boolean isSuc = false;
+                if(!file.exists()){
+                    isSuc = file.createNewFile();
+                }
                 fos = new FileOutputStream(file);
                 fos.write(sb.toString().getBytes());
+                fos.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }finally {

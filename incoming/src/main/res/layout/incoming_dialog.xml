@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="400dp"
+    android:orientation="vertical"
+    android:background="@color/bg">
+    <TextView
+        android:id="@+id/incoming_dialog_num"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textSize="50sp"
+        android:gravity="center_horizontal"
+        android:text="13718562498"/>
+    <TextView
+        android:id="@+id/incoming_dialog_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        android:gravity="center_horizontal"
+        android:text="相关信息"/>
+    <WebView
+        android:id="@+id/net_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        />
+</LinearLayout>

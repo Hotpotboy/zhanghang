@@ -27,6 +27,7 @@ public class BaseApplication extends Application {
                 info = getApplicationInfo();
             }
         }
+        if(info.metaData==null) return null;
         return (String)info.metaData.get(key);
     }
 
