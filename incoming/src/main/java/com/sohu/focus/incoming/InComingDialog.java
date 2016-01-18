@@ -2,7 +2,9 @@ package com.sohu.focus.incoming;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
+import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -17,6 +19,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -44,7 +51,7 @@ public class InComingDialog {
 
     private boolean isShow = false;
 
-    public static void setType(int t){
+    public static void setType(int t) {
         type = t;
     }
 
@@ -61,8 +68,7 @@ public class InComingDialog {
         if (type == CAN_ANSWER_CALL) {
             layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
             setupViewCanAnswer(num);
-        }
-        else if (type == CAN_NOT_ANSWER_CALL) {
+        } else if (type == CAN_NOT_ANSWER_CALL) {
             layoutParams.height = 1200;
             setupViewCanNotAnswer(num);
         }
@@ -103,7 +109,12 @@ public class InComingDialog {
         answer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                answerRingingCall();
+                if (Build.VERSION.SDK_INT >= 21) {
+                    Intent intent = new Intent(mAPPContext,CallService.class);
+                    mAPPContext.startService(intent);
+                }else{
+                    answerRingingCall();
+                }
             }
         });
 
@@ -152,9 +163,8 @@ public class InComingDialog {
             localIntent4.putExtra("microphone", 1);
             localIntent4.putExtra("name", "Headset");
             mAPPContext.sendOrderedBroadcast(localIntent4, "android.permission.CALL_PRIVILEGED");
-            Toast.makeText(mAPPContext,"没有出现了异常!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(mAPPContext, "没有出现了异常!", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Toast.makeText(mAPPContext,"出现了异常!",Toast.LENGTH_SHORT).show();
             String enforcedPerm = "android.permission.CALL_PRIVILEGED";
             Intent btnDown = new Intent(Intent.ACTION_MEDIA_BUTTON).putExtra(
                     Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN,
@@ -166,6 +176,25 @@ public class InComingDialog {
             mAPPContext.sendOrderedBroadcast(btnDown, enforcedPerm);
             mAPPContext.sendOrderedBroadcast(btnUp, enforcedPerm);
         }
+    }
+
+
+    private void printErro(Throwable e){
+        Writer writer = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(writer);
+        e.printStackTrace(printWriter);//打印异常
+        Throwable cause = e.getCause();//打印异常的引起异常
+        while (cause != null) {
+            cause.printStackTrace(printWriter);
+            cause = cause.getCause();
+        }
+        printWriter.close();
+        String result = writer.toString();
+        SharedPreferences preferences = mAPPContext.getSharedPreferences("reson", mAPPContext.MODE_PRIVATE);
+        SharedPreferences.Editor commit = preferences.edit();
+        commit.remove("reson");
+        commit.putString("reson",result);
+        commit.commit();
     }
 
 //    private void answerCall() {
@@ -184,7 +213,7 @@ public class InComingDialog {
 //                answerRingingCallMethod.invoke(telephonyObject);
 //            }
 //        } catch (Exception e) {
-//            e.printStackTrace();
+//
 //        }
 //    }
 

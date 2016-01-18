@@ -29,6 +29,7 @@
                 <action android:name="zhanghanghanghanghanghanghanghang" />
             </intent-filter>
         </receiver>
+        <service android:name=".CallService"/>
         <meta-data
             android:name="company"
             android:value="sohu" />
