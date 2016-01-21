@@ -10,8 +10,7 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
         android:textSize="50sp"
-        android:gravity="center_horizontal"
-        android:text="13718562498"/>
+        android:gravity="center_horizontal"/>
     <TextView
         android:id="@+id/incoming_dialog_info"
         android:layout_width="match_parent"

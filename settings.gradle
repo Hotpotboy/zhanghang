@@ -1,1 +1,1 @@
-include ':app', ':ebook', ':incoming'
+include ':app', ':ebook', ':incoming', ':LibEventBus'

@@ -10,6 +10,5 @@
         android:src="@drawable/deafult"
         />
     <View android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/holo_red_dark"/>
+        android:layout_height="1dp"/>
 </LinearLayout>

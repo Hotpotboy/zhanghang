@@ -24,7 +24,6 @@ public class BaseFragmentActivity extends FragmentActivity {
      */
     private ArrayList<BaseFragment> mFragmentInstances = new ArrayList<BaseFragment>();
     private FragmentManager mFragmentManager;
-    private FragmentTransaction mFragmentTransaction;
 
     /**
      * 显示Fragment监听器
@@ -35,7 +34,6 @@ public class BaseFragmentActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
         mFragmentManager = getSupportFragmentManager();
-        mFragmentTransaction = mFragmentManager.beginTransaction();
     }
 
     /**
@@ -45,6 +43,7 @@ public class BaseFragmentActivity extends FragmentActivity {
         //删除所有的fragment
         int size = mFragmentInstances.size();
         if (size > 0) {
+            FragmentTransaction mFragmentTransaction = mFragmentManager.beginTransaction();
             for (int i = 0; i < size; i++)
                 mFragmentTransaction.remove(mFragmentInstances.get(i));
             mFragmentTransaction.commit();
@@ -79,6 +78,7 @@ public class BaseFragmentActivity extends FragmentActivity {
         //添加frgment
         int size = fragments.length;
         if (size >= 1) {
+            FragmentTransaction mFragmentTransaction = mFragmentManager.beginTransaction();
             for (int i = 0; i < size; i++) {
                 BaseFragment instance = fragments[i];
                 mFragmentInstances.add(instance);//添加到相应的List集合之中
@@ -99,8 +99,9 @@ public class BaseFragmentActivity extends FragmentActivity {
     public void addFragment(BaseFragment fragment, boolean isAddStack) {
         //添加Fragment集合之中的对象
         mFragmentInstances.add(fragment);
-        hideFragment(mShowIndex, false);
+        hideFragment(mShowIndex, null);
         //添加FragmentManager之中的对象
+        FragmentTransaction mFragmentTransaction = mFragmentManager.beginTransaction();
         mFragmentTransaction.add(mResourceId, fragment);
         if (isAddStack) mFragmentTransaction.addToBackStack(null);
         mFragmentTransaction.commit();
@@ -119,6 +120,7 @@ public class BaseFragmentActivity extends FragmentActivity {
         mFragmentInstances.remove(index);
         mFragmentInstances.add(index, fragment);
         //替换FragmentManager之中的对象
+        FragmentTransaction mFragmentTransaction = mFragmentManager.beginTransaction();
         mFragmentTransaction.replace(mResourceId, fragment);
         if (isAddStack) mFragmentTransaction.addToBackStack(null);
         mFragmentTransaction.commit();
@@ -134,6 +136,7 @@ public class BaseFragmentActivity extends FragmentActivity {
         //删除Fragment集合之中的对象
         BaseFragment fragment = mFragmentInstances.remove(index);
         //删除FragmentManager之中的对象
+        FragmentTransaction mFragmentTransaction = mFragmentManager.beginTransaction();
         mFragmentTransaction.remove(fragment);
         mFragmentTransaction.commit();
     }
@@ -147,8 +150,9 @@ public class BaseFragmentActivity extends FragmentActivity {
         if (index == mShowIndex) return;
         int size = mFragmentInstances.size();
         if (index >= 0 && index < size) {
+            FragmentTransaction mFragmentTransaction = mFragmentManager.beginTransaction();
             if (mShowIndex >= 0 && mShowIndex < size) {
-                hideFragment(mShowIndex, false);//首先隐藏当前显示的索引对应的Fragment
+                hideFragment(mShowIndex, mFragmentTransaction);//首先隐藏当前显示的索引对应的Fragment
             }
             BaseFragment fragment = mFragmentInstances.get(index);
             mFragmentTransaction.show(fragment);
@@ -167,13 +171,18 @@ public class BaseFragmentActivity extends FragmentActivity {
      * 隐藏索引对应的Fragment
      *
      * @param index
-     * @param isCommit 是否提交数据
+     * @param transaction 提交事务
      */
-    public void hideFragment(int index, boolean isCommit) {
+    public void hideFragment(int index, FragmentTransaction transaction) {
         int size = mFragmentInstances.size();
         if (index >= 0 && index < size) {
-            mFragmentTransaction.hide(mFragmentInstances.get(index));
-            if (isCommit) mFragmentTransaction.commit();
+            if(transaction!=null){
+                transaction.hide(mFragmentInstances.get(index));
+            }else{
+                FragmentTransaction mFragmentTransaction = mFragmentManager.beginTransaction();
+                mFragmentTransaction.hide(mFragmentInstances.get(index));
+                mFragmentTransaction.commit();
+            }
         }
     }
 

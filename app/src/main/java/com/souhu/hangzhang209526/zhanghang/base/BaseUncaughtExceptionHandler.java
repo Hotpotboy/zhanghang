@@ -3,6 +3,7 @@ package com.souhu.hangzhang209526.zhanghang.base;
 import android.os.Environment;
 import android.os.SystemClock;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,7 +21,7 @@ public final static int DEAFULT_EXCEPTION_HANDLER = 0;
     /**将异常写入文件之中*/
     public final static int FILE_EXCEPTION_HANDLER = 1;
     /**未捕获异常的处理方式*/
-    private int mExceptionHanlderType = FILE_EXCEPTION_HANDLER;
+    private int mExceptionHanlderType = DEAFULT_EXCEPTION_HANDLER;
 
     private BaseApplication mBaseApplication;
 
@@ -68,12 +69,13 @@ public final static int DEAFULT_EXCEPTION_HANDLER = 0;
         printWriter.close();
         String result = writer.toString();
         sb.append(result);
+        Log.e("erro",sb.toString());
 
         //生成文件
         if (Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED)) {//如果sd卡存在，且正常安装好（MEDIA_MOUNTED的含义）
             StringBuffer filePath = new StringBuffer(Environment.getExternalStorageDirectory().getAbsolutePath());
-            String fileName = SystemClock.elapsedRealtimeNanos()+".txt";
+            String fileName = "log.txt";
             String company = mBaseApplication.getMetaData("company");
             if(TextUtils.isEmpty(company)) company = "deafult";
             filePath.append(File.separator).append(company).append(File.separator);

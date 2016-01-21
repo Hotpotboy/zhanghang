@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sohu.focus.incoming">
-    <!--弹出系统框的权限-->
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <!--挂断电话的权限-->
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <!-- 读取手机状态的权限 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CALL_PRIVLEGED"/>
     <application
-        android:name="com.souhu.hangzhang209526.zhanghang.base.BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -23,12 +20,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".InComingReceiver">
-            <intent-filter android:priority="1000">
-                <action android:name="android.intent.action.PHONE_STATE" />
-                <action android:name="zhanghanghanghanghanghanghanghang" />
-            </intent-filter>
-        </receiver>
         <service android:name=".CallService"/>
         <meta-data
             android:name="company"

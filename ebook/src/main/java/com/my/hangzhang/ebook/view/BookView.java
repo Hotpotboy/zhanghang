@@ -25,14 +25,14 @@ public class BookView extends View {
     private static final int PADDING = 20;
     /**书名的上下边距*/
     private int padding;
-    /**书籍背景*/
-    private Drawable mBookDrawable;
     /**书名背景*/
     private Drawable mTitleDrawable;
     /**书名背景的范围*/
     private Rect mTitleDrawableBounds;
     /**书名*/
     private CharSequence mBookName;
+    /**真正的书名*/
+    private CharSequence mRealBookName;
     /**书名中一个文字的宽度*/
     private int mOneTextWidth;
     /**书名中所有文字的高度*/
@@ -48,6 +48,21 @@ public class BookView extends View {
         if(TextUtils.isEmpty(mBookName)){
             throw new Exception("必须在xml文件中，指定BookView:book_name的值!");
         }
+        mRealBookName = new String(mBookName.toString());
+    }
+
+    /**
+     * 重新设置书名，并请求重新布局
+     * @param name
+     */
+    public void setBookName(CharSequence name){
+        mBookName = name;
+        mRealBookName = new String(mBookName.toString());
+        requestLayout();
+    }
+
+    public CharSequence getBookName(){
+        return mRealBookName;
     }
 
     public BookView(Context context, AttributeSet attrs) throws Exception {
@@ -66,11 +81,10 @@ public class BookView extends View {
         if(TextUtils.isEmpty(mBookName)){
             throw new Exception("必须在xml文件中，指定BookView:book_name的值!");
         }
+        mRealBookName = new String(mBookName.toString());
         a.recycle();
         //初始化画笔
         initTextPaint();
-        //书籍背景
-        mBookDrawable = getBackground();
     }
 
     /**
@@ -79,7 +93,7 @@ public class BookView extends View {
     private void initTextPaint(){
         mPaint.density = getResources().getDisplayMetrics().density;
         mPaint.setColor(Color.BLACK);
-        mPaint.setTextSize(20f*mPaint.density);
+        mPaint.setTextSize(12f*mPaint.density);
         Typeface xinshu = Typeface.createFromAsset(getContext().getAssets(), "fonts/YourCustomFont.ttf");
         mPaint.setTypeface(xinshu);//设置字体
         padding = (int) (PADDING*mPaint.density);

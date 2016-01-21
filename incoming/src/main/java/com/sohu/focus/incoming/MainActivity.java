@@ -2,6 +2,7 @@ package com.sohu.focus.incoming;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,7 +14,7 @@ import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
-
+    private InComingReceiver inComingReceiver = new InComingReceiver();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +28,9 @@ public class MainActivity extends Activity {
         findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InComingDialog.setType(InComingDialog.CAN_ANSWER_CALL);
+//                InComingDialog.setType(InComingDialog.CAN_ANSWER_CALL);
+                InComingDialog dialog = new InComingDialog(MainActivity.this,"5555");
+                dialog.show();//打开来电悬浮窗界面
             }
         });
         findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
@@ -36,5 +39,15 @@ public class MainActivity extends Activity {
                 InComingDialog.setType(InComingDialog.CAN_NOT_ANSWER_CALL);
             }
         });
+//
+        IntentFilter intent = new IntentFilter();
+        intent.addAction("android.intent.action.PHONE_STATE");
+        registerReceiver(inComingReceiver,intent);
+    }
+
+    @Override
+    public void onDestroy(){
+        unregisterReceiver(inComingReceiver);
+        super.onDestroy();
     }
 }

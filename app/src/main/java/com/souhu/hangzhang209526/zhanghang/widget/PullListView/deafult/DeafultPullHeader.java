@@ -58,8 +58,8 @@ public class DeafultPullHeader extends PullLinearView {
             ArrayList<String> datas = new ArrayList<String>();
             for(String item:(String[])result[0])
                 datas.add(item);
-            ArrayAdapter adapter = new ArrayAdapter(mContext,R.layout.layout_item,R.id.text,datas);
-            mAttchedListView.setAdapter(adapter);
+//            ArrayAdapter adapter = new ArrayAdapter(mContext,R.layout.layout_item,R.id.text,datas);
+//            mAttchedListView.setAdapter(adapter);
         }
         initView();
         tip.setText("更新完成……");

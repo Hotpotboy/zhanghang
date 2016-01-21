@@ -11,7 +11,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -19,8 +18,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -34,7 +31,7 @@ public class InComingDialog {
     public static final int CAN_ANSWER_CALL = 0;
     public static final int CAN_NOT_ANSWER_CALL = 1;
 
-    public static int type = CAN_ANSWER_CALL;
+    public static int type = CAN_NOT_ANSWER_CALL;
 
     private Context mAPPContext;
     /**
@@ -62,14 +59,16 @@ public class InComingDialog {
         inflater = (LayoutInflater) mAPPContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //窗口布局参数
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-        layoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
         layoutParams.format = PixelFormat.TRANSLUCENT;
-        layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+//        layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         if (type == CAN_ANSWER_CALL) {
+            layoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
             layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
             setupViewCanAnswer(num);
         } else if (type == CAN_NOT_ANSWER_CALL) {
+            layoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
             layoutParams.height = 1200;
+            layoutParams.gravity = Gravity.TOP;
             setupViewCanNotAnswer(num);
         }
 
