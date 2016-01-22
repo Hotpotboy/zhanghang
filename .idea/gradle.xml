@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/ebook" />
             <option value="$PROJECT_DIR$/incoming" />
+            <option value="$PROJECT_DIR$/pulllistview" />
           </set>
         </option>
       </GradleProjectSettings>

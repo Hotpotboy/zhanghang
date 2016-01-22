@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/incoming/incoming.iml" filepath="$PROJECT_DIR$/incoming/incoming.iml" />
       <module fileurl="file://$PROJECT_DIR$/AndFix/libandfix/libandfix.iml" filepath="$PROJECT_DIR$/AndFix/libandfix/libandfix.iml" />
       <module fileurl="file://$PROJECT_DIR$/AndFix/libandfixtool/libandfixtool.iml" filepath="$PROJECT_DIR$/AndFix/libandfixtool/libandfixtool.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pulllistview/pulllistview.iml" filepath="$PROJECT_DIR$/pulllistview/pulllistview.iml" />
       <module fileurl="file://$PROJECT_DIR$/zhanghang.iml" filepath="$PROJECT_DIR$/zhanghang.iml" />
     </modules>
   </component>
