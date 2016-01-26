@@ -19,7 +19,7 @@ public class PatchBuilder
             this.mBuilder =
                     new SignedJarBuilder(new FileOutputStream(outFile, false), key.getPrivateKey(),
                             (X509Certificate)key.getCertificate());
-            this.mBuilder.writeFile(dexFile, "classes.dex");
+            this.mBuilder.writeFile(dexFile, "classes.dex");//写入dex文件
         } catch (Exception e) {
             e.printStackTrace();
         }
