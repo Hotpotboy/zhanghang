@@ -225,7 +225,7 @@ static bool dvmIsStaticMethod(const Method* method) {
 */
 extern void __attribute__ ((visibility ("hidden"))) dalvik_replaceMethod(
 		JNIEnv* env, jobject src, jobject dest) {
-	jobject clazz = env->CallObjectMethod(dest, jClassMethod);//获取申明dest方法的类对象
+	jobject clazz = env->CallObjectMethod(dest, jClassMethod);//获取申明dest方法的类对象,调用java/lang/reflect/Method#getDeclaringClass方法
 	ClassObject* clz = (ClassObject*) dvmDecodeIndirectRef_fnPtr(
 			dvmThreadSelf_fnPtr(), clazz);
 	clz->status = CLASS_INITIALIZED;//将该类的状态设置为已初始化的
@@ -240,7 +240,7 @@ extern void __attribute__ ((visibility ("hidden"))) dalvik_replaceMethod(
 	int argsSize = dvmComputeMethodArgsSize_fnPtr(meth);//源方法的参数个数
 	if (!dvmIsStaticMethod(meth))
 		argsSize++;
-	meth->registersSize = meth->insSize = argsSize;//寄存器的个数以及指令的个数
+	meth->registersSize = meth->insSize = argsSize;//寄存器的个数以及入参的个数，native方法两者相等
 	meth->insns = (u2*) target;//源函数执行的新入口
 
 	meth->nativeFunc = (dalvik_dispatcher_func)dalvik_dispatcher;//本地方法的入口
@@ -278,9 +278,9 @@ static void dalvik_dispatcher(const u4* args, jvalue* pResult,
 	LOGD("dalvik_dispatcher start call->");
 
 	if (!dvmIsStaticMethod(meth)) {//如果不是静态方法
-		Object* thisObj = (Object*) args[0];
+		Object* thisObj = (Object*) args[0];//调用此方法的对象
 		ClassObject* tmp = thisObj->clazz;
-		thisObj->clazz = meth->clazz;
+		thisObj->clazz = meth->clazz;//替换原始方法的调用对象的类
 		argArray = boxMethodArgs(meth, args + 1);
 		if (dvmCheckException_fnPtr(self))
 			goto bail;
@@ -289,7 +289,7 @@ static void dalvik_dispatcher(const u4* args, jvalue* pResult,
 				dvmCreateReflectMethodObject_fnPtr(meth), &result, thisObj,
 				argArray);//执行方法
 
-		thisObj->clazz = tmp;
+		thisObj->clazz = tmp;//恢复原始方法的调用对象的类
 	} else {
 		argArray = boxMethodArgs(meth, args);
 		if (dvmCheckException_fnPtr(self))

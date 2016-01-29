@@ -1,3 +1,4 @@
-include ':app', ':ebook', ':incoming', ':LibEventBus', ':libandfix', ':libandfixtool', ':', ':pulllistview'
+include ':app', ':ebook', ':incoming', ':LibEventBus', ':libandfix', ':libandfixtool', ':chat', ':', ':pulllistview', ':andfixtest'
 project(':libandfix').projectDir = new File('AndFix/libandfix')
 project(':libandfixtool').projectDir = new File('AndFix/libandfixtool')
+project(':andfixtest').projectDir = new File('AndFix/andfixtest')

@@ -3,4 +3,9 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="broadcast_webSocket_open">com.android.webSocket.openConnection</string>
+    <string name="broadcast_webSocket_close">com.android.webSocket.closeConnection</string>
+    <string name="broadcast_webSocket_receive_text_message">com.android.webSocket.receiveTextMessage</string>
+    <string name="broadcast_webSocket_receive_raw_message">com.android.webSocket.receiveRawMessage</string>
+    <string name="broadcast_webSocket_receive_binary_message">com.android.webSocket.receiveBinaryMessage</string>
 </resources>

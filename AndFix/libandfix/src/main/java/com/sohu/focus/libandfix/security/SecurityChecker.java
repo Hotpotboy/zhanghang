@@ -75,6 +75,7 @@ public class SecurityChecker {
 	}
 
 	/**
+	 * MD5签名是否相等
 	 * @param path
 	 *            Dex file
 	 * @return true if verify fingerprint success
@@ -98,6 +99,7 @@ public class SecurityChecker {
 	}
 
 	/**
+	 * 证书是否通过
 	 * @param path
 	 *            Apk file
 	 * @return true if verify apk success
@@ -116,12 +118,12 @@ public class SecurityChecker {
 			if (null == jarEntry) {// no code
 				return false;
 			}
-			loadDigestes(jarFile, jarEntry);//导入签名
+			loadDigestes(jarFile, jarEntry);//从补丁文件之中获取签名证书
 			Certificate[] certs = jarEntry.getCertificates();
 			if (certs == null) {
 				return false;
 			}
-			return check(path, certs);
+			return check(path, certs);//检查此证书是否与当前应用的安装包中的证书是否一致
 		} catch (IOException e) {
 			Log.e(TAG, path.getAbsolutePath(), e);
 			return false;

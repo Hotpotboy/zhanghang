@@ -42,7 +42,7 @@ public class AndFix {
 
 	private static native boolean setup(boolean isArt, int apilevel);
 
-	private static native void replaceMethod(Method dest, Method src);
+	private static native void replaceMethod(Method src, Method dest);
 
 	private static native void setFieldFlag(Field field);
 
@@ -50,9 +50,9 @@ public class AndFix {
 	 * replace method's body
 	 * 
 	 * @param src
-	 *            source method
+	 *            source method   有bug的方法
 	 * @param dest
-	 *            target method
+	 *            target method   修复了bug的方法
 	 * 
 	 */
 	public static void addReplaceMethod(Method src, Method dest) {

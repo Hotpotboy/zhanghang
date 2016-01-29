@@ -65,7 +65,7 @@ public class AndFixManager {
 	private SecurityChecker mSecurityChecker;
 
 	/**
-	 * optimize directory
+	 * optimize directory  优化后的dex文件所在的目录/data/data/[package-name]/files/apatch_opt
 	 */
 	private File mOptDir;
 
@@ -116,7 +116,7 @@ public class AndFixManager {
 	 * @param classLoader
 	 *            classloader of class that will be fixed
 	 * @param classes
-	 *            classes will be fixed
+	 *            classes will be fixed  类名添加了_CF后缀
 	 */
 	public synchronized void fix(File file, ClassLoader classLoader,
 			List<String> classes) {
@@ -124,7 +124,7 @@ public class AndFixManager {
 			return;
 		}
 
-		if (!mSecurityChecker.verifyApk(file)) {// security check fail
+		if (!mSecurityChecker.verifyApk(file)) {// security check fail验证补丁文件的签名证书与安装当前应用的apk文件的签名证书是否一致
 			return;
 		}
 
@@ -137,7 +137,7 @@ public class AndFixManager {
 				// Vulnerability-Parasyte.
 				// btw:exaggerated android Vulnerability-Parasyte
 				// http://secauo.com/Exaggerated-Android-Vulnerability-Parasyte.html
-				if (mSecurityChecker.verifyOpt(optfile)) {
+				if (mSecurityChecker.verifyOpt(optfile)) {//如果优化后的补丁文件存在，那么它的内容摘要与上一次保存的内容摘要是否一致
 					saveFingerprint = false;
 				} else if (!optfile.delete()) {
 					return;
@@ -157,6 +157,8 @@ public class AndFixManager {
 					optfile.getAbsolutePath(), Context.MODE_PRIVATE);
 
 			if (saveFingerprint) {
+				//会遍历整个优化后的aptach文件的内容，根据整个文件内容进行MD5加密，生成一个MD5指纹，
+				//按照"键,值对"为："文件名-md5,MD5指纹字符串"的格式保存到SharedPreferences之中
 				mSecurityChecker.saveOptSig(optfile);//保存指纹
 			}
 
@@ -166,7 +168,7 @@ public class AndFixManager {
 						throws ClassNotFoundException {
 					Class<?> clazz = dexFile.loadClass(className, this);
 					if (clazz == null
-							&& className.startsWith("com.alipay.euler.andfix")) {
+							&& className.startsWith("com.sohu.focus.andfix")) {
 						return Class.forName(className);// annotation’s class
 														// not found
 					}
@@ -205,6 +207,9 @@ public class AndFixManager {
 		String clz;
 		String meth;
 		for (Method method : methods) {
+			//获取方法的注释，如果一个方法被修改过，那么在apktool阶段，apktool命令就会自动为每一个修改过的方法添加@MethodReplace注释
+			//@MethodReplace注释的clazz属性表示产生bug的类；
+			//@MethodReplace注释的method属性表示产生bug的方法。
 			methodReplace = method.getAnnotation(MethodReplace.class);
 			if (methodReplace == null)
 				continue;
@@ -219,10 +224,10 @@ public class AndFixManager {
 	/**
 	 * replace method
 	 * 
-	 * @param classLoader classloader
-	 * @param clz class
-	 * @param meth name of target method 目标方法的名称
-	 * @param method source method       源方法
+	 * @param classLoader classloader    原始类的类加载器
+	 * @param clz class                  原始类的类名
+	 * @param meth name of target method 原始类的原始方法名，即有bug的方法
+	 * @param method source method       修复了bug的方法
 	 */
 	private void replaceMethod(ClassLoader classLoader, String clz,
 			String meth, Method method) {
@@ -230,14 +235,14 @@ public class AndFixManager {
 			String key = clz + "@" + classLoader.toString();
 			Class<?> clazz = mFixedClass.get(key);
 			if (clazz == null) {// class not load
-				Class<?> clzz = classLoader.loadClass(clz);
+				Class<?> clzz = classLoader.loadClass(clz);//导入原始类，即需要修复的类
 				// initialize target class
-				clazz = AndFix.initTargetClass(clzz);
+				clazz = AndFix.initTargetClass(clzz);//原始类的所有的属性都变为可访问
 			}
 			if (clazz != null) {// initialize class OK
 				mFixedClass.put(key, clazz);
 				Method src = clazz.getDeclaredMethod(meth,
-						method.getParameterTypes());
+						method.getParameterTypes());//获取原始方法
 				AndFix.addReplaceMethod(src, method);
 			}
 		} catch (Exception e) {

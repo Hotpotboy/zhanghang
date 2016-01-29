@@ -34,7 +34,7 @@ public final static int DEAFULT_EXCEPTION_HANDLER = 0;
     }
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
-        dealException(thread,ex);
+        dealException(thread, ex);
     }
 
     /***
@@ -45,10 +45,14 @@ public final static int DEAFULT_EXCEPTION_HANDLER = 0;
     protected void dealException(Thread thread, Throwable ex){
         switch (mExceptionHanlderType){
             case DEAFULT_EXCEPTION_HANDLER:
-                Thread.UncaughtExceptionHandler deafult = Thread.getDefaultUncaughtExceptionHandler();
-                if(deafult!=null){
-                    deafult.uncaughtException(thread, ex);
-                }
+//                Thread.UncaughtExceptionHandler deafult = Thread.getDefaultUncaughtExceptionHandler();
+//                if(deafult!=null){
+//                    deafult.uncaughtException(thread, ex);
+//                }
+
+                StringWriter stringWriter = new StringWriter();
+                new Exception(ex).printStackTrace(new PrintWriter(stringWriter));
+                Log.e("erro",stringWriter.toString());
                 break;
             case FILE_EXCEPTION_HANDLER:
                 fileDealException(thread, ex);

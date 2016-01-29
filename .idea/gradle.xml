@@ -9,10 +9,12 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/AndFix/andfixtest" />
             <option value="$PROJECT_DIR$/AndFix/libandfix" />
             <option value="$PROJECT_DIR$/AndFix/libandfixtool" />
             <option value="$PROJECT_DIR$/LibEventBus" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/chat" />
             <option value="$PROJECT_DIR$/ebook" />
             <option value="$PROJECT_DIR$/incoming" />
             <option value="$PROJECT_DIR$/pulllistview" />

@@ -1,0 +1,4 @@
+<resources>
+    <color name="msg_text_color">#50161616</color>
+    <color name="msg_list_line_color">#504a4a4a</color>
+</resources>

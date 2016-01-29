@@ -40,10 +40,12 @@ public class SignedJarBuilder
     private static final String DIGEST_ATTR = "SHA1-Digest";
     private static final String DIGEST_MANIFEST_ATTR = "SHA1-Digest-Manifest";
     private JarOutputStream mOutputJar;
+    /**私钥*/
     private PrivateKey mKey;
     private X509Certificate mCertificate;
     private Manifest mManifest;
     private BASE64Encoder mBase64Encoder;
+    /**具体签名*/
     private MessageDigest mMessageDigest;
     private byte[] mBuffer = new byte[4096];
 

@@ -112,11 +112,11 @@ public class ApkPatch extends Build {
                 e.printStackTrace();
             }
             File smaliFile = inFileNameHandler.getUniqueFilenameForClass(className);//获取对应的smali文件
-            SmaliMod.assembleSmaliFile(smaliFile, dexBuilder, true, true);//将对应的smali文件合成为dex格式
-            classes.add(TypeGenUtil.newType(className).substring(1, TypeGenUtil.newType(className).length() - 1).replace('/', '.'));
+            SmaliMod.assembleSmaliFile(smaliFile, dexBuilder, true, true);//将对应的smali文件合成为dex格式，保存到dexBuilder对象中
+            classes.add(className.substring(1, className.length() - 1).replace('/', '.'));
         }
 
-        dexBuilder.writeTo(new FileDataStore(dexFile));//写入dex文件
+        dexBuilder.writeTo(new FileDataStore(dexFile));//将所有smali文件合成的dex数据写入dex文件
 
         return classes;
     }

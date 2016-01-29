@@ -92,9 +92,7 @@ public class Patch implements Comparable<Patch> {
 					if (name.equalsIgnoreCase(PATCH_CLASSES)) {
 						mClassesMap.put(mName, strings);
 					} else {
-						mClassesMap.put(
-								name.trim().substring(0, name.length() - 8),// remove
-																			// "-Classes"
+						mClassesMap.put(name.trim().substring(0, name.length() - 8),// remove "-Classes"
 								strings);
 					}
 				}

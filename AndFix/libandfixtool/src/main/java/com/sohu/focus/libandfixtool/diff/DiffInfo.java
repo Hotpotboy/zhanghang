@@ -1,6 +1,7 @@
 package com.sohu.focus.libandfixtool.diff;
 
 
+import com.sohu.focus.libandfixtool.annotation.MethodReplaceAnnotation;
 import com.sohu.focus.libandfixtool.utils.Formater;
 
 import org.jf.dexlib2.dexbacked.DexBackedClassDef;

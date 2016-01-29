@@ -12,22 +12,21 @@ import java.util.Set;
 
 public class MethodReplaceAnnotation extends BaseAnnotation
 {
-    private static final String ANNOTATION = "Lcom/alipay/euler/andfix/annotation/MethodReplace;";
+    private static final String ANNOTATION = "Lcom/sohu/focus/libandfix/annotation/MethodReplace;";
     private Set<BaseAnnotationElement> mElements = new HashSet();
 
     public int getVisibility()
     {
         return AnnotationVisibility.getVisibility("runtime");
     }
-
+    @Override
     public String getType()
     {
-        return "Lcom/alipay/euler/andfix/annotation/MethodReplace;";
+        return ANNOTATION;
     }
 
     public MethodReplaceAnnotation(final String clazz, final String method) {
-        BaseAnnotationElement clazzElement = new BaseAnnotationElement()
-        {
+        BaseAnnotationElement clazzElement = new BaseAnnotationElement(){
             public EncodedValue getValue()
             {
                 String name = clazz.substring(1, clazz.length() - 1).replace('/', '.');
@@ -55,7 +54,7 @@ public class MethodReplaceAnnotation extends BaseAnnotation
         };
         this.mElements.add(methodElement);
     }
-
+    @Override
     public Set<? extends AnnotationElement> getElements()
     {
         return this.mElements;

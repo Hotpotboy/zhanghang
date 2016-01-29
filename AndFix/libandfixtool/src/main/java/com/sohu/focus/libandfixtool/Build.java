@@ -68,8 +68,9 @@ public abstract class Build
         keyStore.load(is, this.password.toCharArray());
         privateKeyEntry = (PrivateKeyEntry)keyStore.getEntry(this.alias,
                 new PasswordProtection(this.entry.toCharArray()));
-
+        //写入dex文件，并写入dex文件的签名
         PatchBuilder builder = new PatchBuilder(outFile, dexFile,privateKeyEntry, System.out);
+        //写入元数据文件
         builder.writeMeta(getMeta());
         builder.sealPatch();
     }

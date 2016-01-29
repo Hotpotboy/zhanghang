@@ -210,14 +210,11 @@ public class PatchManager {
 	 */
 	public void loadPatch() {
 		mLoaders.put("*", mContext.getClassLoader());// wildcard 通配符
-		Set<String> patchNames;
-		List<String> classes;
 		for (Patch patch : mPatchs) {
-			patchNames = patch.getPatchNames();
+			Set<String> patchNames = patch.getPatchNames();
 			for (String patchName : patchNames) {
-				classes = patch.getClasses(patchName);
-				mAndFixManager.fix(patch.getFile(), mContext.getClassLoader(),
-						classes);
+				List<String> classes = patch.getClasses(patchName);
+				mAndFixManager.fix(patch.getFile(), mContext.getClassLoader(),classes);
 			}
 		}
 	}
