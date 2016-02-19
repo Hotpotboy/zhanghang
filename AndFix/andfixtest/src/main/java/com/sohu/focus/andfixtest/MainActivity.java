@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
                     patchsFile.mkdirs();
                     return null;
                 } else if (patchsFile.isDirectory()) {//遍历此目录
-                    return FileUtils.searchFiles(patchsFile);
+                    return FileUtils.traversalFiles(patchsFile);
                 }
                 return null;
             }

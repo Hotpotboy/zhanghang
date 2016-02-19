@@ -5,8 +5,11 @@
       <module fileurl="file://$PROJECT_DIR$/LibEventBus/LibEventBus.iml" filepath="$PROJECT_DIR$/LibEventBus/LibEventBus.iml" />
       <module fileurl="file://$PROJECT_DIR$/AndFix/andfixtest/andfixtest.iml" filepath="$PROJECT_DIR$/AndFix/andfixtest/andfixtest.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/buildsrc/buildsrc.iml" filepath="$PROJECT_DIR$/buildsrc/buildsrc.iml" />
       <module fileurl="file://$PROJECT_DIR$/chat/chat.iml" filepath="$PROJECT_DIR$/chat/chat.iml" />
       <module fileurl="file://$PROJECT_DIR$/ebook/ebook.iml" filepath="$PROJECT_DIR$/ebook/ebook.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HotFix/hotfixlib/hotfixlib.iml" filepath="$PROJECT_DIR$/HotFix/hotfixlib/hotfixlib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HotFix/hotfixtest/hotfixtest.iml" filepath="$PROJECT_DIR$/HotFix/hotfixtest/hotfixtest.iml" />
       <module fileurl="file://$PROJECT_DIR$/incoming/incoming.iml" filepath="$PROJECT_DIR$/incoming/incoming.iml" />
       <module fileurl="file://$PROJECT_DIR$/AndFix/libandfix/libandfix.iml" filepath="$PROJECT_DIR$/AndFix/libandfix/libandfix.iml" />
       <module fileurl="file://$PROJECT_DIR$/AndFix/libandfixtool/libandfixtool.iml" filepath="$PROJECT_DIR$/AndFix/libandfixtool/libandfixtool.iml" />

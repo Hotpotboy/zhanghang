@@ -1,0 +1,46 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion '23.0.1'
+
+    defaultConfig {
+        applicationId "com.sohu.focus.hotfixtest"
+        minSdkVersion 10
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    android.applicationVariants.all { variant ->
+        def dx = tasks.findByName("dex${variant.name.capitalize()}")
+        dx.dependsOn << addConstructs
+    }
+}
+
+assembleDebug.doLast{
+    generateDexFile
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile project(':app')
+}
+task("addConstructs") << {
+    String classPath = file("build\\intermediates\\classes\\debug\\")
+    String hotFixLib = project(':hotfixlib').buildDir.absolutePath + "\\intermediates\\classes\\debug\\"
+    com.common.HotFixTool.addConstructer(classPath, hotFixLib)
+}
+task('generateDexFile'){
+    String classPath = project(':hotfixlib').buildDir.absolutePath + File.separator + "intermediates\\classes\\release\\com\\sohu\\focus\\hotfixlib\\DecalreClass.class"
+    classPath += ","+project(':hotfixtest').buildDir.absolutePath + File.separator + "intermediates\\classes\\debug\\com\\sohu\\focus\\hotfixtest\\BugClass.class"
+    String packageName = "com\\sohu\\focus\\hotfixlib\\,com\\sohu\\focus\\hotfixtest\\"
+//项目编译class所在目录
+    com.common.HotFixTool.toDex(classPath, project(':hotfixtest').buildDir.absolutePath + File.separator + "intermediates\\hotfix\\", packageName)
+}
