@@ -84,10 +84,10 @@ public class ChatActivity extends Activity implements View.OnClickListener {
      * 从数据库中获取聊天记录
      */
     private void getChatRecordFromDB() {
-        String whereCase = "(" + MessageTabeHelper.comlueInfos[4].getName() + "=?&&" + MessageTabeHelper.comlueInfos[5].getName() + "=?)";
-        whereCase += "||" + "(" + MessageTabeHelper.comlueInfos[4].getName() + "=?&&" + MessageTabeHelper.comlueInfos[5].getName() + "=?)";
+        String whereCase = "(" + MessageTabeHelper.comlueInfos[3].getName() + "=?&&" + MessageTabeHelper.comlueInfos[8].getName() + "=?)";
+        whereCase += "||" + "(" + MessageTabeHelper.comlueInfos[3].getName() + "=?&&" + MessageTabeHelper.comlueInfos[8].getName() + "=?)";
         String[] whereArgs = {Const.currentId + "", otherId + "", otherId + "", Const.currentId + ""};
-        String orderBy = "order by " + MessageTabeHelper.comlueInfos[7];
+        String orderBy = "order by " + MessageTabeHelper.comlueInfos[5];
         try {
             mDatas = mMessageTableHelper.selectDatas(whereCase, whereArgs, null, null, orderBy, MessageData.class);
         } catch (Exception e) {
@@ -196,7 +196,9 @@ public class ChatActivity extends Activity implements View.OnClickListener {
         result.setFrom(Const.currentId);
         result.setTo(otherId);
         result.setSessionId(sessionId);
-        result.setCreateTime(System.currentTimeMillis());
+        long time = System.currentTimeMillis();
+        result.setCreateTime(time);
+        result.setServerTime(time);
         result.setType(MessageType.TEXT_MESSAGE.id());
         result.setClientType(3);
         result.setStatue(MessageData.STATUE_SENDING);

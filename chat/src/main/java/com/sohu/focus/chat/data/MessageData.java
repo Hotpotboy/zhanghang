@@ -14,26 +14,26 @@ public class MessageData extends BaseData {
     public static final int STATUE_SENDED = 1;
     /**发送失败*/
     public static final int STATUE_FAILED = 2;
-    /**消息ID*/
-    private long id;
-    /**消息ID*/
-    private long sessionId;
-    /**消息类型*/
-    private int type;
-    /**消息内容*/
-    private Content content;
-    /**消息发送者*/
-    private long from;
-    /**消息接收者*/
-    private long to;
-    /**消息创建时间*/
-    private long createTime;
-    /**服务器时间*/
-    private long serverTime;
     /**客户端类型*/
     private int clientType;
+    /**消息内容*/
+    private Content content;
+    /**消息创建时间*/
+    private long createTime;
+    /**消息发送者*/
+    private long from;
+    /**消息ID*/
+    private long id;
+    /**服务器时间*/
+    private long serverTime;
+    /**消息ID*/
+    private long sessionId;
     /**消息状态*/
     private int statue;
+    /**消息接收者*/
+    private long to;
+    /**消息类型*/
+    private int type;
 
     /**
      * 通过ID获取用户的名字

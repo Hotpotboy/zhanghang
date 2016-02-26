@@ -18,7 +18,7 @@ public class BaseSQLiteHelper<T> extends SQLiteOpenHelper {
     /**
      * 替换关键字的前缀
      */
-    private static final String KEY_WORD_PRE = "_pre_key_word";
+    private static final String KEY_WORD_SUFFIX = "_sufffix_key_word";
     protected String mTableName;
     protected ComlueInfo[] mComlueInfos;
 
@@ -29,10 +29,10 @@ public class BaseSQLiteHelper<T> extends SQLiteOpenHelper {
     protected static String filterKeyWord(String keyWord){
         if(TextUtils.isEmpty(keyWord)) return keyWord;
         if("from".equals(keyWord.toLowerCase())
-                &&"to".equals(keyWord.toLowerCase())
-                &&"type".equals(keyWord.toLowerCase())
+                ||"to".equals(keyWord.toLowerCase())
+                ||"type".equals(keyWord.toLowerCase())
                 ){
-            return KEY_WORD_PRE+keyWord;
+            return keyWord+KEY_WORD_SUFFIX;
         }else{
             return keyWord;
         }
@@ -42,9 +42,9 @@ public class BaseSQLiteHelper<T> extends SQLiteOpenHelper {
         if(TextUtils.isEmpty(keyWord)){
             return keyWord;
         }else{
-            int index = keyWord.indexOf(KEY_WORD_PRE);
+            int index = keyWord.indexOf(KEY_WORD_SUFFIX);
             if(index==-1) return keyWord;
-            else return keyWord.substring(KEY_WORD_PRE.length());
+            else return keyWord.substring(0,index);
         }
     }
 
@@ -61,12 +61,13 @@ public class BaseSQLiteHelper<T> extends SQLiteOpenHelper {
         sqlStrBuffer.append(mTableName);
         sqlStrBuffer.append("(");
         for(ComlueInfo item: mComlueInfos){
+            if(item==null) continue;
             sqlStrBuffer.append(item.getName()).append(" ").append(item.getType());
             if(item.isPrimaryKey())
                 sqlStrBuffer.append(" ").append("primary key");
-            if(mComlueInfos[mComlueInfos.length-1]!=item)
-                sqlStrBuffer.append(",");
+            sqlStrBuffer.append(",");
         }
+        sqlStrBuffer.substring(0,sqlStrBuffer.length()-1);
         sqlStrBuffer.append(")");
         db.execSQL(sqlStrBuffer.toString());
     }

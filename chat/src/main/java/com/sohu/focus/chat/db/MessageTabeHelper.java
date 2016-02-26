@@ -21,7 +21,7 @@ public class MessageTabeHelper extends BaseSQLiteHelper<MessageData> {
     public static ComlueInfo[] comlueInfos;
 
     static {
-        Field[] fields = MessageData.class.getFields();
+        Field[] fields = MessageData.class.getDeclaredFields();
         comlueInfos = new ComlueInfo[fields.length];
         for(int i=0;i<fields.length;i++){
             Field field = fields[i];
