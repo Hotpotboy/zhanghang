@@ -61,4 +61,18 @@ public class ComlueInfo {
                 return String.class;
         }
     }
+
+    public String getTableType(){
+        switch (type){
+            case INT_TYPE:
+                return "integer";
+            case LONG_TYPE:
+                return "bigint";
+            case DOUBLE_TYPE:
+                return "double";
+            case STRING_TYPE:
+            default:
+                return "varchar";
+        }
+    }
 }
