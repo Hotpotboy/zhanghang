@@ -44,6 +44,8 @@ public class AndFix {
 
 	private static native void replaceMethod(Method src, Method dest);
 
+	private static native void repalceClass(Class src,Class dest);
+
 	private static native void setFieldFlag(Field field);
 
 	/**

@@ -2,11 +2,13 @@ package com.souhu.hangzhang209526.zhanghang.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.android.websocket.WebSocket;
 import com.android.websocket.WebSocketConnection;
 import com.android.websocket.WebSocketException;
 import com.android.websocket.WebSocketOptions;
+import com.sohu.focus.eventbus.EventBus;
 import com.souhu.hangzhang209526.zhanghang.R;
 
 import java.util.HashMap;
@@ -15,6 +17,10 @@ import java.util.HashMap;
  * Created by hangzhang209526 on 2016/1/28.
  */
 public class DefaultWebSocketUtils {
+    private static final String TAG = "DefaultWebSocketUtils";
+    public static final String TAG_RECEIVE_TEXT = "tag_recevie_text";
+    public static final String TAG_RECEIVE_RAW = "tag_recevie_raw";
+    public static final String TAG_RECEIVE_BIN = "tag_recevie_bin";
     private static Object lock = new Object();
     /**WebSocket连接*/
     private WebSocket webSocket;
@@ -72,8 +78,9 @@ public class DefaultWebSocketUtils {
                 Intent receiveTextMessageBradCast = new Intent();
                 String action = context.getResources().getString(R.string.broadcast_webSocket_receive_text_message);
                 receiveTextMessageBradCast.setAction(action);
-                receiveTextMessageBradCast.putExtra(action,payload);
+                receiveTextMessageBradCast.putExtra(TAG_RECEIVE_TEXT, payload);
                 context.sendBroadcast(receiveTextMessageBradCast);
+                EventBus.getDefault().post(receiveTextMessageBradCast,TAG_RECEIVE_TEXT);
             }
 
             @Override
@@ -81,8 +88,9 @@ public class DefaultWebSocketUtils {
                 Intent receiveRawMessageBradCast = new Intent();
                 String action = context.getResources().getString(R.string.broadcast_webSocket_receive_raw_message);
                 receiveRawMessageBradCast.setAction(action);
-                receiveRawMessageBradCast.putExtra(action, payload);
+                receiveRawMessageBradCast.putExtra(TAG_RECEIVE_RAW, payload);
                 context.sendBroadcast(receiveRawMessageBradCast);
+                EventBus.getDefault().post(receiveRawMessageBradCast, TAG_RECEIVE_RAW);
             }
 
             @Override
@@ -90,8 +98,9 @@ public class DefaultWebSocketUtils {
                 Intent receiveBinaryMessageBradCast = new Intent();
                 String action = context.getResources().getString(R.string.broadcast_webSocket_receive_binary_message);
                 receiveBinaryMessageBradCast.setAction(action);
-                receiveBinaryMessageBradCast.putExtra(action,payload);
+                receiveBinaryMessageBradCast.putExtra(TAG_RECEIVE_BIN, payload);
                 context.sendBroadcast(receiveBinaryMessageBradCast);
+                EventBus.getDefault().post(receiveBinaryMessageBradCast, TAG_RECEIVE_BIN);
             }
         };
     }
@@ -110,6 +119,7 @@ public class DefaultWebSocketUtils {
     public void sendMessage(String msg) throws WebSocketException {
         if(webSocket.isConnected()) {
             webSocket.sendTextMessage(msg);
+            Log.d(TAG,"webSocket发送消息【"+msg+"】");
         }else{
             throw new WebSocketException("websocket失去连接!");
         }

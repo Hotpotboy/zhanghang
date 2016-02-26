@@ -220,6 +220,50 @@ static bool dvmIsStaticMethod(const Method* method) {
 }
 
 /*
+*src  表示补丁前的类
+*dest 表示补丁后的类
+*/
+extern void __attribute__ ((visibility ("hidden"))) dalvik_replaceClass(JNIEnv* env, jobject src, jobject dest){
+//    ClassObject* srcClz = (ClassObject*) dvmDecodeIndirectRef_fnPtr(dvmThreadSelf_fnPtr(), src);
+//    ClassObject* destClz = (ClassObject*) dvmDecodeIndirectRef_fnPtr(dvmThreadSelf_fnPtr(), dest);
+//    srcClz->instanceData = destClz->instanceData;
+//    srcClz->descriptor = destClz->descriptor;
+//    srcClz->descriptorAlloc = destClz->descriptorAlloc;
+//    srcClz->accessFlags = destClz->accessFlags;
+//    srcClz->serialNumber = destClz->serialNumber;
+//    srcClz->pDvmDex = destClz->pDvmDex;
+//    srcClz->status = destClz->status;
+//    srcClz->verifyErrorClass = destClz->verifyErrorClass;
+//    srcClz->initThreadId = destClz->initThreadId;
+//    srcClz->objectSize = destClz->objectSize;
+//    srcClz->elementClass = destClz->elementClass;
+//    srcClz->arrayDim = destClz->arrayDim;
+//    srcClz->primitiveType = destClz->primitiveType;
+//    srcClz->super = destClz->super;
+//    srcClz->classLoader = destClz->classLoader;
+//    srcClz->initiatingLoaderList = destClz->initiatingLoaderList;
+//    srcClz->interfaceCount = destClz->interfaceCount;
+//    srcClz->interfaces = destClz->interfaces;
+//    srcClz->directMethodCount = destClz->directMethodCount;
+//    srcClz->directMethods = destClz->directMethods;
+//    srcClz->virtualMethodCount = destClz->virtualMethodCount;
+//    srcClz->virtualMethods = destClz->virtualMethods;
+//    srcClz->vtableCount = destClz->vtableCount;
+//    srcClz->vtable = destClz->vtable;
+//    srcClz->iftableCount = destClz->iftableCount;
+//    srcClz->iftable = destClz->iftable;
+//    srcClz->ifviPoolCount = destClz->ifviPoolCount;
+//    srcClz->ifviPool = destClz->ifviPool;
+//    srcClz->ifieldCount = destClz->ifieldCount;
+//    srcClz->ifieldRefCount = destClz->ifieldRefCount;
+//    srcClz->ifields = destClz->ifields;
+//    srcClz->refOffsets = destClz->refOffsets;
+//    srcClz->sourceFile = destClz->sourceFile;
+//    srcClz->sfieldCount = destClz->sfieldCount;
+//    srcClz->sfields[0] = destClz->sfields[0];
+}
+
+/*
 *src  表示补丁前的方法
 *dest 表示补丁后的方法
 */
@@ -270,7 +314,7 @@ static void dalvik_dispatcher(const u4* args, jvalue* pResult,
 	LOGD("dalvik_dispatcher target method: %s %s", method->name,
 			method->shorty);
 
-	returnType = dvmGetBoxedReturnType_fnPtr(method);//获取该方法的返回类型
+	returnType = dvmGetBoxedReturnType_fnPtr(method);//获取原始方法的返回类型
 	if (returnType == NULL) {
 		assert(dvmCheckException_fnPtr(self));
 		goto bail;

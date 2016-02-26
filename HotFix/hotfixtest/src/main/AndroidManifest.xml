@@ -3,7 +3,7 @@
     package="com.sohu.focus.hotfixtest" >
 
     <application
-        android:name="com.souhu.hangzhang209526.zhanghang.base.BaseApplication"
+        android:name=".SelfApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

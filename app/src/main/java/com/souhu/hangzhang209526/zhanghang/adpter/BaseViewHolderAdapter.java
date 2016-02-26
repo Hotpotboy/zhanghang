@@ -30,12 +30,31 @@ public abstract class BaseViewHolderAdapter extends BaseAdapter {
         mDatas = list;
     }
 
+    public void setDatas(ArrayList datas){
+        mDatas = datas;
+        notifyDataSetInvalidated();
+    }
+
+    public void addData(Object data){
+        if(mDatas!=null){
+            mDatas.add(data);
+            notifyDataSetChanged();
+        }
+    }
+
+    public int getPosistionForObject(Object object){
+        if(mDatas!=null){
+            return  mDatas.indexOf(object);
+        }
+        return -1;
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         HashMap<String, View> baseViewHolder;
         if (convertView == null) {
             baseViewHolder = new HashMap<String, View>();
-            convertView = inflaterView();
+            convertView = inflaterView(position);
             convertView.setTag(baseViewHolder);
         } else {
             baseViewHolder = (HashMap<String, View>) convertView.getTag();
@@ -49,7 +68,7 @@ public abstract class BaseViewHolderAdapter extends BaseAdapter {
      *
      * @return
      */
-    protected abstract View inflaterView();
+    protected abstract View inflaterView(int position);
 
     /**
      * 根据tag查找item视图中的某一个子视图
@@ -65,7 +84,7 @@ public abstract class BaseViewHolderAdapter extends BaseAdapter {
         if (!baseViewHolder.containsKey(tag)) {
             view = convertView.findViewById(id);
             baseViewHolder.put(tag, view);
-        } else view = (TextView) baseViewHolder.get(tag);
+        } else view = baseViewHolder.get(tag);
         return view;
     }
 

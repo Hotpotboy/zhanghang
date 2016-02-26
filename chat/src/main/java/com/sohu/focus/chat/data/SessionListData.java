@@ -5,14 +5,14 @@ import java.util.ArrayList;
 /**
  * Created by hangzhang209526 on 2016/1/29.
  */
-public class SessionListData {
-    private ArrayList<SessionData> sessionDatas;
+public class SessionListData extends BaseData {
+    private ArrayList<SessionData> messages;
 
     public ArrayList<SessionData> getSessionDatas() {
-        return sessionDatas;
+        return messages;
     }
 
     public void setSessionDatas(ArrayList<SessionData> sessionDatas) {
-        this.sessionDatas = sessionDatas;
+        messages = sessionDatas;
     }
 }

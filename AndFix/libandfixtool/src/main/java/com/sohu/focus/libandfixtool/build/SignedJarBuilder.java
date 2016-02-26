@@ -147,7 +147,7 @@ public class SignedJarBuilder
             }
     }
 
-    private void writeEntry(InputStream input, JarEntry entry)
+    public void writeEntry(InputStream input, JarEntry entry)
             throws IOException
     {
         this.mOutputJar.putNextEntry(entry);

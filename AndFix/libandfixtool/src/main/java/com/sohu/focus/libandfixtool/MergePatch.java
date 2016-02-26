@@ -35,7 +35,7 @@ public class MergePatch extends Build
 
             mergeCode(dexFile);
 
-            build(outFile, dexFile);
+            build(outFile, dexFile,null);
 
             release(this.out, dexFile, outFile);
         } catch (Exception e) {

@@ -8,6 +8,7 @@ import org.jf.dexlib2.dexbacked.DexBackedClassDef;
 import org.jf.dexlib2.dexbacked.DexBackedField;
 import org.jf.dexlib2.dexbacked.DexBackedMethod;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,6 +24,8 @@ public class DiffInfo
 
     private Set<DexBackedMethod> addedMethods = new HashSet();
     private Set<DexBackedMethod> modifiedMethods = new HashSet();
+
+    public HashMap<String,byte[]> modifiedRes = new HashMap<>();
 
     public static synchronized DiffInfo getInstance()
     {

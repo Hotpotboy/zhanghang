@@ -2,14 +2,17 @@ package com.souhu.hangzhang209526.zhanghang.base;
 
 import android.app.Application;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Environment;
-import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.sohu.focus.hotfixlib.HotFix;
 import com.sohu.focus.libandfix.patch.PatchManager;
 import com.souhu.hangzhang209526.zhanghang.BuildConfig;
 import com.souhu.hangzhang209526.zhanghang.utils.FileUtils;
+import com.souhu.hangzhang209526.zhanghang.utils.VolleyUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,21 +21,27 @@ import java.util.ArrayList;
  * Created by hangzhang209526 on 2016/1/4.
  */
 public class BaseApplication extends Application {
+    /**版本号*/
+    private int versionCode;
+    /**版本名称*/
+    private String versionName;
 
-    private static BaseApplication instance;
+    protected static BaseApplication instance;
 
     private ApplicationInfo info;
 
     /**
      * 是否开启AndFix热补丁的功能
      */
-    private boolean isAndFix = false;
+    private boolean isAndFix = true;
     /**
      * 热补丁管理器
      */
     private PatchManager mPatchManager;
     /**是否开启HotFix热补丁功能*/
     private boolean isHotFix = true;
+    /**请求网络队列*/
+    private RequestQueue mRequestQueue;
     public static BaseApplication getInstance() {
         return instance;
     }
@@ -60,6 +69,16 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         instance = this;
+
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            versionName = packageInfo.versionName;
+            versionCode = packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            versionName = "1.0";
+            versionCode = 1;
+        }
         //未捕获异常的处理
         BaseUncaughtExceptionHandler deafultCaughter = new BaseUncaughtExceptionHandler(this);
         Thread.setDefaultUncaughtExceptionHandler(deafultCaughter);
@@ -68,24 +87,19 @@ public class BaseApplication extends Application {
             exeAndFix();
         }
         //HotFix热补丁功能
-        if(isHotFix){
-            exeHotFix();
-        }
+//        if(isHotFix){
+//            exeHotFix();
+//        }
+        VolleyUtils.init(this);//初始化Volley
     }
 
     private void exeAndFix(){
         mPatchManager = new PatchManager(this);//实例化补丁管理器
-        try {
-            String version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-            mPatchManager.init(version);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-            mPatchManager.init("1.0");
-        }
-        mPatchManager.loadPatch();
+        mPatchManager.init(versionName);
+        mPatchManager.loadPatch();//加载已经存在的补丁
     }
 
-    private void exeHotFix(){
+    public void exeHotFix(){
         String patchDir = Environment.getExternalStorageDirectory().getAbsolutePath() + BuildConfig.HOTFIX_DIR;
         File patchFile = new File(patchDir);
         if(patchFile.exists()&&!patchFile.isFile()){
@@ -99,5 +113,13 @@ public class BaseApplication extends Application {
                 }
             }
         }
+    }
+
+    public int getVersionCode() {
+        return versionCode;
+    }
+
+    public String getVersionName() {
+        return versionName;
     }
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="15dp"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp">
+    <com.souhu.hangzhang209526.zhanghang.widget.CycleImageView
+        android:id="@+id/item_chat_other_head_img"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/default_img"/>
+    <TextView
+        android:id="@+id/item_chat_other_msg"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/item_chat_other_head_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:padding="10dp"
+        android:layout_marginLeft="10dp"
+        android:textColor="@android:color/black"
+        android:background="@color/chat_bg_color"
+        android:textSize="25sp"
+        android:text="不知道该怎么办?"
+        android:paddingLeft="20dp"/>
+</RelativeLayout>

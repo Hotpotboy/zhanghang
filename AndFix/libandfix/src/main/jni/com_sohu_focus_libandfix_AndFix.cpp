@@ -6,6 +6,7 @@
 //dalvik
 extern jboolean dalvik_setup(JNIEnv* env, int apilevel);
 extern void dalvik_replaceMethod(JNIEnv* env, jobject src, jobject dest);
+extern void dalvik_replaceClass(JNIEnv* env, jobject src, jobject dest);
 extern void dalvik_setFieldFlag(JNIEnv* env, jobject field);
 //art
 extern jboolean art_setup(JNIEnv* env, int apilevel);
@@ -40,6 +41,20 @@ JNIEXPORT void JNICALL Java_com_sohu_focus_libandfix_AndFix_replaceMethod
       dalvik_replaceMethod(env,src,dest);
   }else{
       art_replaceMethod(env,src,dest);
+  }
+}
+
+/*
+ * Class:     com_sohu_focus_libandfix_AndFix
+ * Method:    replaceClass
+ * Signature: (Ljava/lang/Class;Ljava/lang/Class;)V
+ */
+JNIEXPORT void JNICALL Java_com_sohu_focus_libandfix_AndFix_replaceClass
+  (JNIEnv * env, jclass clazz, jclass src, jclass dest){
+  if(!isart){
+      dalvik_replaceClass(env,src,dest);
+  }else{
+//      art_replaceMethod(env,src,dest);
   }
 }
 

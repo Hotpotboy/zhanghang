@@ -3,9 +3,11 @@
     package="com.sohu.focus.chat" >
 
     <application
+        android:name=".ChatApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name" >
+        android:label="@string/app_name"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
@@ -15,6 +17,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ChatActivity">
+        </activity>
+        <service android:name=".ChatService"/>
     </application>
 
 </manifest>

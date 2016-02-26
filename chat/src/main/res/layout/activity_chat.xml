@@ -1,0 +1,29 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ListView
+        android:id="@+id/chat_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@android:color/transparent" />
+
+    <Button
+        android:id="@+id/chat_send_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/fa_song_cn"/>
+
+    <EditText
+        android:id="@+id/chat_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/chat_send_button"
+        android:layout_alignTop="@id/chat_send_button"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        android:textSize="20sp" />
+
+</RelativeLayout>

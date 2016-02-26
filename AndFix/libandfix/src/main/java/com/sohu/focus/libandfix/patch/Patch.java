@@ -20,6 +20,7 @@ package com.sohu.focus.libandfix.patch;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -42,6 +43,7 @@ public class Patch implements Comparable<Patch> {
 	private static final String ENTRY_NAME = "META-INF/PATCH.MF";
 	private static final String CLASSES = "-Classes";
 	private static final String PATCH_CLASSES = "Patch-Classes";
+	private static final String PATCH_RESES = "Patch-ResNames";
 	private static final String CREATED_TIME = "Created-Time";
 	private static final String PATCH_NAME = "Patch-Name";
 
@@ -62,9 +64,15 @@ public class Patch implements Comparable<Patch> {
 	 */
 	private Map<String, List<String>> mClassesMap;
 
+	private ArrayList<String> mResNames = new ArrayList<String>();
+
 	public Patch(File file) throws IOException {
 		mFile = file;
 		init();
+	}
+
+	public ArrayList<String> getResNames(){
+		return mResNames;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -95,6 +103,8 @@ public class Patch implements Comparable<Patch> {
 						mClassesMap.put(name.trim().substring(0, name.length() - 8),// remove "-Classes"
 								strings);
 					}
+				}else if(name.equals(PATCH_RESES)){
+					mResNames.addAll(Arrays.asList(main.getValue(attrName).split(",")));
 				}
 			}
 		} finally {

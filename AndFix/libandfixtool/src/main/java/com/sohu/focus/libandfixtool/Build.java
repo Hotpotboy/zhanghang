@@ -4,6 +4,7 @@ package com.sohu.focus.libandfixtool;
 import com.sohu.focus.libandfixtool.build.PatchBuilder;
 import com.sohu.focus.libandfixtool.utils.HexUtil;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -17,6 +18,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.jar.JarEntry;
 import java.util.jar.Manifest;
 
 public abstract class Build
@@ -59,7 +64,7 @@ public abstract class Build
         outFile.renameTo(new File(outDir, this.name + "-" + md5 + ".apatch"));
     }
 
-    protected void build(File outFile, File dexFile)
+    protected void build(File outFile, File dexFile,HashMap<String,byte[]> resMap)
             throws KeyStoreException, FileNotFoundException, IOException, NoSuchAlgorithmException, CertificateException, UnrecoverableEntryException
     {
         KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
@@ -70,6 +75,17 @@ public abstract class Build
                 new PasswordProtection(this.entry.toCharArray()));
         //写入dex文件，并写入dex文件的签名
         PatchBuilder builder = new PatchBuilder(outFile, dexFile,privateKeyEntry, System.out);
+        //写入资源文件
+        if(resMap!=null&&resMap.size()>0){
+            Iterator<Map.Entry<String,byte[]>> iterator = resMap.entrySet().iterator();
+            while (iterator.hasNext()){
+                Map.Entry<String,byte[]> entry = iterator.next();
+                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(entry.getValue());
+                JarEntry jarEntry = new JarEntry(entry.getKey());
+                builder.writeJarEntry(byteArrayInputStream,jarEntry);
+                byteArrayInputStream.close();
+            }
+        }
         //写入元数据文件
         builder.writeMeta(getMeta());
         builder.sealPatch();

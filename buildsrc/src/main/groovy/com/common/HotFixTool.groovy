@@ -34,10 +34,10 @@ public class HotFixTool {
                 if (!isEmpty(path)) {
                     File file = new File(path);
                     if (file.exists() && path.endsWith(".class")) {//如果是class文
-                        println("77777777777777777777777777"+path)
                         File packageFile = new File(outDir + packageDirs[i])
                         if (!packageFile.exists()) packageFile.mkdirs();
                         copyFile(file, new File(outDir + packageDirs[i], file.getName()))
+                        println("77777777777777777777777777"+file.exists())
                     }
                 }
             }
@@ -100,8 +100,8 @@ public class HotFixTool {
 
     public static void addConstructer(String classPath, String hotFixLib) {
         classPool = ClassPool.getDefault();
-        classPool.appendClassPath(classPath)
-        classPool.appendClassPath(hotFixLib)
+        classPool.appendClassPath(classPath)//指定classdex.dex中class文件对应的路径
+        classPool.appendClassPath(hotFixLib)//指定非classdex.dex中class文件对应的路径
         File classDir = new File(classPath)
         if (classDir.exists() && !classDir.isFile()) {
             File[] classFiles = classDir.listFiles()

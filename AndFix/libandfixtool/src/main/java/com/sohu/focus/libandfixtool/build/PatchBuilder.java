@@ -2,9 +2,12 @@ package com.sohu.focus.libandfixtool.build;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.security.KeyStore.PrivateKeyEntry;
 import java.security.cert.X509Certificate;
+import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.Manifest;
 
@@ -23,6 +26,10 @@ public class PatchBuilder
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void writeJarEntry(InputStream input,JarEntry entry) throws IOException {
+        mBuilder.writeEntry(input,entry);
     }
 
     public void writeMeta(Manifest manifest) {

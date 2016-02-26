@@ -8,22 +8,32 @@ import java.util.Date;
  * Created by hangzhang209526 on 2016/1/29.
  */
 public class MessageData extends BaseData {
+    /**即将（正在）发送*/
+    public static final int STATUE_SENDING = 0;
+    /**已经发送*/
+    public static final int STATUE_SENDED = 1;
+    /**发送失败*/
+    public static final int STATUE_FAILED = 2;
     /**消息ID*/
-    public long id;
+    private long id;
+    /**消息ID*/
+    private long sessionId;
     /**消息类型*/
-    public int type;
+    private int type;
     /**消息内容*/
-    public byte[] content;
+    private Content content;
     /**消息发送者*/
-    public long from;
+    private long from;
     /**消息接收者*/
-    public long to;
+    private long to;
     /**消息创建时间*/
-    public long createTime;
-    /**服务时间*/
-    public long serverTime;
-    /**属于哪一个会话*/
-    public SessionData sessionData;
+    private long createTime;
+    /**服务器时间*/
+    private long serverTime;
+    /**客户端类型*/
+    private int clientType;
+    /**消息状态*/
+    private int statue;
 
     /**
      * 通过ID获取用户的名字
@@ -38,5 +48,91 @@ public class MessageData extends BaseData {
     public String getFormatBymillSec(long time){
         Date date = new Date(time);
         return SystemUtils.getTimestampStringListView(SystemUtils.TIME_FORMAT_HH_mm,date);
+    }
+
+    public int getClientType() {
+        return clientType;
+    }
+
+    public void setClientType(int clientType) {
+        this.clientType = clientType;
+    }
+
+    public long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
+    }
+
+    public long getTo() {
+        return to;
+    }
+
+    public void setTo(long to) {
+        this.to = to;
+    }
+
+    public long getFrom() {
+        return from;
+    }
+
+    public void setFrom(long from) {
+        this.from = from;
+    }
+
+    public Content getContent() {
+        return content;
+    }
+
+    public void setContent(Content content) {
+        this.content = content;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public long getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(long sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public long getServerTime() {
+        return serverTime;
+    }
+
+    public void setServerTime(long serverTime) {
+        this.serverTime = serverTime;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public int getStatue() {
+        return statue;
+    }
+
+    public void setStatue(int statue) {
+        this.statue = statue;
+    }
+
+    @Override
+    public boolean equals(Object other){
+        if(!(other instanceof MessageData)) return false;
+        return id==((MessageData) other).getId();
     }
 }

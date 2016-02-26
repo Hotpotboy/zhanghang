@@ -28,34 +28,34 @@ public class MessageListAdapter extends BaseViewHolderAdapter {
     }
 
     @Override
-    protected View inflaterView() {
+    protected View inflaterView(int position) {
         return mLayoutInflater.inflate(R.layout.item_message_list, null);
     }
 
     @Override
     protected void reBindDataAndView(int position, HashMap<String, View> baseViewHolder, View convertView) {
-        SessionData data = (SessionData) mDatas.get(position);
-        MessageData msg = data.getMessages().get(data.getMessages().size() - 1);
-        if (baseViewHolder.containsKey(KEY_HEAD_IMG)) {
-            CycleImageView headImag = (CycleImageView) baseViewHolder.get(KEY_HEAD_IMG);
-        }
-        //更新姓名
-        TextView sessionOtherName = (TextView) getViewByTag(R.id.item_message_list_sender_name, KEY_SESSION_NAME, baseViewHolder, convertView);
-        sessionOtherName.setText(msg.getNameFromId(msg.from));
-        //更新消息
-        TextView sessionLastMsg = (TextView) getViewByTag(R.id.item_message_list_last_msg, KEY_SESSION_LAST_MSG_STR, baseViewHolder, convertView);
-        sessionLastMsg.setText(msg.content.toString());
-        //更新最后对话时间
-        TextView sessionLastTime = (TextView) getViewByTag(R.id.item_message_list_time, KEY_SESSION_LAST_TIME, baseViewHolder, convertView);
-        sessionLastTime.setText(msg.getFormatBymillSec(msg.createTime));
-        //更新未读消息数
-        TextView sessionUnReadNum = (TextView) getViewByTag(R.id.item_message_list_time, KEY_SESSION_UNREAD_NUM, baseViewHolder, convertView);
-        int num = data.getUnReadNum();
-        if (num <= 0) {
-            sessionUnReadNum.setVisibility(View.GONE);
-        } else {
-            sessionUnReadNum.setText(data.getUnReadNum());
-            sessionUnReadNum.setVisibility(View.VISIBLE);
-        }
+//        SessionData data = (SessionData) mDatas.get(position);
+//        MessageData msg = data.getMessages().get(data.getMessages().size() - 1);
+//        if (baseViewHolder.containsKey(KEY_HEAD_IMG)) {
+//            CycleImageView headImag = (CycleImageView) baseViewHolder.get(KEY_HEAD_IMG);
+//        }
+//        //更新姓名
+//        TextView sessionOtherName = (TextView) getViewByTag(R.id.item_message_list_sender_name, KEY_SESSION_NAME, baseViewHolder, convertView);
+//        sessionOtherName.setText(msg.getNameFromId(msg.from));
+//        //更新消息
+//        TextView sessionLastMsg = (TextView) getViewByTag(R.id.item_message_list_last_msg, KEY_SESSION_LAST_MSG_STR, baseViewHolder, convertView);
+//        sessionLastMsg.setText(msg.content.toString());
+//        //更新最后对话时间
+//        TextView sessionLastTime = (TextView) getViewByTag(R.id.item_message_list_time, KEY_SESSION_LAST_TIME, baseViewHolder, convertView);
+//        sessionLastTime.setText(msg.getFormatBymillSec(msg.createTime));
+//        //更新未读消息数
+//        TextView sessionUnReadNum = (TextView) getViewByTag(R.id.item_message_list_msg_num, KEY_SESSION_UNREAD_NUM, baseViewHolder, convertView);
+//        int num = data.getUnReadNum();
+//        if (num <= 0) {
+//            sessionUnReadNum.setVisibility(View.GONE);
+//        } else {
+//            sessionUnReadNum.setText(data.getUnReadNum());
+//            sessionUnReadNum.setVisibility(View.VISIBLE);
+//        }
     }
 }

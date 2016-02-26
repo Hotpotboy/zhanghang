@@ -63,6 +63,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author mrsimple
  */
 public final class EventBus {
+    private static final String TAG = "EventBus";
 
     /**
      * default descriptor
@@ -194,7 +195,7 @@ public final class EventBus {
      */
     public void post(Object event, String tag) {
         if (event == null) {
-            Log.e(this.getClass().getSimpleName(), "The event object is null");
+            Log.e(TAG, "The event object is null");
             return;
         }
         //将本次事件添加到线程局部的事件队列之中
@@ -222,7 +223,7 @@ public final class EventBus {
      */
     public void postSticky(Object event, String tag) {
         if (event == null) {
-            Log.e(this.getClass().getSimpleName(), "The event object is null");
+            Log.e(TAG,this.getClass().getSimpleName()+"The event object is null");
             return;
         }
         EventType eventType = new EventType(event.getClass(), tag);
@@ -428,10 +429,10 @@ public final class EventBus {
         private void deliveryEvent(EventType type, Object aEvent) {
             // 如果有缓存则直接从缓存中取
             List<EventType> eventTypes = getMatchedEventTypes(type, aEvent);
-            Log.e("test", "事件【" + type.toString() + "】一共合成了" + eventTypes.size() + "个新的事件");
+            Log.d(TAG, "事件【" + type.toString() + "】一共合成了" + eventTypes.size() + "个新的事件");
             // 迭代所有匹配的事件并且分发给订阅者
             for (EventType eventType : eventTypes) {
-                Log.e("test", "合成事件【" + eventType.toString() + "】");
+                Log.d(TAG, "合成事件【" + eventType.toString() + "】");
                 handleEvent(eventType, aEvent);
             }
         }
@@ -489,7 +490,7 @@ public final class EventBus {
                     isGoOn = mBGThreadEventHandler.isGoOnSendEvent();
                 }
                 if (!isGoOn) return false;//停止事件处理
-                Log.e("test","8888888888888888888888888888888执行方法:"+subscription.targetMethod.toString()+"【"+isGoOn+"】");
+                Log.d(TAG,"执行方法:"+subscription.targetMethod.toString()+"【"+isGoOn+"】");
             } else{
                 // 处理事件
                 mAsyncEventHandler.handleEvent(subscription, aEvent);
@@ -527,8 +528,7 @@ public final class EventBus {
             // 事件
             Object event = eventType.event;
             for (EventType foundEventType : eventTypes) {
-                Log.e("", "### 找到的类型 : " + foundEventType.paramClass.getSimpleName()
-                        + ", event class : " + event.getClass().getSimpleName());
+                Log.d(TAG, "### 找到的类型 : " + foundEventType.paramClass.getSimpleName()+ ", event class : " + event.getClass().getSimpleName());
                 final List<Subscription> subscriptions = mSubcriberMap.get(foundEventType);
                 if (subscriptions == null) {
                     continue;

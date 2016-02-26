@@ -18,6 +18,7 @@
 package com.sohu.focus.libandfix;
 
 import android.content.Context;
+import android.os.Debug;
 import android.util.Log;
 
 import com.sohu.focus.libandfix.annotation.MethodReplace;
@@ -31,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import dalvik.system.DexClassLoader;
 import dalvik.system.DexFile;
 
 /**
@@ -144,6 +146,25 @@ public class AndFixManager {
 				}
 			}
 
+			if (saveFingerprint) {
+				//会遍历整个优化后的aptach文件的内容，根据整个文件内容进行MD5加密，生成一个MD5指纹，
+				//按照"键,值对"为："文件名-md5,MD5指纹字符串"的格式保存到SharedPreferences之中
+				mSecurityChecker.saveOptSig(optfile);//保存指纹
+			}
+
+			DexClassLoader dexClassLoader = new DexClassLoader(file.getAbsolutePath(),optfile.getAbsolutePath(),null,classLoader);
+
+			if(classes!=null&&classes.size()>0){
+				Class<?> clazz = null;
+				for(String item:classes){
+					clazz = dexClassLoader.loadClass(item);
+//					clazz = Class.forName(item,true,dexClassLoader);
+					if (clazz != null) {
+						fixClass(clazz, classLoader);
+					}
+				}
+			}
+
 			/*Open a DEX file, specifying the file in which the optimized DEX data should be written.
 			If the optimized form exists and appears to be current, it will be used;
 			if not, the VM will attempt to regenerate it.
@@ -153,44 +174,40 @@ public class AndFixManager {
 			 * 这一点意为被期望从通用应用安装机制之外的地方下载并执行DEX文件的应用使用
 			 * loadDex方法不应该被应用直接调用；而是使用类似DexClassLoader这样的类加载器
 			 * */
-			final DexFile dexFile = DexFile.loadDex(file.getAbsolutePath(),
-					optfile.getAbsolutePath(), Context.MODE_PRIVATE);
-
-			if (saveFingerprint) {
-				//会遍历整个优化后的aptach文件的内容，根据整个文件内容进行MD5加密，生成一个MD5指纹，
-				//按照"键,值对"为："文件名-md5,MD5指纹字符串"的格式保存到SharedPreferences之中
-				mSecurityChecker.saveOptSig(optfile);//保存指纹
-			}
-
-			ClassLoader patchClassLoader = new ClassLoader(classLoader) {
-				@Override
-				protected Class<?> findClass(String className)
-						throws ClassNotFoundException {
-					Class<?> clazz = dexFile.loadClass(className, this);
-					if (clazz == null
-							&& className.startsWith("com.sohu.focus.andfix")) {
-						return Class.forName(className);// annotation’s class
-														// not found
-					}
-					if (clazz == null) {
-						throw new ClassNotFoundException(className);
-					}
-					return clazz;
-				}
-			};
-			Enumeration<String> entrys = dexFile.entries();//Dex文件中的所有类的名称
-			Class<?> clazz = null;
-			while (entrys.hasMoreElements()) {
-				String entry = entrys.nextElement();
-				if (classes != null && !classes.contains(entry)) {
-					continue;// skip, not need fix
-				}
-				clazz = dexFile.loadClass(entry, patchClassLoader);
-				if (clazz != null) {
-					fixClass(clazz, classLoader);
-				}
-			}
-		} catch (IOException e) {
+//			final DexFile dexFile = DexFile.loadDex(file.getAbsolutePath(),
+//					optfile.getAbsolutePath(), Context.MODE_PRIVATE);
+//
+//
+//
+//			ClassLoader patchClassLoader = new ClassLoader(classLoader) {
+//				@Override
+//				protected Class<?> findClass(String className)
+//						throws ClassNotFoundException {
+//					Class<?> clazz = dexFile.loadClass(className, this);
+//					if (clazz == null
+//							&& className.startsWith("com.sohu.focus.andfix")) {
+//						return Class.forName(className);// annotation’s class
+//														// not found
+//					}
+//					if (clazz == null) {
+//						throw new ClassNotFoundException(className);
+//					}
+//					return clazz;
+//				}
+//			};
+//			Enumeration<String> entrys = dexFile.entries();//Dex文件中的所有类的名称
+//			Class<?> clazz = null;
+//			while (entrys.hasMoreElements()) {
+//				String entry = entrys.nextElement();
+//				if (classes != null && !classes.contains(entry)) {
+//					continue;// skip, not need fix
+//				}
+//				clazz = dexFile.loadClass(entry, patchClassLoader);
+//				if (clazz != null) {
+//					fixClass(clazz, classLoader);
+//				}
+//			}
+		}catch (ClassNotFoundException e) {
 			Log.e(TAG, "pacth", e);
 		}
 	}

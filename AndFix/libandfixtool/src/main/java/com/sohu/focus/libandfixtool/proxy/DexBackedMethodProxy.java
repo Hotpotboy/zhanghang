@@ -3,7 +3,6 @@ package com.sohu.focus.libandfixtool.proxy;
 import com.sohu.focus.libandfixtool.annotation.MethodReplaceAnnotation;
 
 import org.jf.dexlib2.dexbacked.DexBackedMethod;
-import org.jf.dexlib2.dexbacked.util.FixedSizeSet;
 import org.jf.dexlib2.iface.Annotation;
 import org.jf.dexlib2.iface.Method;
 import org.jf.dexlib2.iface.MethodImplementation;
@@ -11,7 +10,6 @@ import org.jf.dexlib2.iface.MethodParameter;
 import org.jf.dexlib2.iface.reference.MethodReference;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class SessionData extends BaseData {
     /**未读消息数*/
-    private int mUnReadNum = 7;
+    private int count = 7;
     private ArrayList<MessageData> messages;
 
     public ArrayList<MessageData> getMessages() {
@@ -18,11 +18,11 @@ public class SessionData extends BaseData {
         this.messages = messages;
     }
 
-    public int getUnReadNum() {
-        return mUnReadNum;
+    public int getCount() {
+        return count;
     }
 
-    public void setUnReadNum(int mUnReadNum) {
-        this.mUnReadNum = mUnReadNum;
+    public void setCount(int count) {
+        this.count = count;
     }
 }

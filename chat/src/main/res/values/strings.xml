@@ -3,4 +3,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="fa_song_cn">发送</string>
+    <string name="send_fail_tip">发送失败,重新发送</string>
 </resources>

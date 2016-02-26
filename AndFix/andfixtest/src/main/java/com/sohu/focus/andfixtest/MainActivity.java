@@ -24,11 +24,11 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ((TextView)findViewById(R.id.text_view)).setText(providerString());
+//        ((TextView)findViewById(R.id.text_view)).setText(BugClass.getMsg());
+//        ((TextView)findViewById(R.id.text_view)).setText(providerString());
         searchAndUpdatePatch();
     }
 
-    @MethodReplace(clazz = "",method = "providerString")
     private String providerString(){
         return "修复bug前，提供的字符串";
     }

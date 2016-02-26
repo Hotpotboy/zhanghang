@@ -2,6 +2,7 @@ package com.sohu.focus.libandfixtool;
 
 import com.sohu.focus.libandfixtool.diff.DexDiffer;
 import com.sohu.focus.libandfixtool.diff.DiffInfo;
+import com.sohu.focus.libandfixtool.diff.ResDiffer;
 import com.sohu.focus.libandfixtool.proxy.DexBackedClassDefProxy;
 import com.sohu.focus.libandfixtool.utils.Formater;
 import com.sohu.focus.libandfixtool.utils.TypeGenUtil;
@@ -32,6 +33,7 @@ public class ApkPatch extends Build {
     private File from;
     private File to;
     private Set<String> classes;
+    private Set<String> resnames;
 
     public ApkPatch(File from, File to, String name, File out, String keystore, String password, String alias, String entry) {
         super(name, out, keystore, password, alias, entry);
@@ -60,10 +62,12 @@ public class ApkPatch extends Build {
             }
 
             DiffInfo info = new DexDiffer().diff(this.from, this.to);
+            new ResDiffer().diff(this.from,this.to);
 
             this.classes = buildCode(smaliDir, dexFile, info);
+            resnames = info.modifiedRes.keySet();
 
-            build(outFile, dexFile);
+            build(outFile, dexFile,info.modifiedRes);
 
             release(this.out, dexFile, outFile);
         } catch (Exception e) {
@@ -132,6 +136,7 @@ public class ApkPatch extends Build {
         main.putValue("To-File", this.to.getName());
         main.putValue("Patch-Name", this.name);
         main.putValue("Patch-Classes", Formater.dotStringList(this.classes));
+        main.putValue("Patch-ResNames", Formater.dotStringList(this.resnames));
         return manifest;
     }
 }

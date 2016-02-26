@@ -19,6 +19,7 @@ package com.sohu.focus.libandfix.patch;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.util.Log;
 
 
@@ -28,6 +29,7 @@ import com.sohu.focus.libandfix.util.FileUtil;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -60,7 +62,7 @@ public class PatchManager {
 	private final AndFixManager mAndFixManager;
 	/**
 	 * patch directory
-	 * 补丁目录
+	 * 补丁目录/data/data/[package-name]/files/apatch
 	 */
 	private final File mPatchDir;
 	/**
@@ -104,7 +106,7 @@ public class PatchManager {
 				Context.MODE_PRIVATE);
 		String ver = sp.getString(SP_VERSION, null);
 		if (ver == null || !ver.equalsIgnoreCase(appVersion)) {
-			cleanPatch();//清空文件夹
+			cleanPatch();//清空补丁目录和优化目录的所有文件
 			sp.edit().putString(SP_VERSION, appVersion).commit();
 		} else {
 			initPatchs();//加载补丁目录下的所有后缀名为'.apatch'的文件
@@ -121,7 +123,7 @@ public class PatchManager {
 	/**
 	 * add patch file
 	 * 
-	 * @param file
+	 * @param file    .apatch格式的文件
 	 * @return patch
 	 */
 	private Patch addPatch(File file) {
@@ -191,18 +193,18 @@ public class PatchManager {
 	 * @param classLoader
 	 *            classloader
 	 */
-	public void loadPatch(String patchName, ClassLoader classLoader) {
-		mLoaders.put(patchName, classLoader);
-		Set<String> patchNames;
-		List<String> classes;
-		for (Patch patch : mPatchs) {
-			patchNames = patch.getPatchNames();
-			if (patchNames.contains(patchName)) {
-				classes = patch.getClasses(patchName);
-				mAndFixManager.fix(patch.getFile(), classLoader, classes);
-			}
-		}
-	}
+//	public void loadPatch(String patchName, ClassLoader classLoader) {
+//		mLoaders.put(patchName, classLoader);
+//		Set<String> patchNames;
+//		List<String> classes;
+//		for (Patch patch : mPatchs) {
+//			patchNames = patch.getPatchNames();
+//			if (patchNames.contains(patchName)) {
+//				classes = patch.getClasses(patchName);
+//				mAndFixManager.fix(patch.getFile(), classLoader, classes);
+//			}
+//		}
+//	}
 
 	/**
 	 * load patch,call when application start
@@ -238,6 +240,14 @@ public class PatchManager {
 			if (cl != null) {
 				classes = patch.getClasses(patchName);
 				mAndFixManager.fix(patch.getFile(), cl, classes);
+			}
+		}
+		//替换资源文件
+		ArrayList<String> resNames = patch.getResNames();
+		if(resNames!=null&&resNames.size()>0){
+
+			for(String resName:resNames){
+
 			}
 		}
 	}

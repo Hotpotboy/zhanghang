@@ -33,5 +33,6 @@
     <orderEntry type="library" exported="" name="android-sun-jarsign-support-1.1" level="project" />
     <orderEntry type="library" exported="" name="apktool_2.0.2" level="project" />
     <orderEntry type="library" exported="" name="sun.misc.BASE64Decoder" level="project" />
+    <orderEntry type="library" exported="" name="libandfixtool.libandfixtool" level="project" />
   </component>
 </module>
