@@ -51,7 +51,7 @@ public class HotFixTool {
             File jarFile = new File(JAR_FILE_NAME);
             copyFile(jarFile, new File(outDir, JAR_FILE_NAME))
             jarFile.delete()
-            proc = ["D:\\android_studio\\sdk\\build-tools\\23.0.1\\dx.bat", "--dex", "--output=" + outDir + DEX_FILE_NAME, outDir + JAR_FILE_NAME].execute();
+            proc = ["F:\\Android\\AS\\sdk\\build-tools\\23.0.1\\dx.bat", "--dex", "--output=" + outDir + DEX_FILE_NAME, outDir + JAR_FILE_NAME].execute();
             if (proc.waitFor() != 0) {
                 println "[WARNING] ${proc.err.text.trim()}"
             }

@@ -152,7 +152,7 @@ public class AndFixManager {
 				mSecurityChecker.saveOptSig(optfile);//保存指纹
 			}
 
-			DexClassLoader dexClassLoader = new DexClassLoader(file.getAbsolutePath(),optfile.getAbsolutePath(),null,classLoader);
+			DexClassLoader dexClassLoader = new DexClassLoader(file.getAbsolutePath(),mOptDir.getAbsolutePath(),null,classLoader);
 
 			if(classes!=null&&classes.size()>0){
 				Class<?> clazz = null;

@@ -64,6 +64,7 @@ public class DexDiffer {
 
         boolean contains = false;
         for (DexBackedClassDef newClazz : newDexFile.getClasses()) {
+            System.out.println(newClazz.toString());
             Set<DexBackedClassDef> oldclasses = (Set<DexBackedClassDef>) oldDexFile.getClasses();
             for (DexBackedClassDef oldClazz : oldclasses) {
                 if (newClazz.equals(oldClazz)) {

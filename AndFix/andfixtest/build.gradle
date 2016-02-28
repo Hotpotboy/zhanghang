@@ -6,7 +6,7 @@ android {
             keyAlias 'andfix_test'
             keyPassword '123456'
             storePassword '123456'
-            storeFile file('D:/zhanghang/zhanghang/AndFix/andfixtest/andfix_test.keystore')
+            storeFile file(project(':andfixtest').projectDir.absolutePath +'/andfix_test.keystore')
         }
     }
     compileSdkVersion 23

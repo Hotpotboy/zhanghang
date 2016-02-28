@@ -18,17 +18,21 @@
 package com.sohu.focus.libandfix.patch;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.util.Log;
 
 
 import com.sohu.focus.libandfix.AndFixManager;
+import com.sohu.focus.libandfix.CanReplaceResource;
 import com.sohu.focus.libandfix.util.FileUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -75,6 +79,27 @@ public class PatchManager {
 	 * 类加载器
 	 */
 	private final Map<String, ClassLoader> mLoaders;
+	/**
+	 * 替换资源
+	 */
+	private CanReplaceResource mCanRepalceResource;
+
+//	public void replaceResource(Context context){
+//		if(context!=null&&context instanceof ContextWrapper){
+//			try {
+//				ContextWrapper contextWrapper = (ContextWrapper) context;
+//				Field field = contextWrapper.getBaseContext().getClass().getField("mResource");
+//				field.setAccessible(true);
+//				field.set(context,mCanRepalceResource);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
+//	}
+
+	public CanReplaceResource getCanRepalceResource(){
+		return mCanRepalceResource;
+	}
 
 	/**
 	 * @param context
@@ -86,6 +111,7 @@ public class PatchManager {
 		mPatchDir = new File(mContext.getFilesDir(), DIR);
 		mPatchs = new ConcurrentSkipListSet<Patch>();
 		mLoaders = new ConcurrentHashMap<String, ClassLoader>();
+		mCanRepalceResource = new CanReplaceResource(context);
 	}
 
 	/**
@@ -218,6 +244,12 @@ public class PatchManager {
 				List<String> classes = patch.getClasses(patchName);
 				mAndFixManager.fix(patch.getFile(), mContext.getClassLoader(),classes);
 			}
+			//替换资源文件
+			try {
+				mCanRepalceResource.addFile(patch.getFile());
+			} catch (PackageManager.NameNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -243,13 +275,18 @@ public class PatchManager {
 			}
 		}
 		//替换资源文件
-		ArrayList<String> resNames = patch.getResNames();
-		if(resNames!=null&&resNames.size()>0){
-
-			for(String resName:resNames){
-
-			}
+		try {
+			mCanRepalceResource.addFile(patch.getFile());
+		} catch (PackageManager.NameNotFoundException e) {
+			e.printStackTrace();
 		}
+//		ArrayList<String> resNames = patch.getResNames();
+//		if(resNames!=null&&resNames.size()>0){
+//
+//			for(String resName:resNames){
+//
+//			}
+//		}
 	}
 
 }

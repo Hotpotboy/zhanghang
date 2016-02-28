@@ -25,18 +25,19 @@ public class ResDiffer {
         ZipFile oldZipFile = new ZipFile(oldFile);
         ZipEntry zipEntry;
         while ((zipEntry=newZipInput.getNextEntry())!=null){
-            if(!zipEntry.getName().endsWith(".xml")) continue;
-            ZipEntry oldZipEntry = oldZipFile.getEntry(zipEntry.getName());
-            if(oldZipEntry==null){
-                byte[] content = getSpeacilFile(newZipFile,zipEntry);
-                info.modifiedRes.put(zipEntry.getName(),content);
-            }else{
-                byte[] newContent = getSpeacilFile(newZipFile,zipEntry);
-                byte[] oldContent = getSpeacilFile(oldZipFile,oldZipEntry);
-                for(int i=0;i<newContent.length;i++){
-                    if(newContent[i]!=oldContent[i]){
-                        info.modifiedRes.put(zipEntry.getName()+"_mod",newContent);
-                        break;
+            if(zipEntry.getName().endsWith(".xml")||zipEntry.getName().endsWith(".arsc")) {
+                ZipEntry oldZipEntry = oldZipFile.getEntry(zipEntry.getName());
+                if (oldZipEntry == null) {
+                    byte[] content = getSpeacilFile(newZipFile, zipEntry);
+                    info.modifiedRes.put(zipEntry.getName(), content);
+                } else {
+                    byte[] newContent = getSpeacilFile(newZipFile, zipEntry);
+                    byte[] oldContent = getSpeacilFile(oldZipFile, oldZipEntry);
+                    for (int i = 0; i < newContent.length; i++) {
+                        if (newContent[i] != oldContent[i]) {
+                            info.modifiedRes.put(zipEntry.getName(), newContent);
+                            break;
+                        }
                     }
                 }
             }

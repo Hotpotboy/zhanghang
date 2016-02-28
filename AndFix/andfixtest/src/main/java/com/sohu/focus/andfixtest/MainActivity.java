@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -26,7 +28,21 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 //        ((TextView)findViewById(R.id.text_view)).setText(BugClass.getMsg());
 //        ((TextView)findViewById(R.id.text_view)).setText(providerString());
+        TextView text_view = (TextView)findViewById(R.id.text_view);
+        String jj = getResources().getString(R.string.hello_world);
         searchAndUpdatePatch();
+    }
+
+    @Override
+    public AssetManager getAssets() {
+       Resources resources = BaseApplication.getInstance().getPatchManager().getCanRepalceResource();
+        return resources == null ? super.getAssets() : resources.getAssets();
+    }
+
+    @Override
+    public Resources getResources() {
+        Resources resources = BaseApplication.getInstance().getPatchManager().getCanRepalceResource();
+        return resources == null ? super.getResources() : resources;
     }
 
     private String providerString(){
