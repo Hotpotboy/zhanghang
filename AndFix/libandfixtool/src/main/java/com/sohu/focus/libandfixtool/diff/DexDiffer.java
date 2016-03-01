@@ -64,7 +64,6 @@ public class DexDiffer {
 
         boolean contains = false;
         for (DexBackedClassDef newClazz : newDexFile.getClasses()) {
-            System.out.println(newClazz.toString());
             Set<DexBackedClassDef> oldclasses = (Set<DexBackedClassDef>) oldDexFile.getClasses();
             for (DexBackedClassDef oldClazz : oldclasses) {
                 if (newClazz.equals(oldClazz)) {
@@ -91,8 +90,7 @@ public class DexDiffer {
             if (reference.getName().equals("<clinit>")) {
                 continue;
             }
-            if(reference.getName().equals("getInfo"))
-                compareMethod(reference, olds, info);
+            compareMethod(reference, olds, info);
         }
     }
 
@@ -271,7 +269,7 @@ public class DexDiffer {
             return condition1&&condition2&&condition3&&condition4&&condition5;
         }else if(a instanceof DexBackedInstruction21lh){
             boolean condition1 = commonCompareInstruction(a,b);
-            boolean condition2 = ((DexBackedInstruction21lh)a).getRegisterA()==((DexBackedInstruction21ih)b).getRegisterA();
+            boolean condition2 = ((DexBackedInstruction21lh)a).getRegisterA()==((DexBackedInstruction21lh)b).getRegisterA();
             boolean condition3 = Long.compare(((DexBackedInstruction21lh) a).getWideLiteral(), ((DexBackedInstruction21lh) b).getWideLiteral()) == 0;
             boolean condition4 = ((DexBackedInstruction21lh)a).getHatLiteral()==((DexBackedInstruction21lh)b).getHatLiteral();
             return condition1&&condition2&&condition3&&condition4;

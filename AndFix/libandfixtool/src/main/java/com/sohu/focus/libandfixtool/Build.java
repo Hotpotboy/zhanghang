@@ -64,7 +64,7 @@ public abstract class Build
         outFile.renameTo(new File(outDir, this.name + "-" + md5 + ".apatch"));
     }
 
-    protected void build(File outFile, File dexFile,HashMap<String,byte[]> resMap)
+    protected void build(File outFile, File dexFile)
             throws KeyStoreException, FileNotFoundException, IOException, NoSuchAlgorithmException, CertificateException, UnrecoverableEntryException
     {
         KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
@@ -75,17 +75,6 @@ public abstract class Build
                 new PasswordProtection(this.entry.toCharArray()));
         //写入dex文件，并写入dex文件的签名
         PatchBuilder builder = new PatchBuilder(outFile, dexFile,privateKeyEntry, System.out);
-        //写入资源文件
-        if(resMap!=null&&resMap.size()>0){
-            Iterator<Map.Entry<String,byte[]>> iterator = resMap.entrySet().iterator();
-            while (iterator.hasNext()){
-                Map.Entry<String,byte[]> entry = iterator.next();
-                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(entry.getValue());
-                JarEntry jarEntry = new JarEntry(entry.getKey());
-                builder.writeJarEntry(byteArrayInputStream,jarEntry);
-                byteArrayInputStream.close();
-            }
-        }
         //写入元数据文件
         builder.writeMeta(getMeta());
         builder.sealPatch();

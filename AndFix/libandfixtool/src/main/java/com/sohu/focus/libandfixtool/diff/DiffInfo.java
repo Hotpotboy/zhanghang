@@ -7,6 +7,7 @@ import com.sohu.focus.libandfixtool.utils.Formater;
 import org.jf.dexlib2.dexbacked.DexBackedClassDef;
 import org.jf.dexlib2.dexbacked.DexBackedField;
 import org.jf.dexlib2.dexbacked.DexBackedMethod;
+import org.jf.util.SparseIntArray;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,8 +25,6 @@ public class DiffInfo
 
     private Set<DexBackedMethod> addedMethods = new HashSet();
     private Set<DexBackedMethod> modifiedMethods = new HashSet();
-
-    public HashMap<String,byte[]> modifiedRes = new HashMap<>();
 
     public static synchronized DiffInfo getInstance()
     {
