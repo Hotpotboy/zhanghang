@@ -3,6 +3,9 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="geng_duo_cn">更多</string>
     <string name="fa_song_cn">发送</string>
+    <string name="pai_zhao_cn">拍照</string>
+    <string name="cong_xiang_ce_xuan_ze_cn">从相册选择</string>
     <string name="send_fail_tip">发送失败,重新发送</string>
 </resources>

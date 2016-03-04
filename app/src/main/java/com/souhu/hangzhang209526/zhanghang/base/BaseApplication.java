@@ -39,7 +39,7 @@ public class BaseApplication extends Application {
      */
     private PatchManager mPatchManager;
     /**是否开启HotFix热补丁功能*/
-    private boolean isHotFix = true;
+    private boolean isHotFix = false;
     /**请求网络队列*/
     private RequestQueue mRequestQueue;
     public static BaseApplication getInstance() {
@@ -87,15 +87,15 @@ public class BaseApplication extends Application {
             exeAndFix();
         }
         //HotFix热补丁功能
-//        if(isHotFix){
-//            exeHotFix();
-//        }
+        if(isHotFix){
+            exeHotFix();
+        }
         VolleyUtils.init(this);//初始化Volley
     }
 
     private void exeAndFix(){
         mPatchManager = new PatchManager(this);//实例化补丁管理器
-        mPatchManager.init(versionName);
+        mPatchManager.init(versionName,false);
         mPatchManager.loadPatch();//加载已经存在的补丁
     }
 

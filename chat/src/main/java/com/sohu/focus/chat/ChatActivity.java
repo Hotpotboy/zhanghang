@@ -1,14 +1,22 @@
 package com.sohu.focus.chat;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Scroller;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +28,8 @@ import com.sohu.focus.chat.db.MessageTabeHelper;
 import com.sohu.focus.eventbus.EventBus;
 import com.sohu.focus.eventbus.subscribe.Subscriber;
 import com.sohu.focus.eventbus.subscribe.ThreadMode;
+import com.souhu.hangzhang209526.zhanghang.db.BaseSQLiteHelper;
+import com.souhu.hangzhang209526.zhanghang.utils.CameraUtils;
 import com.souhu.hangzhang209526.zhanghang.utils.DefaultWebSocketUtils;
 
 import java.io.IOException;
@@ -28,7 +38,13 @@ import java.util.ArrayList;
 /**
  * Created by hangzhang209526 on 2016/2/26.
  */
-public class ChatActivity extends Activity implements View.OnClickListener {
+public class ChatActivity extends Activity implements View.OnClickListener,AdapterView.OnItemClickListener,ViewTreeObserver.OnPreDrawListener,ViewTreeObserver.OnGlobalLayoutListener {
+    /**当前屏幕可滑动的距离*/
+    private int mCanMovingHeight;
+    /**是否收起更多按钮*/
+    private boolean isNoShowMoreButton = true;
+    /**滚动器*/
+    private Scroller mScroller;
     /**
      * 对话者的ID
      */
@@ -37,6 +53,8 @@ public class ChatActivity extends Activity implements View.OnClickListener {
      * 会话者的Id
      */
     private long sessionId;
+    /**总体布局*/
+    private RelativeLayout mChatRelativelayout;
     /**
      * 聊天记录列表
      */
@@ -49,6 +67,10 @@ public class ChatActivity extends Activity implements View.OnClickListener {
      * 发送聊天内容按钮
      */
     private Button mSendButton;
+    /**更多按钮*/
+    private Button mMoreButton;
+    /**拍照按钮*/
+    private Button mCameraButton;
     /**
      * 聊天内容适配器
      */
@@ -68,9 +90,13 @@ public class ChatActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_chat);
         otherId = getIntent().getIntExtra(Const.INTENT_KEY_OTHER_ID, -1);
         sessionId = getIntent().getLongExtra(Const.INTENT_KEY_SESSION_ID, -1);
+
+        mChatRelativelayout = (RelativeLayout)findViewById(R.id.chat_all_layout);
         mChatList = (ListView) findViewById(R.id.chat_list);
         mChatMsg = (EditText) findViewById(R.id.chat_msg);
         mSendButton = (Button) findViewById(R.id.chat_send_button);
+        mMoreButton = (Button) findViewById(R.id.chat_more_button);
+        mCameraButton = (Button) findViewById(R.id.chat_carmera_button);
         mMessageTableHelper = MessageTabeHelper.getInstance(this);//获取数据库帮助类
         getChatRecordFromDB();
         mChatAdapter = new ChatAdapter(this, mDatas);
@@ -78,16 +104,24 @@ public class ChatActivity extends Activity implements View.OnClickListener {
         mChatList.setAdapter(mChatAdapter);
 
         mSendButton.setOnClickListener(this);
+        mMoreButton.setOnClickListener(this);
+        mCameraButton.setOnClickListener(this);
+        mChatList.setOnItemClickListener(this);
+        mChatRelativelayout.getViewTreeObserver().addOnPreDrawListener(this);
+        mChatRelativelayout.getViewTreeObserver().addOnGlobalLayoutListener(this);
+        //初始化滚动器
+        mScroller = new Scroller(this);
+        mCanMovingHeight = (int) getResources().getDimension(R.dimen.button_height)*2;
     }
 
     /**
      * 从数据库中获取聊天记录
      */
     private void getChatRecordFromDB() {
-        String whereCase = "(" + MessageTabeHelper.comlueInfos[3].getName() + "=?&&" + MessageTabeHelper.comlueInfos[8].getName() + "=?)";
-        whereCase += "||" + "(" + MessageTabeHelper.comlueInfos[3].getName() + "=?&&" + MessageTabeHelper.comlueInfos[8].getName() + "=?)";
+        String whereCase = "(" + mMessageTableHelper.getComlueInfos()[3].getName() + "=? AND " + mMessageTableHelper.getComlueInfos()[8].getName() + "=?)";
+        whereCase += " OR " + "(" + mMessageTableHelper.getComlueInfos()[3].getName() + "=? AND " + mMessageTableHelper.getComlueInfos()[8].getName() + "=?)";
         String[] whereArgs = {Const.currentId + "", otherId + "", otherId + "", Const.currentId + ""};
-        String orderBy = "order by " + MessageTabeHelper.comlueInfos[5];
+        String orderBy = mMessageTableHelper.getComlueInfos()[5].getName();
         try {
             mDatas = mMessageTableHelper.selectDatas(whereCase, whereArgs, null, null, orderBy, MessageData.class);
         } catch (Exception e) {
@@ -132,6 +166,7 @@ public class ChatActivity extends Activity implements View.OnClickListener {
                 }
             } else if (messageData.getType() == MessageType.TEXT_MESSAGE.id()) {//如果收到普通的文本消息
                 orgData = messageData;
+                orgData.setId(BaseSQLiteHelper.getId());
             }
             updateDBorListViewIfNeed(orgData);//保存和展示满足条件的聊天记录
         } catch (IOException e) {
@@ -150,8 +185,7 @@ public class ChatActivity extends Activity implements View.OnClickListener {
         if(orgData!=null) {
             boolean isNeedAdd = mMessageTableHelper.selectData(orgData.getId(),orgData.getClass())==null;
             if(isNeedAdd) {
-                long id = mMessageTableHelper.insertData(orgData);//新增数据库
-                orgData.setId(id);
+                mMessageTableHelper.insertData(orgData);//新增数据库
             }else {
                 mMessageTableHelper.updateData(orgData, null, null);//更新数据库；
             }
@@ -168,30 +202,75 @@ public class ChatActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.chat_send_button:
+            case R.id.chat_send_button://点击“发送”按钮
                 Editable content = mChatMsg.getText();
                 if (TextUtils.isEmpty(content)) {
                     Toast.makeText(this, "不能发送空消息!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                mChatMsg.setText("");
+                //隐藏输入法
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(mChatMsg.getWindowToken(), 0);
                 try {
                     MessageData msgData = getMessageData(content.toString());
                     ObjectMapper objectMapper = new ObjectMapper();
-                    ChatApplication.getInstance().getDefaultWebSocketUtils().sendMessage(objectMapper.writeValueAsString(msgData));
                     //检查消息是否发送失败
                     v.postDelayed(new CheckMessageSendFailed(msgData), CheckMessageSendFailed.DELAYED_TIME);
+                    ChatApplication.getInstance().getDefaultWebSocketUtils().sendMessage(objectMapper.writeValueAsString(msgData));
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(this, "消息发送失败" + e.toString(), Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case R.id.chat_more_button://点击“更多”按钮
+                if(!mScroller.isFinished()) mScroller.abortAnimation();//停止动画
+                scrollScreen();
+                break;
+            case R.id.chat_carmera_button://点击“拍照”按钮
+                CameraUtils.startSystemCamera(this);
+                break;
         }
     }
 
+    /**
+     * 滑动屏幕
+     */
+    private void scrollScreen(){
+        if(isNoShowMoreButton){//显示更多按钮
+            isNoShowMoreButton = false;
+            mScroller.startScroll(0,0,0, mCanMovingHeight);
+        }else{//隐藏更多按钮
+            isNoShowMoreButton = true;
+            mScroller.startScroll(0, mCanMovingHeight,0,-mCanMovingHeight);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode,int resultCode,Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==this.RESULT_OK){
+            switch (requestCode){
+                case CameraUtils.CAMERA_REQUEST_CODE://从相机页面返回的结果
+                     Bundle bundle = data.getExtras();
+                    //获取相机返回的数据，并转换为图片格式
+                    Bitmap bitmap = (Bitmap)bundle.get("data");
+                    break;
+            }
+        }
+    }
+
+    /**
+     * 根据消息内容，生成一个消息数据对象，并将其保存在数据库中
+     * @param msgContent
+     * @return
+     * @throws Exception
+     */
     private MessageData getMessageData(String msgContent) throws Exception {
         Content content = new Content();
         content.setContent(msgContent);
         MessageData result = new MessageData();
+        result.setId(BaseSQLiteHelper.getId());
         result.setContent(content);
         result.setFrom(Const.currentId);
         result.setTo(otherId);
@@ -204,6 +283,36 @@ public class ChatActivity extends Activity implements View.OnClickListener {
         result.setStatue(MessageData.STATUE_SENDING);
         updateDBorListViewIfNeed(result);
         return result;
+    }
+
+    @Override
+    public boolean onPreDraw() {
+        if(mScroller.computeScrollOffset()){//如果滚动没有完成
+            int currentScrollY = mScroller.getCurrY();
+            mChatRelativelayout.setScrollY(currentScrollY);//更新滚动高度的值
+            mChatRelativelayout.requestLayout();
+        }
+        return true;
+    }
+
+    @Override
+    public void onGlobalLayout() {
+        //整体布局的高度随着滚动的增加而增加
+        int currentHeight = mChatRelativelayout.getMeasuredHeight();//整个布局的当前高度
+        currentHeight += (mCanMovingHeight-mChatRelativelayout.getScrollY());//显示相关按钮后的高度；
+        ViewGroup.LayoutParams params = mChatRelativelayout.getLayoutParams();
+        params.height = currentHeight;
+        //列表的高度一致不变
+        int currentListViewHeight = mChatList.getMeasuredHeight();
+        params = mChatList.getLayoutParams();
+        params.height = currentListViewHeight;
+        mChatRelativelayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if(!isNoShowMoreButton)
+            scrollScreen();
     }
 
     /**

@@ -1,0 +1,12 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.sohu.focus.libandfixrestool">
+    <application>
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="ANDROID.INTENT.ACTION.MAIN"/>
+                <category android:name="android.intent.category.launcher"/>
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

@@ -26,7 +26,6 @@ import android.util.Log;
 
 
 import com.sohu.focus.libandfix.AndFixManager;
-import com.sohu.focus.libandfix.CanReplaceResource;
 import com.sohu.focus.libandfix.util.FileUtil;
 
 import java.io.File;
@@ -48,9 +47,10 @@ import java.util.concurrent.ConcurrentSkipListSet;
  * 
  */
 public class PatchManager {
+	public static final String SUFFIX = ".apatch";
+	public static final String SD_DIR = "patchs";
 	private static final String TAG = "PatchManager";
 	// patch extension
-	private static final String SUFFIX = ".apatch";
 	private static final String DIR = "apatch";
 	private static final String SP_NAME = "_andfix_";
 	private static final String SP_VERSION = "version";
@@ -97,7 +97,11 @@ public class PatchManager {
 //		}
 //	}
 
-	public CanReplaceResource getCanRepalceResource(){
+	public void addResourcePathc(File file) throws IOException {
+		if(mCanRepalceResource!=null) mCanRepalceResource.addOrgFile(file);
+	}
+
+	public Resources getCanReplaceResource(){
 		return mCanRepalceResource;
 	}
 
@@ -111,16 +115,15 @@ public class PatchManager {
 		mPatchDir = new File(mContext.getFilesDir(), DIR);
 		mPatchs = new ConcurrentSkipListSet<Patch>();
 		mLoaders = new ConcurrentHashMap<String, ClassLoader>();
-		mCanRepalceResource = new CanReplaceResource(context);
 	}
 
 	/**
 	 * initialize
 	 * 
-	 * @param appVersion
-	 *            App version
+	 * @param appVersion App version
+	 * @param isNeedReplaceRes  是否开启替换资源的功能
 	 */
-	public void init(String appVersion) {
+	public void init(String appVersion,boolean isNeedReplaceRes) {
 		if (!mPatchDir.exists() && !mPatchDir.mkdirs()) {// make directory fail
 			Log.e(TAG, "patch dir create error.");
 			return;
@@ -137,6 +140,12 @@ public class PatchManager {
 		} else {
 			initPatchs();//加载补丁目录下的所有后缀名为'.apatch'的文件
 		}
+		if(isNeedReplaceRes)
+			mCanRepalceResource = new CanReplaceResource(mContext);
+	}
+
+	public boolean canReplaceRes(){
+		return mCanRepalceResource!=null;
 	}
 
 	private void initPatchs() {
@@ -173,6 +182,8 @@ public class PatchManager {
 				Log.e(TAG, file.getName() + " delete error.");
 			}
 		}
+		if(mCanRepalceResource!=null)
+		    mCanRepalceResource.cleanAllDir();
 	}
 
 	/**
@@ -244,12 +255,6 @@ public class PatchManager {
 				List<String> classes = patch.getClasses(patchName);
 				mAndFixManager.fix(patch.getFile(), mContext.getClassLoader(),classes);
 			}
-			//替换资源文件
-			try {
-				mCanRepalceResource.addFile(patch.getFile());
-			} catch (PackageManager.NameNotFoundException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 
@@ -274,19 +279,6 @@ public class PatchManager {
 				mAndFixManager.fix(patch.getFile(), cl, classes);
 			}
 		}
-		//替换资源文件
-		try {
-			mCanRepalceResource.addFile(patch.getFile());
-		} catch (PackageManager.NameNotFoundException e) {
-			e.printStackTrace();
-		}
-//		ArrayList<String> resNames = patch.getResNames();
-//		if(resNames!=null&&resNames.size()>0){
-//
-//			for(String resName:resNames){
-//
-//			}
-//		}
 	}
 
 }

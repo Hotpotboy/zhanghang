@@ -6,7 +6,8 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name="com.souhu.hangzhang209526.zhanghang.base.BaseApplication">
+        android:name="com.souhu.hangzhang209526.zhanghang.base.BaseApplication"
+        android:theme="@android:style/Theme.NoTitleBar">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >

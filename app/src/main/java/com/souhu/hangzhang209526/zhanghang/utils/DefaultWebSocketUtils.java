@@ -2,6 +2,7 @@ package com.souhu.hangzhang209526.zhanghang.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.websocket.WebSocket;
@@ -12,15 +13,21 @@ import com.sohu.focus.eventbus.EventBus;
 import com.souhu.hangzhang209526.zhanghang.R;
 
 import java.util.HashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by hangzhang209526 on 2016/1/28.
  */
-public class DefaultWebSocketUtils {
+public class DefaultWebSocketUtils{
     private static final String TAG = "DefaultWebSocketUtils";
+    private static final int TIME_DEPLOYED = 2*1000;
     public static final String TAG_RECEIVE_TEXT = "tag_recevie_text";
     public static final String TAG_RECEIVE_RAW = "tag_recevie_raw";
     public static final String TAG_RECEIVE_BIN = "tag_recevie_bin";
+    /**发送心跳包的线程池*/
+    private ScheduledExecutorService mExecutorService = Executors.newSingleThreadScheduledExecutor();
     private static Object lock = new Object();
     /**WebSocket连接*/
     private WebSocket webSocket;
@@ -35,11 +42,16 @@ public class DefaultWebSocketUtils {
 
     /**根据url获取相关实例*/
     public static DefaultWebSocketUtils getInstanceByUrl(Context context,String url){
+        return getInstanceByUrl(context,url,null);
+    }
+
+    /**根据url获取相关实例*/
+    public static DefaultWebSocketUtils getInstanceByUrl(Context context,String url,String heartMsg){
         DefaultWebSocketUtils instance;
         synchronized (lock){
             instance = instanceMap.get(url);
             if(instance==null){
-                instance = new DefaultWebSocketUtils(context,url);
+                instance = new DefaultWebSocketUtils(context,url,heartMsg);
                 instanceMap.put(url,instance);
             }
         }
@@ -52,7 +64,7 @@ public class DefaultWebSocketUtils {
         }
     }
 
-    private DefaultWebSocketUtils(Context c,final String url){
+    private DefaultWebSocketUtils(Context c,final String url, final String heartMsg){
         mUrl = url;
         context = c;
         webSocket = new WebSocketConnection();
@@ -62,6 +74,22 @@ public class DefaultWebSocketUtils {
                 Intent openBradCast = new Intent();
                 openBradCast.setAction(context.getResources().getString(R.string.broadcast_webSocket_open));
                 context.sendBroadcast(openBradCast);
+                if(!TextUtils.isEmpty(heartMsg)) {
+                    //开始发送心跳包
+                    mExecutorService.scheduleAtFixedRate(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                if (webSocket != null && webSocket.isConnected()) {
+                                    webSocket.sendPing();
+                                    sendMessage(heartMsg);
+                                }
+                            } catch (WebSocketException e) {
+
+                            }
+                        }
+                    }, 0, TIME_DEPLOYED, TimeUnit.MILLISECONDS);
+                }
             }
 
             @Override
@@ -71,6 +99,10 @@ public class DefaultWebSocketUtils {
                 closeBradCast.setAction(action);
                 closeBradCast.putExtra(action,reason);
                 context.sendBroadcast(closeBradCast);
+                //结束心跳包
+                if(!TextUtils.isEmpty(heartMsg)) {
+                    mExecutorService.shutdown();
+                }
             }
 
             @Override
@@ -110,7 +142,7 @@ public class DefaultWebSocketUtils {
     public synchronized void connection() throws WebSocketException {
         if(!webSocket.isConnected()) {
             WebSocketOptions option = new WebSocketOptions();
-            option.setReconnectInterval(2000);//每隔两秒进行重连
+            option.setReconnectInterval(TIME_DEPLOYED*15);//每隔30秒进行重连
             webSocket.connect(mUrl, connectionHandler,option);
         }
     }

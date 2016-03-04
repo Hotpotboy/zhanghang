@@ -6,15 +6,19 @@ import java.io.File;
  * Created by hangzhang209526 on 2016/1/29.
  */
 public class Const {
-    public static int currentId = 2;
-    public static int otherId = 1;
+    public static int currentId = 1;
+    public static int otherId = 2;
+    /***********************Intent保存值的key**************************************************************/
     /**朋友Id在Intent之中的key值*/
     public static final String INTENT_KEY_OTHER_ID = "intent_key_other_id";
     /**session Id在Intent之中的key值*/
     public static final String INTENT_KEY_SESSION_ID = "intent_key_session_id";
-
+    /***********************常用字符集**************************************************************/
+    /**数据库名字*/
     public static final String DB_NAME = "im_chat.db";
-
+    /**心跳包的字符串*/
+    public static final String HEARTE_MSG_STR = "{\"type\":11}";
+    /***********************接口地址**************************************************************/
     /**服务端地址*/
     private static final String HTTP_HOST = "http://iim.focustest.cn";
     /**ws地址*/

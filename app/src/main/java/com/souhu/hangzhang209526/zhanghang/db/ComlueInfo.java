@@ -11,6 +11,8 @@ public class ComlueInfo {
     private String name;
     private int type;
     private boolean primaryKey;
+    /**是否是除了String之外的其他类类型*/
+    private boolean isOjbect = false;
 
     public boolean isPrimaryKey() {
         return primaryKey;
@@ -29,13 +31,15 @@ public class ComlueInfo {
     }
 
     public void setType(Class clazz) {
-        if(clazz.equals(Integer.class)){
+        if(clazz==null) type = STRING_TYPE;
+        if(clazz.equals(Integer.class)||clazz.getName().equals("int")){
             type = INT_TYPE;
-        }else if(clazz.equals(Long.class)){
+        }else if(clazz.equals(Long.class)||clazz.getName().equals("long")){
             type = LONG_TYPE;
-        }else if(clazz.equals(Double.class)){
+        }else if(clazz.equals(Double.class)||clazz.getName().equals("double")){
             type = DOUBLE_TYPE;
         }else{
+            if(clazz!=String.class) isOjbect = true;
             type = STRING_TYPE;
         }
     }
@@ -74,5 +78,9 @@ public class ComlueInfo {
             default:
                 return "varchar";
         }
+    }
+
+    public boolean isOjbect() {
+        return isOjbect;
     }
 }

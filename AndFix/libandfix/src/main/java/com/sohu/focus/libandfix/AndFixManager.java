@@ -23,6 +23,7 @@ import android.util.Log;
 
 import com.sohu.focus.libandfix.annotation.MethodReplace;
 import com.sohu.focus.libandfix.security.SecurityChecker;
+import com.sohu.focus.libandfix.util.FileUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import dalvik.system.BaseDexClassLoader;
 import dalvik.system.DexClassLoader;
 import dalvik.system.DexFile;
 
@@ -152,13 +154,22 @@ public class AndFixManager {
 				mSecurityChecker.saveOptSig(optfile);//保存指纹
 			}
 
-			DexClassLoader dexClassLoader = new DexClassLoader(file.getAbsolutePath(),mOptDir.getAbsolutePath(),null,classLoader);
+			//统一将补丁文件的后缀名转换为apk
+			String fileName = file.getName().substring(0,file.getName().indexOf("."))+".apk";
+			File apkFile = new File(file.getParentFile().getAbsolutePath(),fileName);
+			FileUtil.copyFile(file, apkFile);
+
+			DexClassLoader dexClassLoader = new DexClassLoader(apkFile.getAbsolutePath(),mOptDir.getAbsolutePath(),null,classLoader);
 
 			if(classes!=null&&classes.size()>0){
 				Class<?> clazz = null;
 				for(String item:classes){
-					clazz = dexClassLoader.loadClass(item);
+//					clazz = dexClassLoader.loadClass(item);
 //					clazz = Class.forName(item,true,dexClassLoader);
+					Class classLoaderclazz = BaseDexClassLoader.class;
+					Method method = classLoaderclazz.getDeclaredMethod("findClass",String.class);
+					method.setAccessible(true);
+					clazz = (Class<?>) method.invoke(dexClassLoader,item);
 					if (clazz != null) {
 						fixClass(clazz, classLoader);
 					}
@@ -207,7 +218,7 @@ public class AndFixManager {
 //					fixClass(clazz, classLoader);
 //				}
 //			}
-		}catch (ClassNotFoundException e) {
+		}catch (Exception e) {
 			Log.e(TAG, "pacth", e);
 		}
 	}

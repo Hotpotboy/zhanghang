@@ -1,19 +1,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/chat_all_layout">
 
     <ListView
         android:id="@+id/chat_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/button_height"
         android:divider="@android:color/transparent" />
 
     <Button
+        android:id="@+id/chat_more_button"
+        android:layout_width="wrap_content"
+        style="@style/button_style"
+        android:layout_alignBottom="@id/chat_list"
+        android:layout_alignParentRight="true"
+        android:text="@string/geng_duo_cn"/>
+    <Button
         android:id="@+id/chat_send_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        style="@style/button_style"
+        android:layout_alignBottom="@id/chat_list"
+        android:layout_toLeftOf="@id/chat_more_button"
         android:text="@string/fa_song_cn"/>
 
     <EditText
@@ -22,8 +31,24 @@
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/chat_send_button"
         android:layout_alignTop="@id/chat_send_button"
-        android:layout_alignParentBottom="true"
+        android:layout_alignBottom="@id/chat_list"
         android:background="@android:color/white"
         android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/chat_carmera_button"
+        android:layout_width="wrap_content"
+        style="@style/button_style"
+        android:layout_below="@id/chat_msg"
+        android:layout_centerHorizontal="true"
+        android:text="@string/pai_zhao_cn"/>
+
+    <Button
+        android:id="@+id/chat_album_button"
+        android:layout_width="wrap_content"
+        style="@style/button_style"
+        android:layout_below="@id/chat_carmera_button"
+        android:layout_centerHorizontal="true"
+        android:text="@string/cong_xiang_ce_xuan_ze_cn"/>
 
 </RelativeLayout>

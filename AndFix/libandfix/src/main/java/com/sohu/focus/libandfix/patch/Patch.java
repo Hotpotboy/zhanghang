@@ -64,15 +64,9 @@ public class Patch implements Comparable<Patch> {
 	 */
 	private Map<String, List<String>> mClassesMap;
 
-	private ArrayList<String> mResNames = new ArrayList<String>();
-
 	public Patch(File file) throws IOException {
 		mFile = file;
 		init();
-	}
-
-	public ArrayList<String> getResNames(){
-		return mResNames;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -103,8 +97,6 @@ public class Patch implements Comparable<Patch> {
 						mClassesMap.put(name.trim().substring(0, name.length() - 8),// remove "-Classes"
 								strings);
 					}
-				}else if(name.equals(PATCH_RESES)){
-					mResNames.addAll(Arrays.asList(main.getValue(attrName).split(",")));
 				}
 			}
 		} finally {
