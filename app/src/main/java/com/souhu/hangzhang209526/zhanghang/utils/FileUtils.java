@@ -75,4 +75,17 @@ public class FileUtils {
             return false;
         }
     }
+
+    /**
+     * 确保指定的文件是一个目录且存在
+     * @param dirFile
+     */
+    public static void ensureFileIsDir(File dirFile){
+        if(dirFile.exists()&&dirFile.isFile()){//如果是一个文件，删掉
+            dirFile.delete();
+        }
+        if(!dirFile.exists()){
+            dirFile.mkdirs();
+        }
+    }
 }

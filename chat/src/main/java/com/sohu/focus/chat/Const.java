@@ -27,6 +27,8 @@ public class Const {
     public static final String URL_GET_FRIENDS = HTTP_HOST + File.separator +"friend/list";
     /**获取会话ID url*/
     public static final String URL_GET_SESSION_ID = HTTP_HOST + File.separator +"chat/session";
+    /**上传图片url*/
+    public static final String URL_UPLOAD_IMAGE = HTTP_HOST + File.separator +" image/upload";
     /**创建web socket*/
     public static final String WS_CREATE_WEB_SOCKET = WS_HOST + File.separator + "ws/connect";
 }

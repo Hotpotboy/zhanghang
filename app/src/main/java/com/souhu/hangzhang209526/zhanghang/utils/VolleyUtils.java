@@ -18,4 +18,8 @@ public class VolleyUtils {
     public static void requestNet(Request request) {
         sRequestQueue.add(request);
     }
+
+    public static RequestQueue getRequestQueue(){
+        return sRequestQueue;
+    }
 }

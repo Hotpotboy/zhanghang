@@ -9,10 +9,18 @@ import android.provider.MediaStore;
  */
 public class CameraUtils {
     public static final int CAMERA_REQUEST_CODE = 1;
+    public static final int PICTURES_REQUEST_CODE = 2;
     //调用系统相机
     public static void startSystemCamera(Activity activity){
         Intent intent = new Intent();
         intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
         activity.startActivityForResult(intent, CAMERA_REQUEST_CODE);
+    }
+    //调用系统相册
+    public static void startSystemPictures(Activity activity){
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_PICK);
+        intent.setData(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+        activity.startActivityForResult(intent, PICTURES_REQUEST_CODE);
     }
 }

@@ -25,5 +25,17 @@
         android:background="@color/chat_bg_color"
         android:textSize="25sp"
         android:text="不知道该怎么办?"
-        android:paddingLeft="20dp"/>
+        android:paddingLeft="20dp"
+        android:visibility="gone"/>
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/item_chat_other_image"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/item_chat_other_head_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:padding="10dp"
+        android:layout_marginLeft="10dp"
+        android:background="@color/chat_bg_color"
+        />
 </RelativeLayout>

@@ -9,6 +9,7 @@ import android.widget.ListView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.BaseListener;
 import com.android.volley.toolbox.StringRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sohu.focus.chat.adapter.FriendListAdapter;
@@ -20,7 +21,7 @@ import com.souhu.hangzhang209526.zhanghang.utils.VolleyUtils;
 import java.util.ArrayList;
 
 
-public class MainActivity extends Activity implements Response.ErrorListener,AdapterView.OnItemClickListener {
+public class MainActivity extends Activity implements BaseListener,AdapterView.OnItemClickListener {
     private ListView mFriendList;
     /**好友列表适配器*/
     private FriendListAdapter mFriendListAdapter;
@@ -35,29 +36,29 @@ public class MainActivity extends Activity implements Response.ErrorListener,Ada
     }
     private void getFriendList(){
         String url = Const.URL_GET_FRIENDS+"?userId="+Const.currentId;
-        StringRequest friendListRequest = new StringRequest(url,new Response.Listener<String>(){
-            @Override
-            public void onResponse(String response) {
-                try {
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    FriendListData  friendList = objectMapper.readValue(response,FriendListData.class);
-                    if (friendList != null && friendList.getErrorCode()==0) {
-                        ArrayList<FriendData> friendDatas = friendList.getData();
-                        if(mFriendListAdapter==null){
-                            mFriendListAdapter = new FriendListAdapter(MainActivity.this,friendDatas);
-                            mFriendList.setAdapter(mFriendListAdapter);
-                        }else{
-                            mFriendListAdapter.setDatas(friendDatas);
-                        }
-                    }else{
-
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        },this);
+        StringRequest friendListRequest = new StringRequest(url,this,this);
         VolleyUtils.requestNet(friendListRequest);
+    }
+
+    @Override
+    public void onResponse(Object response) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            FriendListData  friendList = objectMapper.readValue(response.toString(),FriendListData.class);
+            if (friendList != null && friendList.getErrorCode()==0) {
+                ArrayList<FriendData> friendDatas = friendList.getData();
+                if(mFriendListAdapter==null){
+                    mFriendListAdapter = new FriendListAdapter(MainActivity.this,friendDatas);
+                    mFriendList.setAdapter(mFriendListAdapter);
+                }else{
+                    mFriendListAdapter.setDatas(friendDatas);
+                }
+            }else{
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override

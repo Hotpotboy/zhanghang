@@ -45,5 +45,17 @@
         android:textColor="@android:color/black"
         android:background="@color/chat_bg_color"
         android:textSize="20sp"
-        android:text="不知道该怎么办?"/>
+        android:text="不知道该怎么办?"
+        android:visibility="gone"/>
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/item_chat_self_image"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@id/item_chat_self_send_fail_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:padding="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/chat_bg_color"
+        />
 </RelativeLayout>

@@ -3,8 +3,14 @@ package com.sohu.focus.chat;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
@@ -19,11 +25,15 @@ import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.BaseListener;
+import com.android.volley.toolbox.UploadRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sohu.focus.chat.adapter.ChatAdapter;
 import com.sohu.focus.chat.data.Content;
 import com.sohu.focus.chat.data.MessageData;
 import com.sohu.focus.chat.data.MessageType;
+import com.sohu.focus.chat.data.StringResponseData;
 import com.sohu.focus.chat.db.MessageTabeHelper;
 import com.sohu.focus.eventbus.EventBus;
 import com.sohu.focus.eventbus.subscribe.Subscriber;
@@ -31,8 +41,12 @@ import com.sohu.focus.eventbus.subscribe.ThreadMode;
 import com.souhu.hangzhang209526.zhanghang.db.BaseSQLiteHelper;
 import com.souhu.hangzhang209526.zhanghang.utils.CameraUtils;
 import com.souhu.hangzhang209526.zhanghang.utils.DefaultWebSocketUtils;
+import com.souhu.hangzhang209526.zhanghang.utils.VolleyUtils;
+import com.souhu.hangzhang209526.zhanghang.utils.cache.ImageCacheImpl;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 /**
@@ -83,6 +97,9 @@ public class ChatActivity extends Activity implements View.OnClickListener,Adapt
      * 数据库帮助类
      */
     private MessageTabeHelper mMessageTableHelper;
+    /**图片缓存类*/
+    private ImageCacheImpl mImageCache;
+    private ObjectMapper mObjectMapper = new ObjectMapper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +116,9 @@ public class ChatActivity extends Activity implements View.OnClickListener,Adapt
         mCameraButton = (Button) findViewById(R.id.chat_carmera_button);
         mMessageTableHelper = MessageTabeHelper.getInstance(this);//获取数据库帮助类
         getChatRecordFromDB();
-        mChatAdapter = new ChatAdapter(this, mDatas);
+        //初始化图片缓存类
+        mImageCache = new ImageCacheImpl(this);
+        mChatAdapter = new ChatAdapter(this, mDatas,mImageCache);
 
         mChatList.setAdapter(mChatAdapter);
 
@@ -164,7 +183,8 @@ public class ChatActivity extends Activity implements View.OnClickListener,Adapt
                         orgData.setStatue(MessageData.STATUE_SENDED);
                     }
                 }
-            } else if (messageData.getType() == MessageType.TEXT_MESSAGE.id()) {//如果收到普通的文本消息
+            } else if (messageData.getType() == MessageType.TEXT_MESSAGE.id()
+                    ||messageData.getType() == MessageType.IMAGE_MESSAGE.id()) {//如果收到普通的文本/图片消息
                 orgData = messageData;
                 orgData.setId(BaseSQLiteHelper.getId());
             }
@@ -213,11 +233,8 @@ public class ChatActivity extends Activity implements View.OnClickListener,Adapt
                 InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputMethodManager.hideSoftInputFromWindow(mChatMsg.getWindowToken(), 0);
                 try {
-                    MessageData msgData = getMessageData(content.toString());
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    //检查消息是否发送失败
-                    v.postDelayed(new CheckMessageSendFailed(msgData), CheckMessageSendFailed.DELAYED_TIME);
-                    ChatApplication.getInstance().getDefaultWebSocketUtils().sendMessage(objectMapper.writeValueAsString(msgData));
+                    MessageData msgData = getMessageData(content.toString(),MessageType.TEXT_MESSAGE.id());
+                    sendMsgToWebSocket(v.getHandler(),msgData);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(this, "消息发送失败" + e.toString(), Toast.LENGTH_SHORT).show();
@@ -231,6 +248,18 @@ public class ChatActivity extends Activity implements View.OnClickListener,Adapt
                 CameraUtils.startSystemCamera(this);
                 break;
         }
+    }
+
+    /**
+     * 发送消息到IM
+     * @param handler
+     * @param msgData
+     * @throws Exception
+     */
+    private void sendMsgToWebSocket(Handler handler,MessageData msgData) throws Exception {
+        //检查消息是否发送失败
+        handler.postDelayed(new CheckMessageSendFailed(msgData), CheckMessageSendFailed.DELAYED_TIME);
+        ChatApplication.getInstance().getDefaultWebSocketUtils().sendMessage(mObjectMapper.writeValueAsString(msgData));
     }
 
     /**
@@ -255,18 +284,64 @@ public class ChatActivity extends Activity implements View.OnClickListener,Adapt
                      Bundle bundle = data.getExtras();
                     //获取相机返回的数据，并转换为图片格式
                     Bitmap bitmap = (Bitmap)bundle.get("data");
+                    sendImage(bitmap);
+                    break;
+                case CameraUtils.PICTURES_REQUEST_CODE://从相册返回结果
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                    Cursor cursor = getContentResolver().query(selectedImage,filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String picturePath = cursor.getString(columnIndex);
+                    cursor.close();
+                    Bitmap bitmap1 = BitmapFactory.decodeFile(picturePath);
+                    sendImage(bitmap1);
                     break;
             }
         }
     }
 
     /**
+     * 发送图片
+     */
+    private void sendImage(final Bitmap bitmap){
+        //保存到文件系统之中
+        String fileName = SystemClock.elapsedRealtime()+"";
+        final File bitmapFile = mImageCache.putFile(fileName,bitmap);
+        //发送图片
+        VolleyUtils.requestNet(new UploadRequest(Const.URL_UPLOAD_IMAGE, new BaseListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+
+            @Override
+            public void onResponse(Object response) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                try {
+                    StringResponseData data = objectMapper.readValue(response.toString(),StringResponseData.class);
+                    String imageUrl = data.getData();//获取图片的路径
+                    imageUrl = URLEncoder.encode(imageUrl,"UTF-8");
+                    bitmapFile.delete();//删除临时文件
+                    //更新缓存
+                    mImageCache.putBitmap(imageUrl,bitmap,true);
+                    MessageData imageMessageData = getMessageData(imageUrl, MessageType.IMAGE_MESSAGE.id());
+                    sendMsgToWebSocket(mCameraButton.getHandler(),imageMessageData);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, bitmapFile));
+    }
+
+    /**
      * 根据消息内容，生成一个消息数据对象，并将其保存在数据库中
      * @param msgContent
+     * @param type       生成消息的类型
      * @return
      * @throws Exception
      */
-    private MessageData getMessageData(String msgContent) throws Exception {
+    private MessageData getMessageData(String msgContent,int type) throws Exception {
         Content content = new Content();
         content.setContent(msgContent);
         MessageData result = new MessageData();
@@ -278,7 +353,7 @@ public class ChatActivity extends Activity implements View.OnClickListener,Adapt
         long time = System.currentTimeMillis();
         result.setCreateTime(time);
         result.setServerTime(time);
-        result.setType(MessageType.TEXT_MESSAGE.id());
+        result.setType(type);
         result.setClientType(3);
         result.setStatue(MessageData.STATUE_SENDING);
         updateDBorListViewIfNeed(result);
