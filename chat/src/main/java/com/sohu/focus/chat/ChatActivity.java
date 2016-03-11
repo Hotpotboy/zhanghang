@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,10 +12,12 @@ import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,17 +31,21 @@ import com.android.volley.toolbox.BaseListener;
 import com.android.volley.toolbox.UploadRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sohu.focus.chat.adapter.ChatAdapter;
-import com.sohu.focus.chat.data.Content;
-import com.sohu.focus.chat.data.MessageData;
-import com.sohu.focus.chat.data.MessageType;
-import com.sohu.focus.chat.data.StringResponseData;
+import com.sohu.focus.chat.data.message.ImageContent;
+import com.sohu.focus.chat.data.message.ImageMessageData;
+import com.sohu.focus.chat.data.message.MessageData;
+import com.sohu.focus.chat.data.message.TextContent;
+import com.sohu.focus.chat.data.message.MessageType;
+import com.sohu.focus.chat.data.FileResponseData;
+import com.sohu.focus.chat.data.message.TextMessageData;
 import com.sohu.focus.chat.db.MessageTabeHelper;
 import com.sohu.focus.eventbus.EventBus;
 import com.sohu.focus.eventbus.subscribe.Subscriber;
 import com.sohu.focus.eventbus.subscribe.ThreadMode;
 import com.souhu.hangzhang209526.zhanghang.db.BaseSQLiteHelper;
-import com.souhu.hangzhang209526.zhanghang.utils.CameraUtils;
+import com.souhu.hangzhang209526.zhanghang.utils.camera.CameraUtils;
 import com.souhu.hangzhang209526.zhanghang.utils.DefaultWebSocketUtils;
+import com.souhu.hangzhang209526.zhanghang.utils.FileUtils;
 import com.souhu.hangzhang209526.zhanghang.utils.VolleyUtils;
 import com.souhu.hangzhang209526.zhanghang.utils.cache.ImageCacheImpl;
 
@@ -48,11 +53,15 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 
 /**
  * Created by hangzhang209526 on 2016/2/26.
  */
 public class ChatActivity extends Activity implements View.OnClickListener,AdapterView.OnItemClickListener,ViewTreeObserver.OnPreDrawListener,ViewTreeObserver.OnGlobalLayoutListener {
+    private static final String TAG = "ChatActivity";
     /**当前屏幕可滑动的距离*/
     private int mCanMovingHeight;
     /**是否收起更多按钮*/
@@ -85,6 +94,8 @@ public class ChatActivity extends Activity implements View.OnClickListener,Adapt
     private Button mMoreButton;
     /**拍照按钮*/
     private Button mCameraButton;
+    /**相册按钮*/
+    private Button mPicturesButton;
     /**
      * 聊天内容适配器
      */
@@ -92,11 +103,11 @@ public class ChatActivity extends Activity implements View.OnClickListener,Adapt
     /**
      * 聊天内容
      */
-    private ArrayList<MessageData> mDatas;
+    private ArrayList<MessageData> mDatas = new ArrayList<MessageData>();
     /**
      * 数据库帮助类
      */
-    private MessageTabeHelper mMessageTableHelper;
+    private MessageTabeHelper mTextMessageTableHelper,mImageMessageTableHelper;
     /**图片缓存类*/
     private ImageCacheImpl mImageCache;
     private ObjectMapper mObjectMapper = new ObjectMapper();
@@ -114,17 +125,32 @@ public class ChatActivity extends Activity implements View.OnClickListener,Adapt
         mSendButton = (Button) findViewById(R.id.chat_send_button);
         mMoreButton = (Button) findViewById(R.id.chat_more_button);
         mCameraButton = (Button) findViewById(R.id.chat_carmera_button);
-        mMessageTableHelper = MessageTabeHelper.getInstance(this);//获取数据库帮助类
-        getChatRecordFromDB();
+        mPicturesButton = (Button) findViewById(R.id.chat_album_button);
+        mTextMessageTableHelper = MessageTabeHelper.getTextMessageInstance(this);//获取数据库帮助类,此对象主要处理文本消息
+        mImageMessageTableHelper = MessageTabeHelper.getImageMessageInstance(this);//获取数据库帮助类,此对象主要处理图片消息
+        getTextMessageDataRecordFromDB();
+        getImageMessageDataRecordFromDB();
+        //排序
+        Collections.sort(mDatas, new Comparator<MessageData>() {
+            @Override
+            public int compare(MessageData lhs, MessageData rhs) {
+                return lhs.getCreateTime()<rhs.getCreateTime()?-1:lhs.getCreateTime()==rhs.getCreateTime()?0:1;
+            }
+        });
         //初始化图片缓存类
-        mImageCache = new ImageCacheImpl(this);
+        mImageCache = ImageCacheImpl.getInstance(this);
         mChatAdapter = new ChatAdapter(this, mDatas,mImageCache);
 
+        mChatList.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
         mChatList.setAdapter(mChatAdapter);
+        if(mDatas.size()>0) {
+            mChatList.setSelection(mDatas.size() - 1);
+        }
 
         mSendButton.setOnClickListener(this);
         mMoreButton.setOnClickListener(this);
         mCameraButton.setOnClickListener(this);
+        mPicturesButton.setOnClickListener(this);
         mChatList.setOnItemClickListener(this);
         mChatRelativelayout.getViewTreeObserver().addOnPreDrawListener(this);
         mChatRelativelayout.getViewTreeObserver().addOnGlobalLayoutListener(this);
@@ -134,18 +160,32 @@ public class ChatActivity extends Activity implements View.OnClickListener,Adapt
     }
 
     /**
-     * 从数据库中获取聊天记录
+     * 从数据库中获取普通文本类型聊天记录
      */
-    private void getChatRecordFromDB() {
-        String whereCase = "(" + mMessageTableHelper.getComlueInfos()[3].getName() + "=? AND " + mMessageTableHelper.getComlueInfos()[8].getName() + "=?)";
-        whereCase += " OR " + "(" + mMessageTableHelper.getComlueInfos()[3].getName() + "=? AND " + mMessageTableHelper.getComlueInfos()[8].getName() + "=?)";
-        String[] whereArgs = {Const.currentId + "", otherId + "", otherId + "", Const.currentId + ""};
-        String orderBy = mMessageTableHelper.getComlueInfos()[5].getName();
+    private void getTextMessageDataRecordFromDB() {
+        String whereCase = "(" + mTextMessageTableHelper.getComlueInfos()[3].getName() + "=? AND " + mTextMessageTableHelper.getComlueInfos()[8].getName() + "=?)";
+        whereCase += " OR " + "(" + mTextMessageTableHelper.getComlueInfos()[3].getName() + "=? AND " + mTextMessageTableHelper.getComlueInfos()[8].getName() + "=?)";
+        String[] whereArgs = {Const.currentId + "", otherId + "", otherId + "", Const.currentId + "",MessageType.TEXT_MESSAGE.id()+""};
         try {
-            mDatas = mMessageTableHelper.selectDatas(whereCase, whereArgs, null, null, orderBy, MessageData.class);
+            whereCase = "("+whereCase+") AND "+mTextMessageTableHelper.getComlueInfos()[9].getName() + "=?";
+            mDatas.addAll(mTextMessageTableHelper.selectDatas(whereCase, whereArgs, null, null, null, TextMessageData.class));
         } catch (Exception e) {
             Toast.makeText(ChatActivity.this, "获取数据库失败" + e.toString(), Toast.LENGTH_SHORT).show();
-            mDatas = new ArrayList<MessageData>();
+        }
+    }
+
+    /**
+     * 从数据库中获取图片文本类型聊天记录
+     */
+    private void getImageMessageDataRecordFromDB() {
+        String whereCase = "(" + mImageMessageTableHelper.getComlueInfos()[3].getName() + "=? AND " + mImageMessageTableHelper.getComlueInfos()[8].getName() + "=?)";
+        whereCase += " OR " + "(" + mImageMessageTableHelper.getComlueInfos()[3].getName() + "=? AND " + mImageMessageTableHelper.getComlueInfos()[8].getName() + "=?)";
+        String[] whereArgs = {Const.currentId + "", otherId + "", otherId + "", Const.currentId + "",MessageType.IMAGE_MESSAGE.id()+""};
+        try {
+            whereCase = "("+whereCase+") AND "+mImageMessageTableHelper.getComlueInfos()[9].getName() + "=?";
+            mDatas.addAll(mImageMessageTableHelper.selectDatas(whereCase, whereArgs, null, null, null, ImageMessageData.class));
+        } catch (Exception e) {
+            Toast.makeText(ChatActivity.this, "获取数据库失败" + e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -171,8 +211,18 @@ public class ChatActivity extends Activity implements View.OnClickListener,Adapt
     public boolean receiveTextMessageBradCast(Intent intent) {
         String msg = intent.getStringExtra(DefaultWebSocketUtils.TAG_RECEIVE_TEXT);
         ObjectMapper objectMapper = new ObjectMapper();
+        MessageData messageData = null;
         try {
-            MessageData messageData = objectMapper.readValue(msg, MessageData.class);
+            messageData = objectMapper.readValue(msg, TextMessageData.class);
+        } catch (IOException e) {
+            try {
+                messageData = objectMapper.readValue(msg, ImageMessageData.class);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+                Toast.makeText(this, "解析消息失败!" + e.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }
+        try {
             MessageData orgData = null;
             if (messageData.getType() == MessageType.ACK_MESSAGE.id()) {//如果是系统发送的确认接收消息
                 int index = mChatAdapter.getPosistionForObject(messageData);
@@ -187,11 +237,19 @@ public class ChatActivity extends Activity implements View.OnClickListener,Adapt
                     ||messageData.getType() == MessageType.IMAGE_MESSAGE.id()) {//如果收到普通的文本/图片消息
                 orgData = messageData;
                 orgData.setId(BaseSQLiteHelper.getId());
+                if(orgData instanceof ImageMessageData){
+                    ImageContent content = ((ImageMessageData)orgData).getContent();
+                    String url = URLEncoder.encode(content.getThumbnail());
+                    content.setThumbnail(url);
+                    url = URLEncoder.encode(content.getImageUrl());
+                    content.setImageUrl(url);
+                }
             }
             updateDBorListViewIfNeed(orgData);//保存和展示满足条件的聊天记录
         } catch (IOException e) {
             Toast.makeText(this, "解析消息失败!" + e.toString(), Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
+            e.printStackTrace();
             Toast.makeText(ChatActivity.this, "更新数据库失败" + e.toString(), Toast.LENGTH_SHORT).show();
         }
         return false;
@@ -203,11 +261,17 @@ public class ChatActivity extends Activity implements View.OnClickListener,Adapt
      */
     private void updateDBorListViewIfNeed(MessageData orgData) throws Exception {
         if(orgData!=null) {
-            boolean isNeedAdd = mMessageTableHelper.selectData(orgData.getId(),orgData.getClass())==null;
+            MessageTabeHelper messageTabeHelper;
+            if(orgData.getType()==MessageType.TEXT_MESSAGE.id()){
+                messageTabeHelper = mTextMessageTableHelper;
+            }else{
+                messageTabeHelper = mImageMessageTableHelper;
+            }
+            boolean isNeedAdd = messageTabeHelper.selectData(orgData.getId(),orgData.getClass())==null;
             if(isNeedAdd) {
-                mMessageTableHelper.insertData(orgData);//新增数据库
+                messageTabeHelper.insertData(orgData);//新增数据库
             }else {
-                mMessageTableHelper.updateData(orgData, null, null);//更新数据库；
+                messageTabeHelper.updateData(orgData, null, null);//更新数据库；
             }
             if(orgData.getSessionId()==sessionId) {//属于当前会话
                 if(isNeedAdd){
@@ -247,6 +311,9 @@ public class ChatActivity extends Activity implements View.OnClickListener,Adapt
             case R.id.chat_carmera_button://点击“拍照”按钮
                 CameraUtils.startSystemCamera(this);
                 break;
+            case R.id.chat_album_button://点击“相册”按钮
+                CameraUtils.startSystemPictures(this);
+                break;
         }
     }
 
@@ -284,18 +351,23 @@ public class ChatActivity extends Activity implements View.OnClickListener,Adapt
                      Bundle bundle = data.getExtras();
                     //获取相机返回的数据，并转换为图片格式
                     Bitmap bitmap = (Bitmap)bundle.get("data");
-                    sendImage(bitmap);
+                    //保存到文件系统之中
+                    final String fileName = SystemClock.elapsedRealtime()+"";
+
+                    //添加到文件缓存之中
+                    File bitmapFile = mImageCache.putFile(fileName,bitmap);
+                    sendImage(bitmapFile);
                     break;
                 case CameraUtils.PICTURES_REQUEST_CODE://从相册返回结果
                     Uri selectedImage = data.getData();
                     String[] filePathColumn = { MediaStore.Images.Media.DATA };
-                    Cursor cursor = getContentResolver().query(selectedImage,filePathColumn, null, null, null);
+                    Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
                     cursor.moveToFirst();
                     int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                     String picturePath = cursor.getString(columnIndex);
                     cursor.close();
-                    Bitmap bitmap1 = BitmapFactory.decodeFile(picturePath);
-                    sendImage(bitmap1);
+                    bitmapFile = new File(picturePath);
+                    sendImage(bitmapFile);
                     break;
             }
         }
@@ -304,34 +376,61 @@ public class ChatActivity extends Activity implements View.OnClickListener,Adapt
     /**
      * 发送图片
      */
-    private void sendImage(final Bitmap bitmap){
-        //保存到文件系统之中
-        String fileName = SystemClock.elapsedRealtime()+"";
-        final File bitmapFile = mImageCache.putFile(fileName,bitmap);
-        //发送图片
+    private void sendImage(final File bitmapFile){
+        Bitmap bitmap = mImageCache.getBitmapFromFile(bitmapFile.getAbsolutePath(),true);
+
+        final String fileName = bitmapFile.getName();
+
+        mImageCache.putBitmap(fileName,bitmap,true);
+        //首先添加到数据库中，并展示在聊天界面中，然后才开始上传图片
+        MessageData tmpMessageData = null;
+        try {
+            tmpMessageData = getMessageData(fileName, MessageType.IMAGE_MESSAGE.id());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //需要发送web的消息
+        final ImageMessageData imageMessageData = (ImageMessageData) tmpMessageData;
+        //上传图片
+        HashMap<String,String> params = new HashMap<String,String>();
+        params.put("fid","false");
         VolleyUtils.requestNet(new UploadRequest(Const.URL_UPLOAD_IMAGE, new BaseListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                error.printStackTrace();
+                Log.e(TAG,error.toString());
             }
 
             @Override
-            public void onResponse(Object response) {
+            public void onResponse(String response) {
                 ObjectMapper objectMapper = new ObjectMapper();
                 try {
-                    StringResponseData data = objectMapper.readValue(response.toString(),StringResponseData.class);
-                    String imageUrl = data.getData();//获取图片的路径
+                    FileResponseData data = objectMapper.readValue(response.toString(),FileResponseData.class);
+                    String imageUrl = data.getData().getUrl();//获取图片的路径
+                    imageMessageData.getContent().setImageUrl(imageUrl);//更新上传图片的URL
+                    sendMsgToWebSocket(mCameraButton.getHandler(), imageMessageData);//发送图片
+                    //更新本地数据
                     imageUrl = URLEncoder.encode(imageUrl,"UTF-8");
-                    bitmapFile.delete();//删除临时文件
-                    //更新缓存
-                    mImageCache.putBitmap(imageUrl,bitmap,true);
-                    MessageData imageMessageData = getMessageData(imageUrl, MessageType.IMAGE_MESSAGE.id());
-                    sendMsgToWebSocket(mCameraButton.getHandler(),imageMessageData);
+                    imageMessageData.getContent().setImageUrl(imageUrl);//更新上传图片的URL
+                    updateDBorListViewIfNeed(imageMessageData);//更新数据库
+                    //修改一级缓存的key值
+                    Bitmap cachedbitmap = mImageCache.removeCache(fileName);
+                    if(cachedbitmap!=null){
+                        mImageCache.putBitmap(imageUrl,cachedbitmap,true);
+                    }
+                    //修改二级缓存的文件名
+                    File newFile = new File(mImageCache.getCacheDir(),imageUrl+".jpg");
+                    if(newFile.exists()){
+                        newFile.delete();
+                    }
+                    newFile.createNewFile();
+                    FileUtils.copyFile(bitmapFile,newFile);
+                    bitmapFile.delete();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-        }, bitmapFile));
+        }, bitmapFile,params));
     }
 
     /**
@@ -342,11 +441,19 @@ public class ChatActivity extends Activity implements View.OnClickListener,Adapt
      * @throws Exception
      */
     private MessageData getMessageData(String msgContent,int type) throws Exception {
-        Content content = new Content();
-        content.setContent(msgContent);
-        MessageData result = new MessageData();
+        MessageData result = null;
+        if(type==MessageType.IMAGE_MESSAGE.id()){
+            result = new ImageMessageData();
+            ImageContent content = new ImageContent();
+            content.setImageUrl(msgContent);
+            ((ImageMessageData)result).setContent(content);
+        }else if(type==MessageType.TEXT_MESSAGE.id()) {
+            result = new TextMessageData();
+            TextContent content = new TextContent();
+            content.setContent(msgContent);
+            ((TextMessageData)result).setContent(content);
+        }
         result.setId(BaseSQLiteHelper.getId());
-        result.setContent(content);
         result.setFrom(Const.currentId);
         result.setTo(otherId);
         result.setSessionId(sessionId);

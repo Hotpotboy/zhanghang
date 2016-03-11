@@ -1,0 +1,174 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.souhu.hangzhang209526.zhanghang.widget.CycleImageView
+        android:id="@+id/my_info_headImage"
+        android:layout_width="@dimen/head_image_height"
+        android:layout_height="@dimen/head_image_height"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/default_img" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/split_line_height"
+        android:background="@color/msg_text_color" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/split_bg_height"
+        android:background="@color/split_bg_color" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/split_line_height"
+        android:background="@color/msg_text_color" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/my_info_niceName_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/twenty_five_dp"
+                android:text="@string/ni_cheng_cn"
+                android:textColor="@color/msg_text_color"
+                android:textSize="@dimen/normal_text_size" />
+
+            <TextView
+                android:id="@+id/my_info_niceName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/my_info_niceName_tip"
+                android:padding="@dimen/twenty_five_dp"
+                android:textColor="@color/msg_text_color"
+                android:textSize="@dimen/normal_text_size" />
+
+            <View
+                android:id="@+id/my_info_split1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/split_line_height"
+                android:layout_below="@id/my_info_niceName_tip"
+                android:background="@color/msg_text_color" />
+
+            <TextView
+                android:id="@+id/my_info_userName_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/my_info_split1"
+                android:padding="@dimen/twenty_five_dp"
+                android:text="@string/yong_hu_ming_cheng_cn"
+                android:textColor="@color/msg_text_color"
+                android:textSize="@dimen/normal_text_size" />
+
+            <TextView
+                android:id="@+id/my_info_userName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/my_info_split1"
+                android:layout_toRightOf="@id/my_info_userName_tip"
+                android:padding="@dimen/twenty_five_dp"
+                android:textColor="@color/msg_text_color"
+                android:textSize="@dimen/normal_text_size" />
+
+            <View
+                android:id="@+id/my_info_split2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/split_line_height"
+                android:layout_below="@id/my_info_userName_tip"
+                android:background="@color/msg_text_color" />
+
+            <TextView
+                android:id="@+id/my_info_createTime_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/my_info_split2"
+                android:padding="@dimen/twenty_five_dp"
+                android:text="@string/zhu_che_shi_jian_cn"
+                android:textColor="@color/msg_text_color"
+                android:textSize="@dimen/normal_text_size" />
+
+            <TextView
+                android:id="@+id/my_info_createTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/my_info_split2"
+                android:layout_toRightOf="@id/my_info_createTime_tip"
+                android:padding="@dimen/twenty_five_dp"
+                android:textColor="@color/msg_text_color"
+                android:textSize="@dimen/normal_text_size" />
+
+            <View
+                android:id="@+id/my_info_split3"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/split_line_height"
+                android:layout_below="@id/my_info_createTime_tip"
+                android:background="@color/msg_text_color" />
+
+            <TextView
+                android:id="@+id/my_info_loginTime_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/my_info_split3"
+                android:padding="@dimen/twenty_five_dp"
+                android:text="@string/shang_ci_deng_lu_cn"
+                android:textColor="@color/msg_text_color"
+                android:textSize="@dimen/normal_text_size" />
+
+            <TextView
+                android:id="@+id/my_info_loginTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/my_info_split3"
+                android:layout_toRightOf="@id/my_info_loginTime_tip"
+                android:padding="@dimen/twenty_five_dp"
+                android:textColor="@color/msg_text_color"
+                android:textSize="@dimen/normal_text_size" />
+
+            <View
+                android:id="@+id/my_info_split4"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/split_line_height"
+                android:layout_below="@id/my_info_loginTime_tip"
+                android:background="@color/msg_text_color" />
+
+            <TextView
+                android:id="@+id/my_info_offTime_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/my_info_split4"
+                android:padding="@dimen/twenty_five_dp"
+                android:text="@string/shang_ci_xia_xian_cn"
+                android:textColor="@color/msg_text_color"
+                android:textSize="@dimen/normal_text_size" />
+
+            <TextView
+                android:id="@+id/my_info_offTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/my_info_split4"
+                android:layout_toRightOf="@id/my_info_offTime_tip"
+                android:padding="@dimen/twenty_five_dp"
+                android:textColor="@color/msg_text_color"
+                android:textSize="@dimen/normal_text_size" />
+
+            <View
+                android:id="@+id/my_info_split5"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/split_line_height"
+                android:layout_below="@id/my_info_offTime_tip"
+                android:background="@color/msg_text_color" />
+        </RelativeLayout>
+    </ScrollView>
+
+</LinearLayout>

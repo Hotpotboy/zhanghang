@@ -1,12 +1,30 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-
+    <RelativeLayout
+        android:id="@+id/friend_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/black">
+        <TextView
+            android:id="@+id/friend_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingTop="@dimen/fifteen_dp"
+            android:paddingLeft="@dimen/fifteen_dp"
+            android:paddingBottom="@dimen/fifteen_dp"
+            android:paddingRight="@dimen/twenty_five_dp"
+            android:textSize="@dimen/twenty_sp"
+            android:textColor="@android:color/white"
+            android:text="+"
+            />
+    </RelativeLayout>
     <ListView
         android:id="@+id/friend_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@android:color/transparent"/>
+        android:divider="@android:color/transparent"
+        android:layout_below="@id/friend_title_layout"/>
 
 </RelativeLayout>

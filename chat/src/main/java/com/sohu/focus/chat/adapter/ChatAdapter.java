@@ -1,6 +1,7 @@
 package com.sohu.focus.chat.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -9,12 +10,15 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.sohu.focus.chat.Const;
 import com.sohu.focus.chat.R;
-import com.sohu.focus.chat.data.MessageData;
-import com.sohu.focus.chat.data.MessageType;
+import com.sohu.focus.chat.data.message.ImageMessageData;
+import com.sohu.focus.chat.data.message.MessageData;
+import com.sohu.focus.chat.data.message.MessageType;
+import com.sohu.focus.chat.data.message.TextMessageData;
 import com.souhu.hangzhang209526.zhanghang.adpter.BaseViewHolderAdapter;
 import com.souhu.hangzhang209526.zhanghang.utils.VolleyUtils;
 import com.souhu.hangzhang209526.zhanghang.widget.CycleImageView;
 
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -65,7 +69,10 @@ public class ChatAdapter extends BaseViewHolderAdapter {
         TextView msgTextView = null;
         CycleImageView headImag = null;
         NetworkImageView msgImage;//图片消息
-        if(messageData.getFrom()==Const.currentId){
+        //此条消息是否由己方发送的
+        boolean isSelf = messageData.getFrom()==Const.currentId;
+
+        if(isSelf){
             headImag = (CycleImageView) getViewByTag(R.id.item_chat_self_head_img, KEY_ITEM_CHAT_SELF_HEAD_IMG,baseViewHolder,convertView);
             msgTextView = (TextView) getViewByTag(R.id.item_chat_self_msg, KEY_ITEM_CHAT_SELF_MSG,baseViewHolder,convertView);
             TextView sendFailTextView = (TextView) getViewByTag(R.id.item_chat_self_send_fail_tip,KEY_ITEM_CHAT_SELF_SEND_FAILD_TIP,baseViewHolder,convertView);
@@ -89,12 +96,21 @@ public class ChatAdapter extends BaseViewHolderAdapter {
         if(messageData.getType()== MessageType.TEXT_MESSAGE.id()) {//文本消息
             msgTextView.setVisibility(View.VISIBLE);
             msgImage.setVisibility(View.GONE);
-            msgTextView.setText(messageData.getContent().getContent());
+            msgTextView.setText(((TextMessageData) messageData).getContent().getContent());
         }else if(messageData.getType()== MessageType.IMAGE_MESSAGE.id()){//图片消息
             msgTextView.setVisibility(View.GONE);
             msgImage.setVisibility(View.VISIBLE);
             msgImage.setDefaultImageResId(R.drawable.default_img);
-            msgImage.setImageUrl(messageData.getContent().getContent(),mImageLoader);
+            String imageUrl;
+            if(isSelf){
+                imageUrl = ((ImageMessageData)messageData).getContent().getImageUrl();
+            }else{
+                imageUrl = ((ImageMessageData)messageData).getContent().getThumbnail();
+            }
+            if(!TextUtils.isEmpty(imageUrl)) {
+                imageUrl = URLDecoder.decode(imageUrl);
+                msgImage.setImageUrl(imageUrl, mImageLoader);
+            }
         }
     }
 }

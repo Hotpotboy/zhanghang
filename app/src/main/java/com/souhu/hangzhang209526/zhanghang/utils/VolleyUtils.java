@@ -2,8 +2,11 @@ package com.souhu.hangzhang209526.zhanghang.utils;
 
 import android.content.Context;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 
 /**
@@ -16,6 +19,9 @@ public class VolleyUtils {
     }
 
     public static void requestNet(Request request) {
+        if(request!=null){
+            request.setRetryPolicy(new DefaultRetryPolicy(20*1000,3,1.0f));
+        }
         sRequestQueue.add(request);
     }
 

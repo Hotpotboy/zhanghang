@@ -59,6 +59,7 @@ public class CycleImageView extends ImageView {
             return; // couldn't resolve the URI
         }
         Bitmap bitmap = SystemUtils.getBitmapFromDrawable(imageDrawable);
+        if(bitmap==null) return;
         int width =  getMeasuredWidth();
         int height = getMeasuredHeight();
         if (width == 0 || height == 0) {

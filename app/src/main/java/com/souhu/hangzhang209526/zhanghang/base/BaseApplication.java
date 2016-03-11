@@ -12,6 +12,7 @@ import com.sohu.focus.hotfixlib.HotFix;
 import com.sohu.focus.libandfix.patch.PatchManager;
 import com.souhu.hangzhang209526.zhanghang.BuildConfig;
 import com.souhu.hangzhang209526.zhanghang.utils.FileUtils;
+import com.souhu.hangzhang209526.zhanghang.utils.LocationUtil;
 import com.souhu.hangzhang209526.zhanghang.utils.VolleyUtils;
 
 import java.io.File;
@@ -69,6 +70,9 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         instance = this;
+
+        //初始化定位工具
+        LocationUtil.init(this);
 
         try {
             PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);

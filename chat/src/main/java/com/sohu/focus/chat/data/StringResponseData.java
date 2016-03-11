@@ -1,7 +1,7 @@
 package com.sohu.focus.chat.data;
 
 /**
- * Created by hangzhang209526 on 2016/3/7.
+ * Created by hangzhang209526 on 2016/2/26.
  */
 public class StringResponseData extends BaseResponseData {
     private String data;

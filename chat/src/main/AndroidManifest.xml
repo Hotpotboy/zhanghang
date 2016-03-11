@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sohu.focus.chat" >
-
+    <uses-permission android:name = "android.permission.CAMERA" />
     <application
         android:name=".ChatApplication"
         android:allowBackup="true"
@@ -17,10 +17,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ChatActivity"
-            android:windowSoftInputMode="adjustPan|stateUnspecified">
-        </activity>
+        <activity android:name=".UserInfoActivity"/>
+        <activity android:name="com.google.zxing.CaptureActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ChatActivity" android:windowSoftInputMode="adjustPan|stateUnspecified"/>
         <service android:name=".ChatService"/>
+        <service android:name="com.amap.api.location.APSService"></service>
+        <meta-data android:name="com.amap.api.v2.apikey" android:value="f0c07bd716ceba9edaf6e47e8fdadd51"/>
     </application>
 
 </manifest>

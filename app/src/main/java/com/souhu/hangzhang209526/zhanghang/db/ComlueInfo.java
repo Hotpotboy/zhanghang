@@ -13,6 +13,9 @@ public class ComlueInfo {
     private boolean primaryKey;
     /**是否是除了String之外的其他类类型*/
     private boolean isOjbect = false;
+    /**所在的类*/
+    private Class decClass;
+
 
     public boolean isPrimaryKey() {
         return primaryKey;
@@ -82,5 +85,13 @@ public class ComlueInfo {
 
     public boolean isOjbect() {
         return isOjbect;
+    }
+
+    public Class getDecClass() {
+        return decClass;
+    }
+
+    public void setDecClass(Class decClass) {
+        this.decClass = decClass;
     }
 }

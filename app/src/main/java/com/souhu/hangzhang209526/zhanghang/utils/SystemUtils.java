@@ -39,6 +39,7 @@ public class SystemUtils {
      *HH:mm格式
      */
     public static final String TIME_FORMAT_HH_mm= "HH:mm";
+    public static final String TIME_FORMAT_yyyy_MM_dd_HH_mm_ss= "yyyy-MM-dd HH:mm:ss";
     public static Bitmap getBitmapFromDrawable(Drawable drawable){
         if(drawable instanceof BitmapDrawable){//如果可绘物是位图可绘物，则直接返回之
             return ((BitmapDrawable)drawable).getBitmap();

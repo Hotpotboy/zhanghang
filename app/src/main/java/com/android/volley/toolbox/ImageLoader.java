@@ -26,8 +26,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageRequest;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -154,8 +154,8 @@ public class ImageLoader {
     public boolean isCached(String requestUrl, int maxWidth, int maxHeight) {
         throwIfNotOnMainThread();
 
-        String cacheKey = getCacheKey(requestUrl, maxWidth, maxHeight);
-        return mCache.getBitmap(cacheKey) != null;
+//        String cacheKey = getCacheKey(requestUrl, maxWidth, maxHeight);
+        return mCache.getBitmap(URLEncoder.encode(requestUrl)) != null;
     }
 
     /**
@@ -189,7 +189,7 @@ public class ImageLoader {
         // only fulfill requests that were initiated from the main thread.
         throwIfNotOnMainThread();//检测是否为主线程
 
-        final String cacheKey = getCacheKey(requestUrl, maxWidth, maxHeight);
+        final String cacheKey = URLEncoder.encode(requestUrl);//getCacheKey(requestUrl, maxWidth, maxHeight);
 
         // Try to look up the request in the cache of remote images.
         Bitmap cachedBitmap = mCache.getBitmap(cacheKey);
@@ -487,8 +487,8 @@ public class ImageLoader {
      * @param maxWidth The max-width of the output.
      * @param maxHeight The max-height of the output.
      */
-    private static String getCacheKey(String url, int maxWidth, int maxHeight) {
-        return new StringBuilder(url.length() + 12).append("#W").append(maxWidth)
-                .append("#H").append(maxHeight).append(url).toString();
-    }
+//    private static String getCacheKey(String url, int maxWidth, int maxHeight) {
+//        return new StringBuilder(url.length() + 12).append("#W").append(maxWidth)
+//                .append("#H").append(maxHeight).append(url).toString();
+//    }
 }

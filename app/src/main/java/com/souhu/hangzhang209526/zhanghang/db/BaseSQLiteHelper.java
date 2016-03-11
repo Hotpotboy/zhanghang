@@ -202,14 +202,14 @@ public class BaseSQLiteHelper<T> extends SQLiteOpenHelper {
             valueInDB = cursor.getString(colIndex);
         }
         String oldName = converKeyWord(mComlueInfos[colIndex].getName());
-        Class dataClazz = data.getClass();
+        Class dataClazz = mComlueInfos[colIndex].getDecClass();
         Field field = dataClazz.getDeclaredField(oldName);
         field.setAccessible(true);
         if (mComlueInfos[colIndex].isOjbect()) {
             Class fieldClazz = field.getType();
             //获取该列对应的类的一个构造器，此构造器只有一个String类型的入参
             Constructor constructor = fieldClazz.getConstructor(String.class);
-            field.set(data, constructor.newInstance(valueInDB.toString()));
+            field.set(data, constructor.newInstance(valueInDB));
         } else {
             field.set(data, valueInDB);
         }
@@ -243,7 +243,7 @@ public class BaseSQLiteHelper<T> extends SQLiteOpenHelper {
         for (int i = 0; i < mComlueInfos.length; i++) {
             String tableColName = mComlueInfos[i].getName();//表中的列名
             String oldName = converKeyWord(tableColName);//对象中的属性名
-            Class clazz = data.getClass();
+            Class clazz = mComlueInfos[i].getDecClass();
             Field field = clazz.getDeclaredField(oldName);
             field.setAccessible(true);
             Object value = field.get(data);

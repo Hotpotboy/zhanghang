@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.sohu.focus.chat.R;
-import com.sohu.focus.chat.data.FriendData;
+import com.sohu.focus.chat.data.user.UserData;
 import com.souhu.hangzhang209526.zhanghang.adpter.BaseViewHolderAdapter;
 import com.souhu.hangzhang209526.zhanghang.widget.CycleImageView;
 
@@ -22,7 +22,7 @@ public class FriendListAdapter extends BaseViewHolderAdapter {
     private final String KEY_SESSION_LAST_TIME = "key_session_last_time";
     private final String KEY_SESSION_UNREAD_NUM = "key_session_nunread_num";
 
-    public FriendListAdapter(Context context, ArrayList<FriendData> list) {
+    public FriendListAdapter(Context context, ArrayList<UserData> list) {
         super(context, list);
     }
 
@@ -33,7 +33,7 @@ public class FriendListAdapter extends BaseViewHolderAdapter {
 
     @Override
     protected void reBindDataAndView(int position, HashMap<String, View> baseViewHolder, View convertView) {
-        FriendData data = (FriendData) mDatas.get(position);
+        UserData data = (UserData) mDatas.get(position);
         if (baseViewHolder.containsKey(KEY_HEAD_IMG)) {
             CycleImageView headImag = (CycleImageView) baseViewHolder.get(KEY_HEAD_IMG);
         }

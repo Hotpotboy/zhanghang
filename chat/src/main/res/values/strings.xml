@@ -8,4 +8,14 @@
     <string name="pai_zhao_cn">拍照</string>
     <string name="cong_xiang_ce_xuan_ze_cn">从相册选择</string>
     <string name="send_fail_tip">发送失败,重新发送</string>
+    <string name="ni_cheng_cn">用户昵称:</string>
+    <string name="yong_hu_ming_cheng_cn">用户名称:</string>
+    <string name="zhu_che_shi_jian_cn">注册时间:</string>
+    <string name="shang_ci_deng_lu_cn">上次登陆</string>
+    <string name="shang_ci_xia_xian_cn">上次下线</string>
+    <string name="tian_jia_peng_you_cn">添加朋友</string>
+    <string name="sao_yi_sao_cn">扫一扫</string>
+    <string name="wo_de_er_wei_ma_cn">我的二维码</string>
+    <string name="qu_xiao_cn">取消</string>
+    <string name="sao_miao_er_wei_ma_cn">扫描二维码</string>
 </resources>

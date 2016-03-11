@@ -2,13 +2,10 @@ package com.sohu.focus.chat.adapter;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.TextView;
 
 import com.sohu.focus.chat.R;
-import com.sohu.focus.chat.data.MessageData;
-import com.sohu.focus.chat.data.SessionData;
+import com.sohu.focus.chat.data.session.SessionData;
 import com.souhu.hangzhang209526.zhanghang.adpter.BaseViewHolderAdapter;
-import com.souhu.hangzhang209526.zhanghang.widget.CycleImageView;
 
 import java.util.ArrayList;
 import java.util.HashMap;

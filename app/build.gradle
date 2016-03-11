@@ -29,9 +29,12 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-core:2.1.4'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.1.4'
     compile 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
+    compile 'com.google.zxing:zxing-parent:3.2.1'
+    compile 'com.google.zxing:core:3.2.1'
     compile project(':libandfix')
     compile project(':hotfixlib')
     compile project(':LibEventBus')
+    compile files('lib/AMap_Location_V2.4.0_20160308.jar')
 }
 
 tasks.withType(JavaCompile) {
