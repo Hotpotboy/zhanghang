@@ -50,6 +50,7 @@ import javax.security.auth.x500.X500Principal;
  * 
  */
 public class SecurityChecker {
+	private static SecurityChecker sInstance;
 	private static final String TAG = "SecurityChecker";
 
 	private static final String SP_NAME = "_andfix_";
@@ -69,15 +70,21 @@ public class SecurityChecker {
 	 */
 	private boolean mDebuggable;
 
-	public SecurityChecker(Context context) {
+	public static SecurityChecker getInstance(Context context){
+		synchronized (TAG){
+			if(sInstance==null) sInstance = new SecurityChecker(context);
+		}
+		return sInstance;
+	}
+
+	private SecurityChecker(Context context) {
 		mContext = context;
 		init(mContext);
 	}
 
 	/**
 	 * MD5签名是否相等
-	 * @param path
-	 *            Dex file
+	 * @param file Dex file
 	 * @return true if verify fingerprint success
 	 */
 	public boolean verifyOpt(File file) {
@@ -90,8 +97,7 @@ public class SecurityChecker {
 	}
 
 	/**
-	 * @param path
-	 *            Dex file
+	 * @param file Dex file
 	 */
 	public void saveOptSig(File file) {
 		String fingerprint = getFileMD5(file);
@@ -100,8 +106,7 @@ public class SecurityChecker {
 
 	/**
 	 * 证书是否通过
-	 * @param path
-	 *            Apk file
+	 * @param path Apk file
 	 * @return true if verify apk success
 	 */
 	public boolean verifyApk(File path) {

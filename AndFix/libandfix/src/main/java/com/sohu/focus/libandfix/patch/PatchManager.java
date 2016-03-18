@@ -54,6 +54,8 @@ public class PatchManager {
 	private static final String DIR = "apatch";
 	private static final String SP_NAME = "_andfix_";
 	private static final String SP_VERSION = "version";
+	/**是否是第一次加载补丁包*/
+	private boolean isFirst = true;
 
 	/**
 	 * context
@@ -78,7 +80,7 @@ public class PatchManager {
 	 * classloaders
 	 * 类加载器
 	 */
-	private final Map<String, ClassLoader> mLoaders;
+//	private final Map<String, ClassLoader> mLoaders;
 	/**
 	 * 替换资源
 	 */
@@ -111,10 +113,10 @@ public class PatchManager {
 	 */
 	public PatchManager(Context context) {
 		mContext = context;
-		mAndFixManager = new AndFixManager(mContext);
-		mPatchDir = new File(mContext.getFilesDir(), DIR);
-		mPatchs = new ConcurrentSkipListSet<Patch>();
-		mLoaders = new ConcurrentHashMap<String, ClassLoader>();
+		mAndFixManager = new AndFixManager(mContext);//负责代码补丁的修复(替换)
+		mPatchDir = new File(mContext.getFilesDir(), DIR);//补丁包保存目录/data/data/[package-name]/files/apatch
+		mPatchs = new ConcurrentSkipListSet<Patch>();//所有的代码补丁包集合
+//		mLoaders = new ConcurrentHashMap<String, ClassLoader>();
 	}
 
 	/**
@@ -124,6 +126,7 @@ public class PatchManager {
 	 * @param isNeedReplaceRes  是否开启替换资源的功能
 	 */
 	public void init(String appVersion,boolean isNeedReplaceRes) {
+		//确保代码补丁包目录存在
 		if (!mPatchDir.exists() && !mPatchDir.mkdirs()) {// make directory fail
 			Log.e(TAG, "patch dir create error.");
 			return;
@@ -134,12 +137,16 @@ public class PatchManager {
 		SharedPreferences sp = mContext.getSharedPreferences(SP_NAME,
 				Context.MODE_PRIVATE);
 		String ver = sp.getString(SP_VERSION, null);
+		//版本号与保存的版本号是否一致
 		if (ver == null || !ver.equalsIgnoreCase(appVersion)) {
-			cleanPatch();//清空补丁目录和优化目录的所有文件
+			//清空补丁目录和优化目录的所有文件
+			cleanPatch();
 			sp.edit().putString(SP_VERSION, appVersion).commit();
 		} else {
-			initPatchs();//加载补丁目录下的所有后缀名为'.apatch'的文件
+			//加载补丁目录下的所有后缀名为'.apatch'的文件
+			initPatchs();
 		}
+		//初始化资源替换器
 		if(isNeedReplaceRes)
 			mCanRepalceResource = new CanReplaceResource(mContext);
 	}
@@ -163,6 +170,7 @@ public class PatchManager {
 	 */
 	private Patch addPatch(File file) {
 		Patch patch = null;
+		//判断文件的后缀名
 		if (file.getName().endsWith(SUFFIX)) {
 			try {
 				patch = new Patch(file);
@@ -248,14 +256,15 @@ public class PatchManager {
 	 * 
 	 */
 	public void loadPatch() {
-		mLoaders.put("*", mContext.getClassLoader());// wildcard 通配符
+//		mLoaders.put("*", mContext.getClassLoader());// wildcard 通配符
 		for (Patch patch : mPatchs) {
 			Set<String> patchNames = patch.getPatchNames();
 			for (String patchName : patchNames) {
-				List<String> classes = patch.getClasses(patchName);
-				mAndFixManager.fix(patch.getFile(), mContext.getClassLoader(),classes);
+				List<String> classes = patch.getClasses(patchName);//补丁包中所有的类的类名集合，这些类都是需要修复的
+				mAndFixManager.fix(patch.getFile(), mContext.getClassLoader(),classes,isFirst);
 			}
 		}
+		isFirst = false;
 	}
 
 	/**
@@ -269,14 +278,15 @@ public class PatchManager {
 		ClassLoader cl;
 		List<String> classes;
 		for (String patchName : patchNames) {
-			if (mLoaders.containsKey("*")) {
-				cl = mContext.getClassLoader();
-			} else {
-				cl = mLoaders.get(patchName);
-			}
+			cl = mContext.getClassLoader();
+//			if (mLoaders.containsKey("*")) {
+//				cl = mContext.getClassLoader();
+//			} else {
+//				cl = mLoaders.get(patchName);
+//			}
 			if (cl != null) {
 				classes = patch.getClasses(patchName);
-				mAndFixManager.fix(patch.getFile(), cl, classes);
+				mAndFixManager.fix(patch.getFile(), cl, classes,isFirst);
 			}
 		}
 	}

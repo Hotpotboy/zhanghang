@@ -50,5 +50,12 @@
         android:layout_below="@id/chat_carmera_button"
         android:layout_centerHorizontal="true"
         android:text="@string/cong_xiang_ce_xuan_ze_cn"/>
+    <Button
+        android:id="@+id/chat_sound_button"
+        android:layout_width="wrap_content"
+        style="@style/button_style"
+        android:layout_below="@id/chat_album_button"
+        android:layout_centerHorizontal="true"
+        android:text="@string/an_zhu_lu_yin_cn"/>
 
 </RelativeLayout>

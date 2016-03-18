@@ -100,7 +100,6 @@ public class ChatAdapter extends BaseViewHolderAdapter {
         }else if(messageData.getType()== MessageType.IMAGE_MESSAGE.id()){//图片消息
             msgTextView.setVisibility(View.GONE);
             msgImage.setVisibility(View.VISIBLE);
-            msgImage.setDefaultImageResId(R.drawable.default_img);
             String imageUrl;
             if(isSelf){
                 imageUrl = ((ImageMessageData)messageData).getContent().getImageUrl();

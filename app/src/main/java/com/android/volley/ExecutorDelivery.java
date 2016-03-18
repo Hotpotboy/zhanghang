@@ -33,7 +33,6 @@ public class ExecutorDelivery implements ResponseDelivery {
      */
     public ExecutorDelivery(final Handler handler) {
         // Make an Executor that just wraps the handler.
-        //���һ����װ��handler��Executor
         mResponsePoster = new Executor() {
             @Override
             public void execute(Runnable command) {

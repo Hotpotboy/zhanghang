@@ -62,6 +62,7 @@ import java.util.HashMap;
  */
 public class ChatActivity extends Activity implements View.OnClickListener,AdapterView.OnItemClickListener,ViewTreeObserver.OnPreDrawListener,ViewTreeObserver.OnGlobalLayoutListener {
     private static final String TAG = "ChatActivity";
+    private static final int HIDDEN_BUTTON_COUNT = 3;
     /**当前屏幕可滑动的距离*/
     private int mCanMovingHeight;
     /**是否收起更多按钮*/
@@ -71,7 +72,7 @@ public class ChatActivity extends Activity implements View.OnClickListener,Adapt
     /**
      * 对话者的ID
      */
-    private int otherId;
+    private long otherId;
     /**
      * 会话者的Id
      */
@@ -116,7 +117,7 @@ public class ChatActivity extends Activity implements View.OnClickListener,Adapt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        otherId = getIntent().getIntExtra(Const.INTENT_KEY_OTHER_ID, -1);
+        otherId = getIntent().getLongExtra(Const.INTENT_KEY_USER_ID, -1);
         sessionId = getIntent().getLongExtra(Const.INTENT_KEY_SESSION_ID, -1);
 
         mChatRelativelayout = (RelativeLayout)findViewById(R.id.chat_all_layout);
@@ -156,7 +157,7 @@ public class ChatActivity extends Activity implements View.OnClickListener,Adapt
         mChatRelativelayout.getViewTreeObserver().addOnGlobalLayoutListener(this);
         //初始化滚动器
         mScroller = new Scroller(this);
-        mCanMovingHeight = (int) getResources().getDimension(R.dimen.button_height)*2;
+        mCanMovingHeight = (int) getResources().getDimension(R.dimen.button_height)*HIDDEN_BUTTON_COUNT;
     }
 
     /**

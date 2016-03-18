@@ -2,38 +2,30 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:id="@+id/window_qr_code"
     android:background="@drawable/menu_bg">
+
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/window_qr_code_image"
         android:layout_width="@dimen/one_hundred_dp"
         android:layout_height="@dimen/one_hundred_dp"
-        android:layout_marginTop="@dimen/ten_dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"/>
-    <LinearLayout
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/ten_dp"
+        android:src="@drawable/default_img" />
+
+    <Button
+        android:id="@+id/window_qr_add_friend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_below="@id/window_qr_code_image"
-        android:padding="@dimen/ten_dp">
-        <Button
-            android:id="@+id/window_add_friend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/sixteen_dp"
-            android:textColor="@android:color/white"
-            android:text="@string/sao_miao_er_wei_ma_cn"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/white_stroke_trans_solid_ten_corner_button_bg"
-            android:layout_marginRight="@dimen/ten_dp"/>
-        <Button
-            android:id="@+id/window_add_ScanQR"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/sixteen_dp"
-            android:textColor="@android:color/white"
-            android:text="@string/qu_xiao_cn"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/white_stroke_trans_solid_ten_corner_button_bg"/>
-    </LinearLayout>
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="@dimen/twenty_dp"
+        android:layout_marginRight="@dimen/twenty_dp"
+        android:layout_marginBottom="@dimen/twenty_dp"
+        android:layout_marginTop="@dimen/ten_dp"
+        android:background="@drawable/msg_hint_stroke_trans_solid_ten_corner_button_bg"
+        android:text="@string/sao_miao_er_wei_ma_cn"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sixteen_sp"/>
 </RelativeLayout>

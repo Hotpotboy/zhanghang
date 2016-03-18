@@ -1,7 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@android:color/white">
 
     <com.souhu.hangzhang209526.zhanghang.widget.CycleImageView
         android:id="@+id/my_info_headImage"
@@ -168,7 +169,32 @@
                 android:layout_height="@dimen/split_line_height"
                 android:layout_below="@id/my_info_offTime_tip"
                 android:background="@color/msg_text_color" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/my_info_split5"
+                android:paddingTop="@dimen/twenty_dp"
+                android:layout_centerHorizontal="true"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/my_info_myQrCode"
+                    android:layout_width="@dimen/one_hundred_dp"
+                    android:textSize="@dimen/eighteen_sp"
+                    android:text="@string/wo_de_er_wei_ma_cn"
+                    android:textColor="@color/msg_text_color"
+                    android:gravity="center"
+                    style="@style/button_style"/>
+                <TextView
+                    android:id="@+id/my_info_addFirend"
+                    android:layout_width="@dimen/one_hundred_dp"
+                    android:layout_marginLeft="@dimen/twenty_dp"
+                    android:textSize="@dimen/eighteen_sp"
+                    android:text="@string/tian_jia_peng_you_cn"
+                    android:textColor="@color/msg_text_color"
+                    android:gravity="center"
+                    style="@style/button_style"/>
+            </LinearLayout>
+
         </RelativeLayout>
     </ScrollView>
-
 </LinearLayout>

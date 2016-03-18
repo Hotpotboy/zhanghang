@@ -18,6 +18,7 @@ import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.util.TypedValue;
 
+import com.sohu.focus.libandfix.security.SecurityChecker;
 import com.sohu.focus.libandfix.util.FileUtil;
 
 import java.io.File;
@@ -103,7 +104,7 @@ class CanReplaceResource extends Resources {
     }
 
     void addOrgFile(File orgFile) throws IOException {
-        if(orgFile!=null&&orgFile.exists()&&(orgFile.getName().endsWith(".apk")||orgFile.getName().endsWith(".aar"))) {
+        if(orgFile!=null&&orgFile.exists()&&(orgFile.getName().endsWith(".apk"))) {
             File apkFile = new File(mResApkDir, orgFile.getName());
             FileUtil.copyFile(orgFile, apkFile);
             addFile(apkFile);
@@ -116,6 +117,11 @@ class CanReplaceResource extends Resources {
      * @throws PackageManager.NameNotFoundException
      */
     private void addFile(File apatchFile){
+        SecurityChecker securityChecker = SecurityChecker.getInstance(mContext);
+        if(!securityChecker.verifyApk(apatchFile)){//签名未通过
+            Log.e(TAG,"没有通过签名");
+            return;
+        }
         try {
             AssetManager assetManager = AssetManager.class.newInstance();
             Method addAssetPath = assetManager.getClass().getMethod("addAssetPath", String.class);

@@ -25,8 +25,9 @@ public class BooksFragments extends BaseFragment implements ViewPager.PageTransf
     /**书籍ViewPager适配器*/
     private BooksAdapter mBooksAdapter;
 
-    public BooksFragments(){
-        mRootLayout = R.layout.fragment_books;
+    @Override
+    protected int specifyRootLayoutId() {
+        return R.layout.fragment_books;
     }
 
     @Override

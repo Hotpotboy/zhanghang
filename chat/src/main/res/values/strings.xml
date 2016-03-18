@@ -18,4 +18,8 @@
     <string name="wo_de_er_wei_ma_cn">我的二维码</string>
     <string name="qu_xiao_cn">取消</string>
     <string name="sao_miao_er_wei_ma_cn">扫描二维码</string>
+    <string name="qing_shu_ru_cha_xun_de_ID_cn">请输入查询的ID</string>
+    <string name="an_zhu_lu_yin_cn">按住录音</string>
+    <string name="wo_de_hao_you_cn">我的好友</string>
+    <string name="fu_jin_de_ren_cn">附近的人</string>
 </resources>

@@ -8,17 +8,23 @@
     <dimen name="split_bg_height">10dp</dimen>
     <dimen name="normal_text_size">18sp</dimen>
 
+    <dimen name="zero_dp">0dp</dimen>
     <dimen name="zero_point_five_dp">0.5dp</dimen>
     <dimen name="one_dp">1dp</dimen>
+    <dimen name="five_dp">5dp</dimen>
     <dimen name="ten_dp">10dp</dimen>
     <dimen name="fifteen_dp">15dp</dimen>
     <dimen name="twenty_dp">20dp</dimen>
     <dimen name="twenty_five_dp">25dp</dimen>
+    <dimen name="thirty_dp">30dp</dimen>
     <dimen name="forty_dp">40dp</dimen>
     <dimen name="fifty_dp">50dp</dimen>
     <dimen name="one_hundred_dp">100dp</dimen>
     <dimen name="one_hundred_fifty_dp">150dp</dimen>
+    <dimen name="two_hundred_fifty_dp">250dp</dimen>
+    <dimen name="three_hundred_dp">300dp</dimen>
 
-    <dimen name="sixteen_dp">16sp</dimen>
+    <dimen name="sixteen_sp">16sp</dimen>
+    <dimen name="eighteen_sp">18sp</dimen>
     <dimen name="twenty_sp">20sp</dimen>
 </resources>

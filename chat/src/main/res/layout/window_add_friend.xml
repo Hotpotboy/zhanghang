@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/ten_dp">
     <ImageView
         android:id="@+id/window_add_friend_topArrowImage"
         android:layout_width="wrap_content"
@@ -19,24 +20,10 @@
         android:padding="@dimen/ten_dp"
         android:layout_marginRight="@dimen/ten_dp">
         <TextView
-            android:id="@+id/window_add_friend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/sixteen_dp"
-            android:textColor="@android:color/white"
-            android:text="@string/tian_jia_peng_you_cn"
-            android:layout_gravity="center_horizontal"
-            android:paddingBottom="@dimen/ten_dp"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/zero_point_five_dp"
-            android:background="@android:color/white"
-            />
-        <TextView
             android:id="@+id/window_add_ScanQR"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/sixteen_dp"
+            android:textSize="@dimen/sixteen_sp"
             android:textColor="@android:color/white"
             android:text="@string/sao_yi_sao_cn"
             android:layout_gravity="center_horizontal"
@@ -51,7 +38,7 @@
             android:id="@+id/window_add_myQR"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/sixteen_dp"
+            android:textSize="@dimen/sixteen_sp"
             android:textColor="@android:color/white"
             android:text="@string/wo_de_er_wei_ma_cn"
             android:layout_gravity="center_horizontal"

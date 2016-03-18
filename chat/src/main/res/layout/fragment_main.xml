@@ -1,0 +1,109 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <RelativeLayout
+        android:id="@+id/friend_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue_bg_color"
+        android:padding="@dimen/ten_dp">
+        <com.souhu.hangzhang209526.zhanghang.widget.CycleImageView
+            android:id="@+id/friend_head_image"
+            android:layout_width="@dimen/forty_dp"
+            android:layout_height="@dimen/forty_dp"
+            android:src="@drawable/default_img"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_centerInParent="true"
+            android:background="@drawable/white_stroke_trans_solid_ten_corner_button_bg"
+            >
+            <TextView
+                android:id="@+id/friend_check_friends"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/thirty_dp"
+                android:paddingLeft="@dimen/ten_dp"
+                android:paddingRight="@dimen/ten_dp"
+                android:gravity="center"
+                android:background="@drawable/white_stroke_white_solid_ten_left_corner_check_bg"
+                android:textColor="@color/blue_bg_color"
+                android:text="@string/wo_de_hao_you_cn"/>
+            <TextView
+                android:id="@+id/friend_check_near"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/thirty_dp"
+                android:paddingLeft="@dimen/ten_dp"
+                android:paddingRight="@dimen/ten_dp"
+                android:gravity="center"
+                android:background="@drawable/white_stroke_white_solid_ten_right_corner_check_bg"
+                android:textColor="@android:color/white"
+                android:text="@string/fu_jin_de_ren_cn"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/friend_add"
+            android:layout_width="@dimen/forty_dp"
+            android:layout_height="@dimen/forty_dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/ten_dp"
+            android:gravity="center"
+            android:text="+"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/twenty_sp" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/friend_serach_button"
+        android:layout_width="@dimen/forty_dp"
+        android:layout_height="@dimen/forty_dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/friend_title_layout"
+        android:layout_marginLeft="@dimen/ten_dp"
+        android:layout_marginRight="@dimen/ten_dp"
+        android:layout_marginTop="@dimen/ten_dp"
+        android:background="@drawable/msg_hint_stroke_trans_solid_ten_corner_button_bg"
+        android:padding="@dimen/five_dp"
+        android:src="@drawable/fang_da_jing" />
+
+    <EditText
+        android:id="@+id/friend_search_id"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/forty_dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/friend_title_layout"
+        android:layout_marginLeft="@dimen/ten_dp"
+        android:layout_marginTop="@dimen/ten_dp"
+        android:layout_toLeftOf="@id/friend_serach_button"
+        android:background="@drawable/msg_hint_stroke_trans_solid_ten_corner_button_bg"
+        android:hint="@string/qing_shu_ru_cha_xun_de_ID_cn"
+        android:paddingLeft="@dimen/ten_dp"
+        android:textColor="@color/msg_text_color"
+        android:textColorHint="@color/msg_hint_color"
+        android:textSize="@dimen/sixteen_sp" />
+    <View
+        android:id="@+id/friend_split1"
+        android:layout_below="@id/friend_search_id"
+        android:layout_marginTop="@dimen/ten_dp"
+        style="@style/split_line_style"/>
+    <View
+        android:id="@+id/friend_split_bg"
+        android:layout_below="@id/friend_split1"
+        style="@style/split_bg_style"/>
+
+    <View
+        android:id="@+id/friend_split2"
+        android:layout_below="@id/friend_split_bg"
+        style="@style/split_line_style"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/friend_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/friend_split2"
+        android:layout_margin="@dimen/ten_dp"/>
+
+</RelativeLayout>

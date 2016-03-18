@@ -16,6 +16,7 @@
 
 package com.android.volley.toolbox;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -23,6 +24,8 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A canned request for retrieving the response body at a given URL as a String.
@@ -30,6 +33,9 @@ import java.io.UnsupportedEncodingException;
  */
 public class StringRequest extends Request<String> {
     private final Listener<String> mListener;
+
+    /**POST参数*/
+    private HashMap<String,String> mParams;
 
     /**
      * Creates a new request with the given method.
@@ -52,6 +58,16 @@ public class StringRequest extends Request<String> {
      */
     public StringRequest(String url, BaseListener baseListener) {
         this(Method.GET, url, baseListener, baseListener);
+    }
+
+    public StringRequest(int method,HashMap<String,String> postParams,String url, BaseListener baseListener) {
+        this(method, url, baseListener, baseListener);
+        mParams = postParams;
+    }
+
+    @Override
+    protected Map<String, String> getParams() throws AuthFailureError {
+        return mParams;
     }
 
     @Override

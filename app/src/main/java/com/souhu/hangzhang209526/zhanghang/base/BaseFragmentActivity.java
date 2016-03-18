@@ -1,11 +1,13 @@
 package com.souhu.hangzhang209526.zhanghang.base;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by hangzhang209526 on 2016/1/4.
@@ -23,7 +25,7 @@ public class BaseFragmentActivity extends FragmentActivity {
      * 所有添加的frgment
      */
     private ArrayList<BaseFragment> mFragmentInstances = new ArrayList<BaseFragment>();
-    private FragmentManager mFragmentManager;
+    protected FragmentManager mFragmentManager;
 
     /**
      * 显示Fragment监听器
@@ -34,6 +36,19 @@ public class BaseFragmentActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
         mFragmentManager = getSupportFragmentManager();
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        List<Fragment> list = mFragmentManager.getFragments();
+        if(list!=null&&list.size()>0){
+            for(Fragment item:list){
+                if(item instanceof BaseFragment){
+                    mFragmentInstances.add((BaseFragment)item);
+                }
+            }
+        }
     }
 
     /**

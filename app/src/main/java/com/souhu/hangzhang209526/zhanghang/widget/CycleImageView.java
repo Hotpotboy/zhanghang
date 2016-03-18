@@ -12,12 +12,13 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.souhu.hangzhang209526.zhanghang.utils.SystemUtils;
 
 /**
  * Created by hangzhang209526 on 2016/1/29.
  */
-public class CycleImageView extends ImageView {
+public class CycleImageView extends NetworkImageView {
     /**圆角半径*/
     private float mRadio;
     /**外围边框的宽度*/

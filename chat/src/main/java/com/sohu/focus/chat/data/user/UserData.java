@@ -20,6 +20,9 @@ public class UserData extends BaseData {
     private long lastOfflineTime;
     private String password;
     private String qrcodePhoto;
+    /**经纬度*/
+    private int lat;
+    private int lng;
 
 
     public long getId() {
@@ -92,5 +95,28 @@ public class UserData extends BaseData {
 
     public void setQrcodePhoto(String qrcodePhoto) {
         this.qrcodePhoto = qrcodePhoto;
+    }
+
+    @Override
+    public boolean equals(Object other){
+        if(other==null) return false;
+        if(!(other instanceof UserData)) return false;
+        return id==((UserData)other).getId();
+    }
+
+    public int getLat() {
+        return lat;
+    }
+
+    public void setLat(int lat) {
+        this.lat = lat;
+    }
+
+    public int getLng() {
+        return lng;
+    }
+
+    public void setLng(int lng) {
+        this.lng = lng;
     }
 }

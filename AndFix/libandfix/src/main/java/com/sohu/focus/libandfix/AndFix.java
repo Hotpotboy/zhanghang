@@ -60,7 +60,7 @@ public class AndFix {
 	public static void addReplaceMethod(Method src, Method dest) {
 		try {
 			replaceMethod(src, dest);
-			initFields(dest.getDeclaringClass());
+			initFields(dest.getDeclaringClass());//补丁类的所有的属性都变为可访问
 		} catch (Throwable e) {
 			Log.e(TAG, "addReplaceMethod", e);
 		}

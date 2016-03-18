@@ -16,6 +16,8 @@
 package com.android.volley.toolbox;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ViewGroup.LayoutParams;
@@ -38,7 +40,7 @@ public class NetworkImageView extends ImageView {
      * Resource ID of the image to be used as a placeholder until the network image is loaded.
      * 默认图片资源ID，默认图片是一个替代物，知道网络图片被完全加载
      */
-    private int mDefaultImageId;
+    private Drawable mDefaultImage;
 
     /**
      * Resource ID of the image to be used if the network response fails.
@@ -62,14 +64,15 @@ public class NetworkImageView extends ImageView {
 
     public NetworkImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        mDefaultImage = getDrawable();
     }
 
     /**
      * Sets URL of the image that should be loaded into this view. Note that calling this will
      * immediately either set the cached image (if available) or the default image specified by
-     * {@link NetworkImageView#setDefaultImageResId(int)} on the view.
+     * {@link NetworkImageView#setDefaultImage(Drawable)}on the view.
      *
-     * NOTE: If applicable, {@link NetworkImageView#setDefaultImageResId(int)} and
+     * NOTE: If applicable, {@link NetworkImageView#setDefaultImage(Drawable)} and
      * {@link NetworkImageView#setErrorImageResId(int)} should be called prior to calling
      * this function.
      *
@@ -87,8 +90,8 @@ public class NetworkImageView extends ImageView {
      * Sets the default image resource ID to be used for this view until the attempt to load it
      * completes.
      */
-    public void setDefaultImageResId(int defaultImage) {
-        mDefaultImageId = defaultImage;
+    public void setDefaultImage(Drawable defaultImage) {
+        mDefaultImage = defaultImage;
     }
 
     /**
@@ -125,7 +128,11 @@ public class NetworkImageView extends ImageView {
                 mImageContainer.cancelRequest();
                 mImageContainer = null;
             }
-            setImageBitmap(null);
+            if(mDefaultImage==null) {
+                setImageBitmap(null);
+            }else{
+                setImageDrawable(mDefaultImage);
+            }
             return;
         }
 
@@ -138,7 +145,11 @@ public class NetworkImageView extends ImageView {
             } else {//如果之前的请求URL与当前的URL不一致，则取消之前的请求
                 // if there is a pre-existing request, cancel it if it's fetching a different URL.
                 mImageContainer.cancelRequest();
-                setImageBitmap(null);
+                if(mDefaultImage==null) {
+                    setImageBitmap(null);
+                }else{
+                    setImageDrawable(mDefaultImage);
+                }
             }
         }
 
@@ -171,8 +182,8 @@ public class NetworkImageView extends ImageView {
 
                         if (response.getBitmap() != null) {
                             setImageBitmap(response.getBitmap());
-                        } else if (mDefaultImageId != 0) {
-                            setImageResource(mDefaultImageId);
+                        } else if (mDefaultImage != null) {
+                            setImageDrawable(mDefaultImage);
                         }
                     }
                 });

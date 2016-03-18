@@ -60,7 +60,7 @@ public class ImageAdapter extends BaseAdapter{
             viewHolder = (ViewHolder)convertView.getTag();
         }
         String imgeUrl = datas.get(position);
-        viewHolder.imageView.setDefaultImageResId(R.drawable.deafult);
+        viewHolder.imageView.setDefaultImage(mContext.getResources().getDrawable(R.drawable.deafult));
         viewHolder.imageView.setImageUrl(imgeUrl,imageLoader);
         return convertView;
     }

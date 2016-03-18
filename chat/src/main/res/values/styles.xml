@@ -7,6 +7,19 @@
 
     <style name="button_style">
         <item name="android:layout_height">@dimen/button_height</item>
+        <item name="android:background">@drawable/msg_txt_color_stroke_trans_solid_ten_corner_button_bg</item>
+    </style>
+
+    <style name="split_line_style">
+        <item name="android:layout_height">@dimen/zero_point_five_dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/split_line_color</item>
+    </style>
+
+    <style name="split_bg_style">
+        <item name="android:layout_height">@dimen/five_dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/split_bg_color</item>
     </style>
 
 </resources>

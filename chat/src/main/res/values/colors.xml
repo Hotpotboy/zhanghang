@@ -1,7 +1,9 @@
 <resources>
     <color name="msg_text_color">#50161616</color>
-    <color name="msg_list_line_color">#504a4a4a</color>
+    <color name="msg_hint_color">#ff838383</color>
+    <color name="split_line_color">#504a4a4a</color>
     <color name="split_bg_color">#50989898</color>
     <color name="chat_bg_color">#50318EEF</color>
     <color name="half_translet_black">#E0000000</color>
+    <color name="blue_bg_color">#ff12b7f5</color>
 </resources>

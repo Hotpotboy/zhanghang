@@ -87,9 +87,9 @@ public class DexDiffer {
 
     public void compareMethod(Iterable<? extends DexBackedMethod> news, Iterable<? extends DexBackedMethod> olds, DiffInfo info) {
         for (DexBackedMethod reference : news) {
-            if (reference.getName().equals("<clinit>")) {
-                continue;
-            }
+//            if (reference.getName().equals("<clinit>")) {
+//                continue;
+//            }
             compareMethod(reference, olds, info);
         }
     }
