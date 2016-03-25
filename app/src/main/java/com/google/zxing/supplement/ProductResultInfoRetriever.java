@@ -21,7 +21,7 @@ import android.text.Html;
 import android.widget.TextView;
 
 import com.google.zxing.LocaleManager;
-import com.souhu.hangzhang209526.zhanghang.R;
+import com.zhanghang.zhanghang.R;
 import com.google.zxing.HttpHelper;
 import com.google.zxing.history.HistoryManager;
 

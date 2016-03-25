@@ -6,8 +6,8 @@ import android.widget.TextView;
 
 import com.sohu.focus.chat.R;
 import com.sohu.focus.chat.data.user.UserData;
-import com.souhu.hangzhang209526.zhanghang.adpter.BaseViewHolderAdapter;
-import com.souhu.hangzhang209526.zhanghang.widget.CycleImageView;
+import com.zhanghang.self.adpter.BaseViewHolderAdapter;
+import com.zhanghang.self.widget.CycleImageView;
 
 import java.util.ArrayList;
 import java.util.HashMap;

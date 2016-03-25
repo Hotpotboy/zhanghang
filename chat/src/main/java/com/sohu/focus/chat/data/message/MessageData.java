@@ -1,7 +1,7 @@
 package com.sohu.focus.chat.data.message;
 
 import com.sohu.focus.chat.data.BaseData;
-import com.souhu.hangzhang209526.zhanghang.utils.SystemUtils;
+import com.zhanghang.self.utils.SystemUtils;
 
 import java.util.Date;
 

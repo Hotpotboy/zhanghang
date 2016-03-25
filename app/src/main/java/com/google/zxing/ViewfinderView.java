@@ -16,7 +16,7 @@
 
 package com.google.zxing;
 
-import com.souhu.hangzhang209526.zhanghang.R;
+import com.zhanghang.zhanghang.R;
 import com.google.zxing.camera.CameraManager;
 
 import android.content.Context;

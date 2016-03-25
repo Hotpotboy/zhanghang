@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:background="@android:color/white">
 
-    <com.souhu.hangzhang209526.zhanghang.widget.CycleImageView
+    <com.zhanghang.self.widget.CycleImageView
         android:id="@+id/my_info_headImage"
         android:layout_width="@dimen/head_image_height"
         android:layout_height="@dimen/head_image_height"

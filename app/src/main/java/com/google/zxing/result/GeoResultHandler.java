@@ -19,7 +19,7 @@ package com.google.zxing.result;
 
 import com.google.zxing.client.result.GeoParsedResult;
 import com.google.zxing.client.result.ParsedResult;
-import com.souhu.hangzhang209526.zhanghang.R;
+import com.zhanghang.zhanghang.R;
 
 import android.app.Activity;
 

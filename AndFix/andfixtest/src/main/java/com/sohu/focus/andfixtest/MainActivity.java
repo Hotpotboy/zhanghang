@@ -9,14 +9,10 @@ import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.StyleRes;
-import android.view.ContextThemeWrapper;
-import android.widget.TextView;
 
-import com.sohu.focus.libandfix.annotation.MethodReplace;
 import com.sohu.focus.libandfix.patch.PatchManager;
-import com.souhu.hangzhang209526.zhanghang.base.BaseApplication;
-import com.souhu.hangzhang209526.zhanghang.utils.FileUtils;
+import com.zhanghang.self.base.BaseApplication;
+import com.zhanghang.self.utils.FileUtils;
 
 import java.io.File;
 import java.io.IOException;

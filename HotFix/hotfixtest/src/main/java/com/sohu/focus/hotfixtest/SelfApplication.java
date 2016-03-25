@@ -1,6 +1,6 @@
 package com.sohu.focus.hotfixtest;
 
-import com.souhu.hangzhang209526.zhanghang.base.BaseApplication;
+import com.zhanghang.self.base.BaseApplication;
 
 /**
  * Created by hangzhang209526 on 2016/2/22.

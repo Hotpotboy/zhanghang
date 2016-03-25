@@ -1,28 +1,15 @@
 package com.sohu.focus.chat;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageRequest;
-import com.sohu.focus.chat.data.user.UserData;
-import com.sohu.focus.chat.fragment.MainFragment;
 import com.sohu.focus.chat.fragment.UserInfoFragment;
 import com.sohu.focus.eventbus.EventBus;
 import com.sohu.focus.eventbus.subscribe.Subscriber;
 import com.sohu.focus.eventbus.subscribe.ThreadMode;
-import com.souhu.hangzhang209526.zhanghang.base.BaseFragment;
-import com.souhu.hangzhang209526.zhanghang.base.BaseFragmentActivity;
-import com.souhu.hangzhang209526.zhanghang.utils.VolleyUtils;
-import com.souhu.hangzhang209526.zhanghang.utils.cache.ImageCacheImpl;
-
-import java.net.URLEncoder;
+import com.zhanghang.self.base.BaseFragmentActivity;
 
 
 public class MainActivity extends BaseFragmentActivity implements DrawerLayout.DrawerListener {
@@ -35,11 +22,11 @@ public class MainActivity extends BaseFragmentActivity implements DrawerLayout.D
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         if (intent == null) {
-            intent = UserInfoFragment.getUserInfoFragmentIntent(Const.currentId, true);
+            intent = UserInfoFragment.getUserInfoFragmentIntent(Const.currentId);
             setIntent(intent);
         } else {
             intent.putExtra(Const.INTENT_KEY_USER_ID, Const.currentId);
-            intent.putExtra(Const.INTENT_KEY_IS_FRIEND, true);
+            intent.putExtra(Const.INTENT_KEY_USER_TYPE, true);
         }
         setContentView(R.layout.activity_main);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.main_layout);

@@ -7,13 +7,12 @@ import com.sohu.focus.chat.Const;
 import com.sohu.focus.chat.data.message.ImageMessageData;
 import com.sohu.focus.chat.data.message.MessageData;
 import com.sohu.focus.chat.data.message.TextMessageData;
-import com.souhu.hangzhang209526.zhanghang.db.BaseSQLiteHelper;
-import com.souhu.hangzhang209526.zhanghang.db.ComlueInfo;
+import com.zhanghang.self.db.BaseSQLiteHelper;
+import com.zhanghang.self.db.ComlueInfo;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 

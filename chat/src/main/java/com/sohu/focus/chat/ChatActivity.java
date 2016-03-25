@@ -39,15 +39,16 @@ import com.sohu.focus.chat.data.message.MessageType;
 import com.sohu.focus.chat.data.FileResponseData;
 import com.sohu.focus.chat.data.message.TextMessageData;
 import com.sohu.focus.chat.db.MessageTabeHelper;
+import com.sohu.focus.chat.netcallback.FileUpLoadCallBack;
 import com.sohu.focus.eventbus.EventBus;
 import com.sohu.focus.eventbus.subscribe.Subscriber;
 import com.sohu.focus.eventbus.subscribe.ThreadMode;
-import com.souhu.hangzhang209526.zhanghang.db.BaseSQLiteHelper;
-import com.souhu.hangzhang209526.zhanghang.utils.camera.CameraUtils;
-import com.souhu.hangzhang209526.zhanghang.utils.DefaultWebSocketUtils;
-import com.souhu.hangzhang209526.zhanghang.utils.FileUtils;
-import com.souhu.hangzhang209526.zhanghang.utils.VolleyUtils;
-import com.souhu.hangzhang209526.zhanghang.utils.cache.ImageCacheImpl;
+import com.zhanghang.self.db.BaseSQLiteHelper;
+import com.zhanghang.self.utils.camera.CameraUtils;
+import com.zhanghang.self.utils.DefaultWebSocketUtils;
+import com.zhanghang.self.utils.FileUtils;
+import com.zhanghang.self.utils.VolleyUtils;
+import com.zhanghang.self.utils.cache.ImageCacheImpl;
 
 import java.io.File;
 import java.io.IOException;
@@ -390,48 +391,44 @@ public class ChatActivity extends Activity implements View.OnClickListener,Adapt
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        //上传图片
+        boolean isNeedFocusUploadToNet = FileUpLoadCallBack.getFileUpLoadCallBack(FileUpLoadCallBack.NET_UPLOAD_IMAGE,bitmapFile.getAbsolutePath()).isInCache();
+        Object[] params = FileUpLoadCallBack.generateQRCodeNetParams(bitmapFile,isNeedFocusUploadToNet);
         //需要发送web的消息
         final ImageMessageData imageMessageData = (ImageMessageData) tmpMessageData;
-        //上传图片
-        HashMap<String,String> params = new HashMap<String,String>();
-        params.put("fid","false");
-        VolleyUtils.requestNet(new UploadRequest(Const.URL_UPLOAD_IMAGE, new BaseListener() {
+        FileUpLoadCallBack.addOnDataRefreshListeners(FileUpLoadCallBack.NET_UPLOAD_IMAGE, new BaseListener.OnDataRefreshListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                Log.e(TAG,error.toString());
-            }
-
-            @Override
-            public void onResponse(String response) {
-                ObjectMapper objectMapper = new ObjectMapper();
+            public void OnDataRefresh(Object data) {
                 try {
-                    FileResponseData data = objectMapper.readValue(response.toString(),FileResponseData.class);
-                    String imageUrl = data.getData().getUrl();//获取图片的路径
+                    String imageUrl = (String) data;
                     imageMessageData.getContent().setImageUrl(imageUrl);//更新上传图片的URL
                     sendMsgToWebSocket(mCameraButton.getHandler(), imageMessageData);//发送图片
                     //更新本地数据
-                    imageUrl = URLEncoder.encode(imageUrl,"UTF-8");
+                    imageUrl = URLEncoder.encode(imageUrl, "UTF-8");
                     imageMessageData.getContent().setImageUrl(imageUrl);//更新上传图片的URL
                     updateDBorListViewIfNeed(imageMessageData);//更新数据库
                     //修改一级缓存的key值
                     Bitmap cachedbitmap = mImageCache.removeCache(fileName);
-                    if(cachedbitmap!=null){
-                        mImageCache.putBitmap(imageUrl,cachedbitmap,true);
+                    if (cachedbitmap != null) {
+                        mImageCache.putBitmap(imageUrl, cachedbitmap, true);
                     }
                     //修改二级缓存的文件名
-                    File newFile = new File(mImageCache.getCacheDir(),imageUrl+".jpg");
-                    if(newFile.exists()){
+                    File newFile = new File(mImageCache.getCacheDir(), imageUrl + ".jpg");
+                    if (newFile.exists()) {
                         newFile.delete();
                     }
                     newFile.createNewFile();
-                    FileUtils.copyFile(bitmapFile,newFile);
+                    FileUtils.copyFile(bitmapFile, newFile);
                     bitmapFile.delete();
                 } catch (Exception e) {
                     e.printStackTrace();
+                }finally {
+                    FileUpLoadCallBack.removeOnDataRefreshListeners(FileUpLoadCallBack.NET_UPLOAD_IMAGE,this);
                 }
             }
-        }, bitmapFile,params));
+        });
+        EventBus.getDefault().post(params, Const.EVENT_BUS_TAG_UP_LOAD_FILE);
     }
 
     /**

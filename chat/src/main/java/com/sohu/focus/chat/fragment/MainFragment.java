@@ -18,32 +18,26 @@ import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.BaseListener;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
-import com.android.volley.toolbox.StringRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.zxing.Intents;
 import com.sohu.focus.chat.Const;
 import com.sohu.focus.chat.R;
 import com.sohu.focus.chat.UserInfoActivity;
-import com.sohu.focus.chat.data.StringResponseData;
 import com.sohu.focus.chat.data.user.UserData;
+import com.sohu.focus.chat.netcallback.StringDataCallBack;
+import com.sohu.focus.chat.netcallback.UserDataCallBack;
 import com.sohu.focus.eventbus.EventBus;
-import com.sohu.focus.eventbus.subscribe.Subscriber;
-import com.sohu.focus.eventbus.subscribe.ThreadMode;
-import com.souhu.hangzhang209526.zhanghang.base.BaseFragment;
-import com.souhu.hangzhang209526.zhanghang.fragment.ViewPagerFragement;
-import com.souhu.hangzhang209526.zhanghang.utils.CallBack;
-import com.souhu.hangzhang209526.zhanghang.utils.LocationUtil;
-import com.souhu.hangzhang209526.zhanghang.utils.PopupWindowUtils;
-import com.souhu.hangzhang209526.zhanghang.utils.VolleyUtils;
-import com.souhu.hangzhang209526.zhanghang.utils.cache.ImageCacheImpl;
-import com.souhu.hangzhang209526.zhanghang.utils.camera.CameraUtils;
-import com.souhu.hangzhang209526.zhanghang.widget.CycleImageView;
+import com.zhanghang.self.base.BaseFragment;
+import com.zhanghang.self.fragment.ViewPagerFragement;
+import com.zhanghang.self.utils.LocationUtil;
+import com.zhanghang.self.utils.PopupWindowUtils;
+import com.zhanghang.self.utils.VolleyUtils;
+import com.zhanghang.self.utils.cache.ImageCacheImpl;
+import com.zhanghang.self.utils.camera.CameraUtils;
+import com.zhanghang.self.widget.CycleImageView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -51,6 +45,7 @@ import java.util.ArrayList;
  */
 public class MainFragment extends ViewPagerFragement implements  AMapLocationListener, View.OnClickListener {
     private static final String TAG = "MainFragment.class";
+    private UserDataCallBack mUserDataCallBack;
     /**我的好友标签*/
     private TextView mFriendsCheckBox;
     /**附近的人标签*/
@@ -80,8 +75,8 @@ public class MainFragment extends ViewPagerFragement implements  AMapLocationLis
     @Override
     protected ArrayList<BaseFragment> specifyFragmentList() {
         ArrayList<BaseFragment> baseFragments = new ArrayList<>();
-        baseFragments.add(new UserFragment());
-        baseFragments.add(new UserFragment());
+        baseFragments.add(new UserFragment());//好友列表
+        baseFragments.add(new StrangerFragment());//附近的人列表
         return baseFragments;
     }
 
@@ -115,18 +110,20 @@ public class MainFragment extends ViewPagerFragement implements  AMapLocationLis
         } catch (Exception e) {
             e.printStackTrace();
         }
-        EventBus.getDefault().register(this);
     }
 
     @Override
     protected void initData(){
-        Const.getUserInfo(Const.currentId, new CallBack<UserData, Void>() {
+        boolean isFocusGetDataFromNet = !UserDataCallBack.getInstance(UserDataCallBack.SELF).isInCache(Const.currentId);//是否缓存了当前用户的信息
+        Object[] params = UserDataCallBack.genrateParams(Const.currentId,UserDataCallBack.SELF,isFocusGetDataFromNet);
+        UserDataCallBack.addOnDataRefreshListeners(UserDataCallBack.SELF, new BaseListener.OnDataRefreshListener() {
             @Override
-            public Void run(UserData userData) {
-                mHeadImage.setImageUrl(userData.getHeadPhoto(),new ImageLoader(VolleyUtils.getRequestQueue(),ImageCacheImpl.getInstance(mActivity)));
-                return null;
+            public void OnDataRefresh(Object data) {
+                mHeadImage.setImageUrl(((ArrayList<UserData>)data).get(0).getHeadPhoto(), new ImageLoader(VolleyUtils.getRequestQueue(), ImageCacheImpl.getInstance(mActivity)));
+                UserDataCallBack.removeOnDataRefreshListeners(UserDataCallBack.SELF, this);
             }
-        }, true);
+        });
+        EventBus.getDefault().post(params, Const.EVENT_BUS_TAG_GET_USER_DATAS);
         super.initData();
     }
 
@@ -134,7 +131,6 @@ public class MainFragment extends ViewPagerFragement implements  AMapLocationLis
     public void onDestroyView() {
         super.onDestroyView();
         LocationUtil.stopLocation();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -143,19 +139,7 @@ public class MainFragment extends ViewPagerFragement implements  AMapLocationLis
             //获取位置信息
             Double geoLat = aMapLocation.getLatitude();
             Double geoLng = aMapLocation.getLongitude();
-            String url = Const.URL_SEND_LOCATION + "?userId=" + Const.currentId + "&lat=" + ((int)(geoLat * 10000)) + "&lng=" + ((int)(geoLng * 10000));
-            StringRequest sendLocationRequest = new StringRequest(url, new BaseListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e(TAG, error.toString());
-                }
-
-                @Override
-                public void onResponse(String response) {
-                    Log.e(TAG,response);
-                }
-            });
-            VolleyUtils.requestNet(sendLocationRequest);
+            EventBus.getDefault().post(StringDataCallBack.generateSendLocationNetParams(geoLng,geoLat),Const.EVENT_BUS_TAG_GET_STRING_DATA);
         } else if (aMapLocation != null) {
             Log.e("zhanghang", aMapLocation.getErrorCode() + "");
             Log.e("zhanghang", aMapLocation.getErrorInfo());
@@ -213,7 +197,7 @@ public class MainFragment extends ViewPagerFragement implements  AMapLocationLis
     }
 
     private void gotoUserInfoActivity(long id) {
-        Intent intent = UserInfoFragment.getUserInfoFragmentIntent(id,((UserFragment)getFragmentInList(0)).isInList(id));
+        Intent intent = UserInfoFragment.getUserInfoFragmentIntent(id);
         intent.setClass(mActivity,UserInfoActivity.class);
         mActivity.startActivity(intent);
     }
@@ -225,7 +209,7 @@ public class MainFragment extends ViewPagerFragement implements  AMapLocationLis
             switch (requestCode) {
                 case CameraUtils.SCANNER_QR_CODE_REQUEST_CODE:
                     String result = data.getStringExtra(Intents.Scan.RESULT);
-                    addFriendFromScanQRCode(result);
+                    Const.addFriendFromScanQRCode(Long.valueOf(result), (UserFragment) getCurrentFragment());
                     break;
             }
         }
@@ -251,81 +235,20 @@ public class MainFragment extends ViewPagerFragement implements  AMapLocationLis
         }
         showQRCodeWindow.showAtLocation();
         //请求网络
-        getQRCodeFromNet(id,(NetworkImageView)showQRCodeWindow.getViewById(R.id.window_qr_code_image));
-    }
-
-    /***
-     * EventBus事件（通过网络请求指定用户的二维码）的执行方法
-     * @param params   Object数组，第一个元素表示指定用户的ID，第二个元素表示用来展示二维码图片的NetworkImageView
-     */
-    @Subscriber(tag = Const.EVENT_BUS_TAG_GENERATE_QR_CODE,mode = ThreadMode.MAIN)
-    private boolean getQRCodeFromNet(Object[] params){
-        getQRCodeFromNet((long) params[0], (NetworkImageView) params[1]);
-        return false;
-    }
-
-    private void getQRCodeFromNet(long id,final NetworkImageView imageView){
-        final String url = Const.URL_GET_QR_CODE + "?userId=" + id;
-        StringRequest genrateQRCodeRequest = new StringRequest(url, new BaseListener() {
+        final NetworkImageView imageView = (NetworkImageView) showQRCodeWindow.getViewById(R.id.window_qr_code_image);
+        final int type = StringDataCallBack.NET_GENERATE_QR_CODE;//请求网络接口的类型为生成二维码
+        boolean isNeedFocus = !StringDataCallBack.getStringDataCallBack(type,id+"").isInCache();//是否强制从网络中获取数据
+        Object[] params = StringDataCallBack.generateQRCodeNetParams(id, isNeedFocus);
+        StringDataCallBack.addOnDataRefreshListeners(type, new BaseListener.OnDataRefreshListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, error.toString());
-            }
-
-            @Override
-            public void onResponse(String response) {
-                try {
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    StringResponseData qrCodeUrlData = objectMapper.readValue(response, StringResponseData.class);
-                    if (qrCodeUrlData != null && qrCodeUrlData.getErrorCode() == 0) {
-                        String imageUrl = qrCodeUrlData.getData();
-                        imageView.setImageUrl(imageUrl, new ImageLoader(VolleyUtils.getRequestQueue(), ImageCacheImpl.getInstance(mActivity)));
-                    } else {
-
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            public void OnDataRefresh(Object stringData) {
+                imageView.setImageUrl((String) stringData, new ImageLoader(VolleyUtils.getRequestQueue(), ImageCacheImpl.getInstance(mActivity)));
+                StringDataCallBack.removeOnDataRefreshListeners(type, this);
             }
         });
-        VolleyUtils.requestNet(genrateQRCodeRequest);
+        EventBus.getDefault().post(params, Const.EVENT_BUS_TAG_GET_STRING_DATA);
     }
 
-    /**
-     * 添加该用户为好友
-     *
-     * @param id 添加的用户的ID
-     * @return
-     */
-    @Subscriber(tag = Const.EVENT_BUS_TAG_ADD_FRIEND, mode = ThreadMode.MAIN)
-    private boolean addFriendFromScanQRCode(String id) {
-        String url = Const.URL_GET_ADD_FRIEND + "?userId="+Const.currentId+"&friendId="+id;
-        StringRequest stringRequest = new StringRequest(url, new BaseListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG,error.toString());
-            }
-
-            @Override
-            public void onResponse(String response) {
-                ObjectMapper objectMapper = new ObjectMapper();
-                try {
-                    StringResponseData responseData = objectMapper.readValue(response,StringResponseData.class);
-                    if(responseData!=null&&responseData.getErrorCode()==0){
-                        //重新刷新界面
-                        EventBus.getDefault().post(Const.currentId,Const.EVENT_BUS_TAG_GET_FRIENDS);
-                    }else{
-
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        VolleyUtils.requestNet(stringRequest);
-        Toast.makeText(mActivity, id, Toast.LENGTH_LONG).show();
-        return false;
-    }
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 

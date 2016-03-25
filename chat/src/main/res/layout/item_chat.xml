@@ -5,7 +5,7 @@
     android:paddingLeft="15dp"
     android:paddingTop="15dp"
     android:paddingBottom="15dp">
-    <com.souhu.hangzhang209526.zhanghang.widget.CycleImageView
+    <com.zhanghang.self.widget.CycleImageView
         android:id="@+id/item_chat_other_head_img"
         android:layout_width="30dp"
         android:layout_height="30dp"

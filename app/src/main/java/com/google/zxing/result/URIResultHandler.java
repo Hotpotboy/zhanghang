@@ -18,7 +18,7 @@ package com.google.zxing.result;
 
 import com.google.zxing.client.result.ParsedResult;
 import com.google.zxing.client.result.URIParsedResult;
-import com.souhu.hangzhang209526.zhanghang.R;
+import com.zhanghang.zhanghang.R;
 import com.google.zxing.LocaleManager;
 
 import android.app.Activity;

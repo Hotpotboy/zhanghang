@@ -14,9 +14,9 @@ import com.sohu.focus.chat.data.message.ImageMessageData;
 import com.sohu.focus.chat.data.message.MessageData;
 import com.sohu.focus.chat.data.message.MessageType;
 import com.sohu.focus.chat.data.message.TextMessageData;
-import com.souhu.hangzhang209526.zhanghang.adpter.BaseViewHolderAdapter;
-import com.souhu.hangzhang209526.zhanghang.utils.VolleyUtils;
-import com.souhu.hangzhang209526.zhanghang.widget.CycleImageView;
+import com.zhanghang.self.adpter.BaseViewHolderAdapter;
+import com.zhanghang.self.utils.VolleyUtils;
+import com.zhanghang.self.widget.CycleImageView;
 
 import java.net.URLDecoder;
 import java.util.ArrayList;

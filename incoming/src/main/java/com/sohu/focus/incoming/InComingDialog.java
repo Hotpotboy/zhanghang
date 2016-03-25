@@ -9,12 +9,15 @@ import android.telephony.TelephonyManager;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +30,7 @@ import java.lang.reflect.Method;
 /**
  * Created by hangzhang209526 on 2016/1/14.
  */
-public class InComingDialog {
+public class InComingDialog{
     public static final int CAN_ANSWER_CALL = 0;
     public static final int CAN_NOT_ANSWER_CALL = 1;
 
@@ -42,8 +45,8 @@ public class InComingDialog {
      * 窗口布局参数
      */
     private WindowManager.LayoutParams mLayoutParams;
-    //顶级视图
-    private View mDecor;
+    /**顶级视图*/
+    private FrameLayout mDecor;
     private LayoutInflater inflater;
 
     private boolean isShow = false;
@@ -55,6 +58,7 @@ public class InComingDialog {
     public InComingDialog(Context context, String num) {
         mAPPContext = context.getApplicationContext();
         mWindowManager = (WindowManager) mAPPContext.getSystemService(Context.WINDOW_SERVICE);
+        mDecor = new FrameLayout(mAPPContext);
 
         inflater = (LayoutInflater) mAPPContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //窗口布局参数
@@ -67,6 +71,8 @@ public class InComingDialog {
             setupViewCanAnswer(num);
         } else if (type == CAN_NOT_ANSWER_CALL) {
             layoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
+            //该标志表示即便窗口是可获取焦点的，那么任何在此窗口外的触摸事件都将被发送给它的后面的窗口；如果此标志不被设置，则任何在此窗口外的触摸事件依然会发送给此窗口
+            layoutParams.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
             layoutParams.height = 1200;
             layoutParams.gravity = Gravity.TOP;
             setupViewCanNotAnswer(num);
@@ -76,8 +82,7 @@ public class InComingDialog {
     }
 
     private void setupViewCanNotAnswer(String num) {
-        mDecor = inflater.inflate(R.layout.incoming_dialog, null);
-
+        mDecor = (FrameLayout) inflater.inflate(R.layout.incoming_dialog, mDecor);
         TextView phoneNum = (TextView) mDecor.findViewById(R.id.incoming_dialog_num);
         phoneNum.setText(num);
         WebView webView = (WebView) mDecor.findViewById(R.id.net_info);
@@ -94,7 +99,7 @@ public class InComingDialog {
     }
 
     private void setupViewCanAnswer(String num) {
-        mDecor = inflater.inflate(R.layout.incoming, null);
+        mDecor = (FrameLayout) inflater.inflate(R.layout.incoming, mDecor);
         Button refuse = (Button) mDecor.findViewById(R.id.incoming_refuse);
         refuse.setOnClickListener(new View.OnClickListener() {
             @Override

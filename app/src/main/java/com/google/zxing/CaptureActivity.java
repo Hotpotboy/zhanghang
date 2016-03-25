@@ -23,7 +23,7 @@ import com.google.zxing.result.ResultButtonListener;
 import com.google.zxing.result.ResultHandler;
 import com.google.zxing.result.ResultHandlerFactory;
 import com.google.zxing.supplement.SupplementalInfoRetriever;
-import com.souhu.hangzhang209526.zhanghang.R;
+import com.zhanghang.zhanghang.R;
 import com.google.zxing.camera.CameraManager;
 import com.google.zxing.history.HistoryActivity;
 

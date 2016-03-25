@@ -20,7 +20,7 @@ import android.content.ActivityNotFoundException;
 import android.util.Log;
 import com.google.zxing.client.result.CalendarParsedResult;
 import com.google.zxing.client.result.ParsedResult;
-import com.souhu.hangzhang209526.zhanghang.R;
+import com.zhanghang.zhanghang.R;
 
 import android.app.Activity;
 import android.content.Intent;

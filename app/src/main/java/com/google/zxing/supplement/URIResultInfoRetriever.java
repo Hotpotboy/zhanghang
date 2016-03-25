@@ -19,7 +19,7 @@ package com.google.zxing.supplement;
 import android.content.Context;
 import android.widget.TextView;
 import com.google.zxing.client.result.URIParsedResult;
-import com.souhu.hangzhang209526.zhanghang.R;
+import com.zhanghang.zhanghang.R;
 import com.google.zxing.HttpHelper;
 import com.google.zxing.history.HistoryManager;
 

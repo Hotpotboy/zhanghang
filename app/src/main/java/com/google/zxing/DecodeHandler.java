@@ -19,7 +19,7 @@ package com.google.zxing;
 import android.graphics.Bitmap;
 
 import com.google.zxing.common.HybridBinarizer;
-import com.souhu.hangzhang209526.zhanghang.R;
+import com.zhanghang.zhanghang.R;
 
 import android.os.Bundle;
 import android.os.Handler;

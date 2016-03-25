@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <color name="transparent">#00000000</color>
+    <color name="mediacontroller_bg_pressed">#ff53c1bd</color>
+    <color name="mediacontroller_bg">#99000000</color>
+    <color name="focus_mediacontroller_bg">#20000000</color>
+    <color name="turn_num_back_bg">#ff4c4c4c</color>
+    <color name="focus_scrubber_sec_bg">#50ffffff</color>
+    <color name="focus_scrubber_sec_bg_color">#70ffffff</color>
+</resources>

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:background="@color/blue_bg_color"
         android:padding="@dimen/ten_dp">
-        <com.souhu.hangzhang209526.zhanghang.widget.CycleImageView
+        <com.zhanghang.self.widget.CycleImageView
             android:id="@+id/friend_head_image"
             android:layout_width="@dimen/forty_dp"
             android:layout_height="@dimen/forty_dp"

@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import com.my.hangzhang.ebook.R;
 import com.my.hangzhang.ebook.mode.Book;
 import com.my.hangzhang.ebook.view.BookView;
-import com.souhu.hangzhang209526.zhanghang.base.BaseFragment;
+import com.zhanghang.self.base.BaseFragment;
 
 import java.util.ArrayList;
 
@@ -48,7 +48,6 @@ public class BooksFragments extends BaseFragment implements ViewPager.PageTransf
         mBooksAdapter = new BooksAdapter(datas);//设置适配器
         mBooksPager.setAdapter(mBooksAdapter);
         mBooksPager.setPageTransformer(true,this);
-        mBooksPager.setCurrentItem(1);
     }
 
     /**

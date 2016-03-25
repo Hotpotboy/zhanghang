@@ -1,6 +1,7 @@
 package com.sohu.focus.chat.data.user;
 
 import com.sohu.focus.chat.data.BaseData;
+import com.sohu.focus.chat.netcallback.UserDataCallBack;
 
 /**
  * Created by hangzhang209526 on 2016/2/23.
@@ -23,6 +24,9 @@ public class UserData extends BaseData {
     /**经纬度*/
     private int lat;
     private int lng;
+    private int mapId;
+    /**类别*/
+    private int type = UserDataCallBack.SELF;
 
 
     public long getId() {
@@ -118,5 +122,21 @@ public class UserData extends BaseData {
 
     public void setLng(int lng) {
         this.lng = lng;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int _type) {
+        type = _type;
+    }
+
+    public int getMapId() {
+        return mapId;
+    }
+
+    public void setMapId(int mapId) {
+        this.mapId = mapId;
     }
 }

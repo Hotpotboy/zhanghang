@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.IBinder;
 
 import com.android.websocket.WebSocketException;
-import com.souhu.hangzhang209526.zhanghang.utils.DefaultWebSocketUtils;
+import com.zhanghang.self.utils.DefaultWebSocketUtils;
 
 /**
  * Created by hangzhang209526 on 2016/2/26.

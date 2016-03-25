@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.sohu.focus.chat.R;
 import com.sohu.focus.chat.data.session.SessionData;
-import com.souhu.hangzhang209526.zhanghang.adpter.BaseViewHolderAdapter;
+import com.zhanghang.self.adpter.BaseViewHolderAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;

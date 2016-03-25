@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.widget.FrameLayout;
 
 import com.my.hangzhang.ebook.fragments.BooksFragments;
-import com.souhu.hangzhang209526.zhanghang.base.BaseFragment;
-import com.souhu.hangzhang209526.zhanghang.base.BaseFragmentActivity;
+import com.zhanghang.self.base.BaseFragment;
+import com.zhanghang.self.base.BaseFragmentActivity;
 
 public class HomeActivity extends BaseFragmentActivity {
     private FrameLayout mFragmentParent;
