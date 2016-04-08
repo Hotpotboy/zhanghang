@@ -35,6 +35,10 @@ public class Const {
     public static final String DB_NAME = "im_chat.db";
     /**心跳包的字符串*/
     public static final String HEARTE_MSG_STR = "{\"type\":11}";
+    /**SharePreference经度的保存KEY*/
+    public static final String SHARE_LON_KEY = "share_lon_key";
+    /**SharePreference纬度的保存KEY*/
+    public static final String SHARE_LAT_KEY = "share_lat_key";
     /***********************接口地址**************************************************************/
     /**服务端地址*/
     private static final String HTTP_HOST = "http://iim.focustest.cn";
@@ -54,8 +58,16 @@ public class Const {
     public static final String URL_GET_QR_CODE = HTTP_HOST + File.separator + "user/qrcode";
     /**添加好友接口*/
     public static final String URL_ADD_FRIEND = HTTP_HOST + File.separator + "friend/add";
+    /**添加知己接口*/
+    public static final String URL_ADD_TRUST = HTTP_HOST + File.separator + "friend/addTrust";
+    /**删除知己接口*/
+    public static final String URL_DELETE_TRUST = HTTP_HOST + File.separator + "friend/deleteTrust";
     /**获取陌生人列表*/
     public static final String URL_GET_STRANGER_LIST = HTTP_HOST + File.separator + "friend/strangerList";
+    /**获取知己列表*/
+    public static final String URL_GET_TRUST_LIST = HTTP_HOST + File.separator + "friend/trustList";
+    /**获取附近列表*/
+    public static final String URL_GET_NEAR_LIST = HTTP_HOST + File.separator + "surround/person";
     /**创建web socket*/
     public static final String WS_CREATE_WEB_SOCKET = WS_HOST + File.separator + "ws/connect";
 

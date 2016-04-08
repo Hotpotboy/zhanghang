@@ -22,6 +22,7 @@ import com.android.volley.toolbox.BaseListener;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.google.zxing.Intents;
+import com.sohu.focus.chat.ChatApplication;
 import com.sohu.focus.chat.Const;
 import com.sohu.focus.chat.R;
 import com.sohu.focus.chat.UserInfoActivity;
@@ -33,6 +34,7 @@ import com.zhanghang.self.base.BaseFragment;
 import com.zhanghang.self.fragment.ViewPagerFragement;
 import com.zhanghang.self.utils.LocationUtil;
 import com.zhanghang.self.utils.PopupWindowUtils;
+import com.zhanghang.self.utils.PreferenceUtil;
 import com.zhanghang.self.utils.VolleyUtils;
 import com.zhanghang.self.utils.cache.ImageCacheImpl;
 import com.zhanghang.self.utils.camera.CameraUtils;
@@ -139,6 +141,8 @@ public class MainFragment extends ViewPagerFragement implements  AMapLocationLis
             //获取位置信息
             Double geoLat = aMapLocation.getLatitude();
             Double geoLng = aMapLocation.getLongitude();
+            PreferenceUtil.updateLongInPreferce(ChatApplication.getInstance(),ChatApplication.getInstance().getVersionName(),Const.SHARE_LAT_KEY, (long) (geoLat*10000));
+            PreferenceUtil.updateLongInPreferce(ChatApplication.getInstance(),ChatApplication.getInstance().getVersionName(),Const.SHARE_LON_KEY, (long) (geoLng*10000));
             EventBus.getDefault().post(StringDataCallBack.generateSendLocationNetParams(geoLng,geoLat),Const.EVENT_BUS_TAG_GET_STRING_DATA);
         } else if (aMapLocation != null) {
             Log.e("zhanghang", aMapLocation.getErrorCode() + "");

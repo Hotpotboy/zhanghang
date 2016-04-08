@@ -13,10 +13,11 @@ public class ChatApplication extends BaseApplication {
     public static ChatApplication getInstance() {
         return (ChatApplication) instance;
     }
+    private NetRequestInterfaceUtil mNetRequestInterfaceUtil;
     @Override
     public void onCreate() {
         super.onCreate();
-        new NetRequestInterfaceUtil();
+        mNetRequestInterfaceUtil = new NetRequestInterfaceUtil();
         instance = this;
         mDefaultWebSocketUtils = DefaultWebSocketUtils.getInstanceByUrl(this,Const.WS_CREATE_WEB_SOCKET+"?userId="+Const.currentId,Const.HEARTE_MSG_STR);
         startService(new Intent(this,ChatService.class));//启动webSocket

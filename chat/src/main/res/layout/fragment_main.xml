@@ -89,21 +89,11 @@
         android:layout_below="@id/friend_search_id"
         android:layout_marginTop="@dimen/ten_dp"
         style="@style/split_line_style"/>
-    <View
-        android:id="@+id/friend_split_bg"
-        android:layout_below="@id/friend_split1"
-        style="@style/split_bg_style"/>
-
-    <View
-        android:id="@+id/friend_split2"
-        android:layout_below="@id/friend_split_bg"
-        style="@style/split_line_style"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/friend_view_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/friend_split2"
-        android:layout_margin="@dimen/ten_dp"/>
+        android:layout_below="@id/friend_split1"/>
 
 </RelativeLayout>

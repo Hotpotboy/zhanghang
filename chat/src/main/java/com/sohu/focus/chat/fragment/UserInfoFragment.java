@@ -125,7 +125,7 @@ public class UserInfoFragment extends BaseFragment implements BaseListener.OnDat
         });
 
         mAddFriend = (TextView) findViewById(R.id.my_info_addFirend);
-        if (mUserType == UserDataCallBack.SELF || mUserType == UserDataCallBack.TRUST || mUserType == UserDataCallBack.FRIEND) {
+        if (mUserId == Const.currentId || mUserType == UserDataCallBack.TRUST || mUserType == UserDataCallBack.FRIEND) {
             mAddFriend.setVisibility(View.GONE);
         } else {
             mAddFriend.setVisibility(View.VISIBLE);
@@ -140,7 +140,7 @@ public class UserInfoFragment extends BaseFragment implements BaseListener.OnDat
 
     @Override
     protected void initData() {
-        boolean isFocusGetDataFromNet = UserDataCallBack.getInstance(mUserType).isInCache(mUserId);//是否缓存了当前用户的信息
+        boolean isFocusGetDataFromNet = !UserDataCallBack.getInstance(mUserType).isInCache(mUserId);//是否缓存了当前用户的信息
         Object[] params = UserDataCallBack.genrateParams(mUserId, mUserType, isFocusGetDataFromNet);
         UserDataCallBack.addOnDataRefreshListeners(UserDataCallBack.SELF,this);
         EventBus.getDefault().post(params, Const.EVENT_BUS_TAG_GET_USER_DATAS);
@@ -154,7 +154,7 @@ public class UserInfoFragment extends BaseFragment implements BaseListener.OnDat
     private void generateQRCode(long id) {
         boolean isFirst = PopupWindowUtils.isNeedInti(R.id.window_qr_code, mActivity, mMyQrCode.getRootView());
         final PopupWindowUtils showQRCodeWindow = PopupWindowUtils.getInstance(R.layout.window_qr_code, mActivity, mMyQrCode.getRootView());
-        if (!(mUserType == UserDataCallBack.SELF || mUserType == UserDataCallBack.TRUST || mUserType == UserDataCallBack.FRIEND)) {//如果不是朋友
+        if (!(mUserId == Const.currentId || mUserType == UserDataCallBack.TRUST || mUserType == UserDataCallBack.FRIEND)) {//如果不是朋友
             showQRCodeWindow.setViewVisibility(R.id.window_qr_add_friend, View.VISIBLE);
             showQRCodeWindow.setOnClickForSpecialedView(R.id.window_qr_add_friend, new View.OnClickListener() {
                 @Override

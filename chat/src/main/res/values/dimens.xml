@@ -19,6 +19,7 @@
     <dimen name="thirty_dp">30dp</dimen>
     <dimen name="forty_dp">40dp</dimen>
     <dimen name="fifty_dp">50dp</dimen>
+    <dimen name="ninty_dp">90dp</dimen>
     <dimen name="one_hundred_dp">100dp</dimen>
     <dimen name="one_hundred_fifty_dp">150dp</dimen>
     <dimen name="two_hundred_fifty_dp">250dp</dimen>

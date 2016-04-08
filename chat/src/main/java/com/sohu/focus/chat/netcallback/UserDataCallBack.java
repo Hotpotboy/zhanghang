@@ -22,8 +22,10 @@ public class UserDataCallBack extends BaseListener<ArrayList<UserData>> {
     public static final int TRUST = 5;
     /**好友*/
     public static final int FRIEND = 6;
-    /**陌生人*/
+    /**过客*/
     public static final int STRANGER = 7;
+    /**附近的人*/
+    public static final int NEARBY = 11;
     /*自己**/
     public static final int SELF = 8;
 

@@ -17,6 +17,10 @@ public class StringDataCallBack extends BaseListener<String> {
     public static final int NET_SEND_LOCATION = 3;
     /**添加好友*/
     public static final int NET_ADD_FRIEND = 4;
+    /**添加知己*/
+    public static final int NET_ADD_TRUST = 10;
+    /**删除知己*/
+    public static final int NET_DELETE_TRUST = 12;
 
 
     /**
@@ -62,13 +66,40 @@ public class StringDataCallBack extends BaseListener<String> {
     }
 
     /**
+     * 生成添加知己的网络参数
+     * @param id  需要添加为知己的用户ID
+     * @return
+     */
+
+    public static Object[] generateAddTrustNetParams(long id){
+        Object[] result = new Object[3];
+        result[0] = NET_ADD_TRUST;
+        result[1] = id;
+        result[2] = true;//此接口强制每次都从网络中获取数据
+        return result;
+    }
+    /**
+     * 生成删除知己的网络参数
+     * @param id  需要添加为知己的用户ID
+     * @return
+     */
+
+    public static Object[] generateDeleteTrustNetParams(long id){
+        Object[] result = new Object[3];
+        result[0] = NET_DELETE_TRUST;
+        result[1] = id;
+        result[2] = true;//此接口强制每次都从网络中获取数据
+        return result;
+    }
+
+    /**
      * 生成上传位置信息的网络参数
      * @return
      */
 
     public static Object[] generateSendLocationNetParams(double lng,double lat){
         Object[] result = new Object[4];
-        result[0] = NET_GET_SESSION_ID;
+        result[0] = NET_SEND_LOCATION;
         result[1] = lng;
         result[2] = lat;
         result[3] = true;//此接口强制每次都从网络中获取数据
@@ -100,7 +131,7 @@ public class StringDataCallBack extends BaseListener<String> {
 
     @Override
     public void onErrorResponse(VolleyError error) {
-
+        error.toString();
     }
 
     @Override

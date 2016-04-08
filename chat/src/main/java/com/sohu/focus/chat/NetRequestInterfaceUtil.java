@@ -14,6 +14,7 @@ import com.sohu.focus.eventbus.EventBus;
 import com.sohu.focus.eventbus.subscribe.Subscriber;
 import com.sohu.focus.eventbus.subscribe.ThreadMode;
 import com.zhanghang.self.utils.FileUtils;
+import com.zhanghang.self.utils.PreferenceUtil;
 import com.zhanghang.self.utils.VolleyUtils;
 
 import java.io.File;
@@ -80,10 +81,16 @@ public class NetRequestInterfaceUtil {
         String url = "";
         if (type == UserDataCallBack.FRIEND) {
             url = Const.URL_GET_FRIENDS + "?userId=" + id;
-        } else if (type == UserDataCallBack.STRANGER) {
+        } else if (type == UserDataCallBack.STRANGER) {//过客
             url = Const.URL_GET_STRANGER_LIST + "?userId=" + id;
-        } else if (type ==UserDataCallBack.SELF){
+        } else if (type ==UserDataCallBack.SELF){//自己
             url = Const.URL_GET_USER_INFO + "?userId=" + id;
+        }else if (type ==UserDataCallBack.TRUST){//知己
+            url = Const.URL_GET_TRUST_LIST + "?userId=" + id;
+        }else if (type ==UserDataCallBack.NEARBY){//附近
+            long lat = PreferenceUtil.getLongInPreferce(ChatApplication.getInstance(), ChatApplication.getInstance().getVersionName(), Const.SHARE_LAT_KEY,-1);
+            long lng = PreferenceUtil.getLongInPreferce(ChatApplication.getInstance(), ChatApplication.getInstance().getVersionName(), Const.SHARE_LON_KEY, -1);
+            url = Const.URL_GET_NEAR_LIST + "?userId=" + id+"&lng="+lng+"&lat="+lat;
         }
         getDataFromNetOrCache(isNeedGetNetWork?url:"",listener);
         return false;
@@ -121,6 +128,14 @@ public class NetRequestInterfaceUtil {
             long id = (long) params[1];
             key = id+"";
             url = Const.URL_ADD_FRIEND + "?userId="+Const.currentId+"&friendId="+id;
+        }else if(type==StringDataCallBack.NET_ADD_TRUST) {//添加知己
+            long id = (long) params[1];
+            key = id+"";
+            url = Const.URL_ADD_TRUST + "?userId="+Const.currentId+"&friendId="+id;
+        }else if(type==StringDataCallBack.NET_DELETE_TRUST) {//删除知己
+            long id = (long) params[1];
+            key = id+"";
+            url = Const.URL_DELETE_TRUST + "?userId="+Const.currentId+"&friendId="+id;
         }
         getDataFromNetOrCache(isNeedGetNetWork?url:"",StringDataCallBack.getStringDataCallBack(type,key));
         return false;

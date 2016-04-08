@@ -1,10 +1,97 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/my_unfriend_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/my_unfriend_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/ten_dp"
+            android:layout_marginRight="@dimen/ten_dp"
+            android:src="@drawable/my_trust" />
+
+        <TextView
+            android:id="@+id/my_unfriend_text"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty_dp"
+            android:layout_toRightOf="@id/my_unfriend_image"
+            android:gravity="center_vertical"
+            android:text="我的知己" />
+
+        <ImageView
+            android:id="@+id/my_trust_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/ten_dp"
+            android:src="@drawable/rightarrow_gray" />
+    </RelativeLayout>
+
+    <View style="@style/split_line_style" />
+
     <ListView
         android:id="@+id/friend_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/ten_dp"
-        android:divider="@android:color/transparent" />
-</FrameLayout>
+        android:divider="@android:color/transparent"
+        android:visibility="gone" />
+
+    <View style="@style/split_line_style" />
+
+    <View style="@style/split_bg_style" />
+
+    <View style="@style/split_line_style" />
+
+    <RelativeLayout
+        android:id="@+id/my_friend_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/my_friend_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/ten_dp"
+            android:layout_marginRight="@dimen/ten_dp"
+            android:src="@drawable/my_trust" />
+
+        <TextView
+            android:id="@+id/my_friend_text"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty_dp"
+            android:layout_toRightOf="@id/my_friend_image"
+            android:gravity="center_vertical"
+            android:text="我的好友" />
+
+        <ImageView
+            android:id="@+id/my_friend_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/ten_dp"
+            android:src="@drawable/rightarrow_gray" />
+    </RelativeLayout>
+
+    <View style="@style/split_line_style" />
+
+    <ListView
+        android:id="@+id/unfriend_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/ten_dp"
+        android:divider="@android:color/transparent"
+        android:visibility="gone" />
+</LinearLayout>
