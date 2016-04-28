@@ -26,6 +26,7 @@ import com.sohu.focus.chat.ChatApplication;
 import com.sohu.focus.chat.Const;
 import com.sohu.focus.chat.R;
 import com.sohu.focus.chat.UserInfoActivity;
+import com.sohu.focus.chat.adapter.FriendListAdapter;
 import com.sohu.focus.chat.data.user.UserData;
 import com.sohu.focus.chat.netcallback.StringDataCallBack;
 import com.sohu.focus.chat.netcallback.UserDataCallBack;
@@ -116,13 +117,13 @@ public class MainFragment extends ViewPagerFragement implements  AMapLocationLis
 
     @Override
     protected void initData(){
-        boolean isFocusGetDataFromNet = !UserDataCallBack.getInstance(UserDataCallBack.SELF).isInCache(Const.currentId);//是否缓存了当前用户的信息
-        Object[] params = UserDataCallBack.genrateParams(Const.currentId,UserDataCallBack.SELF,isFocusGetDataFromNet);
-        UserDataCallBack.addOnDataRefreshListeners(UserDataCallBack.SELF, new BaseListener.OnDataRefreshListener() {
+        boolean isFocusGetDataFromNet = !UserDataCallBack.getInstance(UserDataCallBack.SELF_OR_OTHER).isInCache(Const.currentId);//是否缓存了当前用户的信息
+        Object[] params = UserDataCallBack.genrateParams(Const.currentId,UserDataCallBack.SELF_OR_OTHER,isFocusGetDataFromNet);
+        UserDataCallBack.addOnDataRefreshListeners(UserDataCallBack.SELF_OR_OTHER, new BaseListener.OnDataRefreshListener() {
             @Override
             public void OnDataRefresh(Object data) {
                 mHeadImage.setImageUrl(((ArrayList<UserData>)data).get(0).getHeadPhoto(), new ImageLoader(VolleyUtils.getRequestQueue(), ImageCacheImpl.getInstance(mActivity)));
-                UserDataCallBack.removeOnDataRefreshListeners(UserDataCallBack.SELF, this);
+                UserDataCallBack.removeOnDataRefreshListeners(UserDataCallBack.SELF_OR_OTHER, this);
             }
         });
         EventBus.getDefault().post(params, Const.EVENT_BUS_TAG_GET_USER_DATAS);
@@ -213,7 +214,22 @@ public class MainFragment extends ViewPagerFragement implements  AMapLocationLis
             switch (requestCode) {
                 case CameraUtils.SCANNER_QR_CODE_REQUEST_CODE:
                     String result = data.getStringExtra(Intents.Scan.RESULT);
-                    Const.addFriendFromScanQRCode(Long.valueOf(result), (UserFragment) getCurrentFragment());
+                   long userId = Long.valueOf(result);
+                    UserDataCallBack.addOnDataRefreshListeners(UserDataCallBack.SELF_OR_OTHER, new BaseListener.OnDataRefreshListener() {
+                        @Override
+                        public void OnDataRefresh(Object data) {
+                            if(data!=null&&data instanceof ArrayList){
+                                if(((ArrayList)data).size()>0) {
+                                    Object userDataObj = ((ArrayList) data).get(0);
+                                    if(userDataObj instanceof UserData){
+                                        FriendListAdapter.operationForAllType(FriendListAdapter.OPERA_STRANGER_TO_FRIEND, (UserData) userDataObj);
+                                    }
+                                }
+                            }
+                            UserDataCallBack.removeOnDataRefreshListeners(UserDataCallBack.SELF_OR_OTHER,this);
+                        }
+                    });
+                    EventBus.getDefault().post(UserDataCallBack.genrateParams(userId, UserDataCallBack.SELF_OR_OTHER, true), Const.EVENT_BUS_TAG_GET_USER_DATAS);
                     break;
             }
         }

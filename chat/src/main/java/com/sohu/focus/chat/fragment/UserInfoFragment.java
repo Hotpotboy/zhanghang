@@ -13,6 +13,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.sohu.focus.chat.Const;
 import com.sohu.focus.chat.R;
+import com.sohu.focus.chat.adapter.FriendListAdapter;
 import com.sohu.focus.chat.data.user.UserData;
 import com.sohu.focus.chat.netcallback.StringDataCallBack;
 import com.sohu.focus.chat.netcallback.UserDataCallBack;
@@ -36,7 +37,7 @@ public class UserInfoFragment extends BaseFragment implements BaseListener.OnDat
     /**
      * 当前用户是否是好友
      */
-    private int mUserType = UserDataCallBack.SELF;
+    private int mUserType = UserDataCallBack.SELF_OR_OTHER;
     /**
      * 头像
      */
@@ -86,7 +87,7 @@ public class UserInfoFragment extends BaseFragment implements BaseListener.OnDat
         if (UserDataCallBack.getInstance(UserDataCallBack.FRIEND).isInCache(id)) type = UserDataCallBack.FRIEND;
         else if (UserDataCallBack.getInstance(UserDataCallBack.STRANGER).isInCache(id)) type = UserDataCallBack.STRANGER;
         else if (UserDataCallBack.getInstance(UserDataCallBack.TRUST).isInCache(id)) type = UserDataCallBack.TRUST;
-        else type = UserDataCallBack.SELF;
+        else type = UserDataCallBack.SELF_OR_OTHER;
         intent.putExtra(Const.INTENT_KEY_USER_TYPE, type);
         return intent;
     }
@@ -98,7 +99,7 @@ public class UserInfoFragment extends BaseFragment implements BaseListener.OnDat
 
     @Override
     protected void initDataFromArguments(Bundle arguments) {
-        mUserType = arguments.getInt(Const.INTENT_KEY_USER_TYPE, UserDataCallBack.SELF);
+        mUserType = arguments.getInt(Const.INTENT_KEY_USER_TYPE, UserDataCallBack.SELF_OR_OTHER);
         mUserId = arguments.getLong(Const.INTENT_KEY_USER_ID, -1L);
     }
 
@@ -132,7 +133,8 @@ public class UserInfoFragment extends BaseFragment implements BaseListener.OnDat
             mAddFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Const.addFriendFromScanQRCode(mUserInfo.getId(), null);//添加盆友
+//                    Const.addFriendFromScanQRCode(mUserInfo.getId(), null);//添加盆友
+                    FriendListAdapter.operationForAllType(FriendListAdapter.OPERA_STRANGER_TO_FRIEND,mUserInfo);
                 }
             });
         }
@@ -142,7 +144,7 @@ public class UserInfoFragment extends BaseFragment implements BaseListener.OnDat
     protected void initData() {
         boolean isFocusGetDataFromNet = !UserDataCallBack.getInstance(mUserType).isInCache(mUserId);//是否缓存了当前用户的信息
         Object[] params = UserDataCallBack.genrateParams(mUserId, mUserType, isFocusGetDataFromNet);
-        UserDataCallBack.addOnDataRefreshListeners(UserDataCallBack.SELF,this);
+        UserDataCallBack.addOnDataRefreshListeners(UserDataCallBack.SELF_OR_OTHER,this);
         EventBus.getDefault().post(params, Const.EVENT_BUS_TAG_GET_USER_DATAS);
     }
 
@@ -165,7 +167,22 @@ public class UserInfoFragment extends BaseFragment implements BaseListener.OnDat
                         CameraUtils.scannerQRCodeForSpecialBitmap(bitmapDrawable.getBitmap(), new CallBack<String, Void>() {
                             @Override
                             public Void run(String s) {
-                                Const.addFriendFromScanQRCode(Long.valueOf(s),null);
+                                long userId = Long.valueOf(s);
+                                UserDataCallBack.addOnDataRefreshListeners(UserDataCallBack.SELF_OR_OTHER, new BaseListener.OnDataRefreshListener() {
+                                    @Override
+                                    public void OnDataRefresh(Object data) {
+                                        if(data!=null&&data instanceof ArrayList){
+                                            if(((ArrayList)data).size()>0) {
+                                                Object userDataObj = ((ArrayList) data).get(0);
+                                                if(userDataObj instanceof UserData){
+                                                    FriendListAdapter.operationForAllType(FriendListAdapter.OPERA_STRANGER_TO_FRIEND, (UserData) userDataObj);
+                                                }
+                                            }
+                                        }
+                                        UserDataCallBack.removeOnDataRefreshListeners(UserDataCallBack.SELF_OR_OTHER,this);
+                                    }
+                                });
+                                EventBus.getDefault().post(UserDataCallBack.genrateParams(userId, UserDataCallBack.SELF_OR_OTHER, true), Const.EVENT_BUS_TAG_GET_USER_DATAS);
                                 return null;
                             }
                         });

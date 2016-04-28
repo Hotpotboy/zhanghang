@@ -1,79 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <FrameLayout
+    <io.vov.vitamio.widget.SohuVideoView
+        android:id="@+id/sohu_view_buffer"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true" />
 
-        <io.vov.vitamio.widget.SohuVideoView
-            android:id="@+id/sohu_view_buffer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true" />
+    <ImageView
+        android:id="@+id/sohu_view_soucang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|top"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="90dp"
+        android:padding="5dp"
+        android:src="@drawable/focus_soucang_button"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/sohu_view_guanzhu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="30dp"
+        android:padding="5dp"
+        android:layout_gravity="right|top"
+        android:src="@drawable/focus_guanzhu_button"
+        android:visibility="gone"/>
 
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <ProgressBar
+            android:id="@+id/sohu_view_probar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/sohu_view_download_rate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="horizontal">
+            android:text="" />
 
-            <ProgressBar
-                android:id="@+id/sohu_view_probar"
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/sohu_view_load_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="" />
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/sohu_view_download_rate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="" />
+    <ImageView
+        android:id="@+id/sohu_view_turn_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/focus_video_brightness_bg"
+        android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/sohu_view_load_rate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="" />
-        </LinearLayout>
-    </FrameLayout>
+    <ProgressBar
+        android:id="@+id/sohu_view_turn_progressBar"
+        style="@style/Focus_MediaController_ProgressBar"
+        android:layout_width="70dp"
+        android:layout_height="6dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="90dp"
+        android:max="1000"
+        android:secondaryProgress="1000"
+        android:visibility="gone" />
+    <ImageButton
+        android:id="@+id/sohu_view_mediacontroller_play_pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent"
+        android:layout_marginLeft="5dp"
+        android:padding="5dp"
+        android:contentDescription="@string/mediacontroller_play_pause"
+        android:src="@drawable/focus_mediacontroller_pause" />
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="74dp"
-        android:background="@color/mediacontroller_bg"
-        android:orientation="vertical">
+        android:layout_gravity="bottom"
+        android:background="@color/focus_mediacontroller_bg">
 
         <TextView
             android:id="@+id/sohu_view_mediacontroller_file_name"
             style="@style/MediaController_Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="5dp"
             android:layout_gravity="center_horizontal"
             android:ellipsize="marquee"
+            android:padding="5dp"
             android:singleLine="true" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/sohu_view_mediacontroller_play_pause"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:background="@drawable/mediacontroller_button"
-                android:contentDescription="@string/mediacontroller_play_pause"
-                android:src="@drawable/mediacontroller_pause" />
+            android:layout_gravity="center_vertical">
 
             <TextView
                 android:id="@+id/sohu_view_mediacontroller_time_current"
@@ -81,30 +116,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@id/sohu_view_mediacontroller_play_pause" />
+                android:layout_marginLeft="20dp"/>
 
-            <TextView
+            <ImageView
                 android:id="@+id/sohu_view_full_screen"
-                style="@style/MediaController_Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:padding="5dp"
-                android:text="全屏"/>
+                android:layout_marginRight="20dp"
+                android:src="@drawable/focus_full_screen_button" />
+
 
             <TextView
                 android:id="@+id/sohu_view_mediacontroller_time_total"
                 style="@style/MediaController_Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/sohu_view_full_screen"
-                android:layout_centerVertical="true" />
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@id/sohu_view_full_screen" />
 
             <SeekBar
                 android:id="@+id/sohu_view_mediacontroller_seekbar"
-                style="@style/MediaController_SeekBar"
+                style="@style/Focus_MediaController_SeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -113,5 +149,5 @@
                 android:focusable="true"
                 android:max="1000" />
         </RelativeLayout>
-    </LinearLayout>
-</LinearLayout><!-- From: file:/D:/zhanghang/zhanghang/media/vitamio/res/layout/sohu_video.xml --><!-- From: file:/D:/zhanghang/zhanghang/media/vitamio/build/intermediates/bundles/debug/res/layout/sohu_video.xml -->
+    </FrameLayout>
+</FrameLayout><!-- From: file:/D:/zhanghang/zhanghang/media/vitamio/res/layout/sohu_video.xml --><!-- From: file:/D:/zhanghang/zhanghang/media/vitamio/build/intermediates/bundles/debug/res/layout/sohu_video.xml -->

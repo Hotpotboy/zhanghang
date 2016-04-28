@@ -29,6 +29,16 @@
             android:text="添加好友"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
+        <TextView
+            android:id="@+id/item_message_list_operation3"
+            android:layout_width="@dimen/ninty_dp"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/item_message_list_operation2"
+            android:background="@color/chat_bg_color"
+            android:gravity="center"
+            android:text="与子相弃"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -101,7 +111,10 @@
     </RelativeLayout>
 
     <View
-        style="@style/split_line_style"
+        android:id="@+id/item_message_list_splite"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/one_dp"
+        android:background="@drawable/map_line_x"
         android:layout_gravity="bottom"
-        android:layout_marginLeft="80dp" />
+        android:layout_marginLeft="@dimen/ten_dp" />
 </FrameLayout>

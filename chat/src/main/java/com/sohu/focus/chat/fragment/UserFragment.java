@@ -1,6 +1,8 @@
 package com.sohu.focus.chat.fragment;
 
+import android.util.SparseArray;
 import android.view.View;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,27 +22,13 @@ import java.util.ArrayList;
 /**
  * Created by hangzhang209526 on 2016/3/16.
  */
-public class UserFragment extends BaseFragment implements View.OnClickListener {
+public class UserFragment extends BaseFragment {
     private static final String TAG = "UserFragment.class";
-    String[] mUnFriendShow = {"我的好友", "红颜知己"};
-    ListView mFriendList;
+    int[] showType = {UserDataCallBack.FRIEND,UserDataCallBack.TRUST};;
+    ArrayList<String> mUnFriendShow = new ArrayList<>();
+    SparseArray<ArrayList> mChildData = new SparseArray<>();
+    ExpandableListView mFriendList;
     FriendListAdapter mFriendListAdapter;
-    /**
-     * 我的知己/我的过客操作布局视图
-     */
-    RelativeLayout mUnFriendAreaView;
-    /**
-     * 我的知己/我的过客显示视图
-     */
-    TextView mUnFriednTextView;
-    /**
-     * 是否显示我的知己/我的过客列表
-     */
-    boolean isShowMyUnFriend = false;
-    /**
-     * 是否显示我的好友/附近的人列表
-     */
-    boolean isShowMyFriend = true;
 
     @Override
     protected int specifyRootLayoutId() {
@@ -49,20 +37,15 @@ public class UserFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     protected void initView() {
-        mUnFriednTextView = (TextView) findViewById(R.id.my_unfriend_text);
-        mUnFriednTextView.setText(mUnFriendShow[1]);
-        mUnFriendAreaView = (RelativeLayout) findViewById(R.id.my_unfriend_layout);
-        mFriendList = (ListView) findViewById(R.id.friend_list);
-        mUnFriendAreaView.setOnClickListener(this);
+        mFriendList = (ExpandableListView) findViewById(R.id.friend_list);
     }
 
     @Override
     public void initData() {
-        if(!isShowMyUnFriend) {//我的好友
-            updateList(UserDataCallBack.FRIEND);
-        }else{//我的知己
-            updateList(UserDataCallBack.TRUST);
-        }
+        mUnFriendShow.add("我的好友");
+        mUnFriendShow.add("红颜知己");
+        //我的好友
+        updateList(showType[0]);
     }
 
     void updateList(final int type){
@@ -70,31 +53,19 @@ public class UserFragment extends BaseFragment implements View.OnClickListener {
 
             @Override
             public void OnDataRefresh(Object data) {
+                mChildData.put(type == showType[0] ? 0 : 1, (ArrayList<UserData>) data);
                 if (mFriendListAdapter == null) {
-                    mFriendListAdapter = new FriendListAdapter(ChatApplication.getInstance(), (ArrayList<UserData>) data, mFriendList);
+                    mFriendListAdapter = new FriendListAdapter(ChatApplication.getInstance(), mUnFriendShow,mChildData, mFriendList);
                     mFriendList.setAdapter(mFriendListAdapter);
                 } else {
-                    mFriendListAdapter.setDatas((ArrayList) data);
+                    mFriendListAdapter.setDatas(mUnFriendShow,mChildData);
                 }
                 UserDataCallBack.removeOnDataRefreshListeners(type, this);
+                if(type==showType[0]) {
+                    updateList(showType[1]);
+                }
             }
         });
         EventBus.getDefault().post(UserDataCallBack.genrateParams(Const.currentId, type, true), Const.EVENT_BUS_TAG_GET_USER_DATAS);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.my_unfriend_layout:
-                if (!isShowMyUnFriend) {
-                    isShowMyUnFriend = true;
-                    mUnFriednTextView.setText(mUnFriendShow[0]);
-                } else {
-                    isShowMyUnFriend = false;
-                    mUnFriednTextView.setText(mUnFriendShow[1]);
-                }
-                initData();
-                break;
-        }
     }
 }

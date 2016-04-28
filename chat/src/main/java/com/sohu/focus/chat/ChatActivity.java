@@ -211,19 +211,13 @@ public class ChatActivity extends Activity implements View.OnClickListener,Adapt
      */
     @Subscriber(tag = DefaultWebSocketUtils.TAG_RECEIVE_TEXT, mode = ThreadMode.MAIN)
     public boolean receiveTextMessageBradCast(Intent intent) {
-        String msg = intent.getStringExtra(DefaultWebSocketUtils.TAG_RECEIVE_TEXT);
-        ObjectMapper objectMapper = new ObjectMapper();
         MessageData messageData = null;
         try {
-            messageData = objectMapper.readValue(msg, TextMessageData.class);
-        } catch (IOException e) {
-            try {
-                messageData = objectMapper.readValue(msg, ImageMessageData.class);
-            } catch (IOException e1) {
-                e1.printStackTrace();
-                Toast.makeText(this, "解析消息失败!" + e.toString(), Toast.LENGTH_SHORT).show();
-            }
+            messageData = (MessageData) intent.getSerializableExtra(DefaultWebSocketUtils.TAG_RECEIVE_TEXT);
+        } catch (Exception e) {
+            return false;
         }
+        if(messageData==null) return false;
         try {
             MessageData orgData = null;
             if (messageData.getType() == MessageType.ACK_MESSAGE.id()) {//如果是系统发送的确认接收消息

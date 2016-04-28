@@ -57,11 +57,13 @@ public class Const {
     /**生成二维码*/
     public static final String URL_GET_QR_CODE = HTTP_HOST + File.separator + "user/qrcode";
     /**添加好友接口*/
-    public static final String URL_ADD_FRIEND = HTTP_HOST + File.separator + "friend/add";
+    public static final String URL_ADD_FRIEND = HTTP_HOST + File.separator + "friend/addFriendNotify";//"friend/add";
     /**添加知己接口*/
     public static final String URL_ADD_TRUST = HTTP_HOST + File.separator + "friend/addTrust";
     /**删除知己接口*/
     public static final String URL_DELETE_TRUST = HTTP_HOST + File.separator + "friend/deleteTrust";
+    /**好友移为陌生人接口*/
+    public static final String URL_TO_STRANGER = HTTP_HOST + File.separator + "friend/toStranger";
     /**获取陌生人列表*/
     public static final String URL_GET_STRANGER_LIST = HTTP_HOST + File.separator + "friend/strangerList";
     /**获取知己列表*/
@@ -81,26 +83,4 @@ public class Const {
     public static final String EVENT_BUS_TAG_GET_USER_DATAS = "com.sohu.focus.chat.NetRequestInterfaceUtil.getUsersInfoList";
     /**打开DrawerLayout的抽屉，其入参表示打开左抽屉还是右抽屉*/
     public static final String EVENT_BUS_TAG_OPEN_DRAWER = "com.sohu.focus.chat.MainActivity.openLeftDrawer";
-
-    /************************相关公用的静态方法***************************************************************************/
-    /**
-     * 添加该用户为好友
-     *
-     * @param id 添加的用户的ID
-     * @param baseFragment 刷新界面
-     */
-    public static void addFriendFromScanQRCode(long id,final UserFragment baseFragment) {
-        Object[] params = StringDataCallBack.generateAddFriendNetParams(id);
-        EventBus.getDefault().post(params,Const.EVENT_BUS_TAG_GET_STRING_DATA);
-        StringDataCallBack.addOnDataRefreshListeners(StringDataCallBack.NET_ADD_FRIEND, new BaseListener.OnDataRefreshListener() {
-            @Override
-            public void OnDataRefresh(Object stringData) {
-                //重新刷新界面
-                if(baseFragment!=null) {
-                    baseFragment.initData();
-                }
-                StringDataCallBack.removeOnDataRefreshListeners(StringDataCallBack.NET_ADD_FRIEND, this);
-            }
-        });
-    }
 }

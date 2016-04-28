@@ -54,7 +54,11 @@ public enum MessageType {
     /**
      * 保持服务节点的订阅消息通道处理活动状态
      */
-    KEEP_CHANNEL_MESSAGE(14);
+    KEEP_CHANNEL_MESSAGE(14),
+    /**
+     * 添加好友确认消息
+     */
+    ADD_FRIEND_SURE(15);
 
     private MessageType(int id) {
         this.id = id;

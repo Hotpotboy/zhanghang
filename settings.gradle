@@ -1,4 +1,4 @@
-include ':app', ':ebook', ':incoming', ':LibEventBus', ':libandfix', ':libandfixtool', ':chat', ':buildsrc', ':pulllistview', ':andfixtest', ':hotfixlib', ':hotfixtest', ':libandfixrestool', ':vitamio', ':mediademo', ':vitamio-sample'
+include ':app', ':ebook', ':incoming', ':LibEventBus', ':libandfix', ':libandfixtool', ':chat', ':buildsrc', ':pulllistview', ':andfixtest', ':hotfixlib', ':hotfixtest', ':libandfixrestool', ':vitamio', ':mediademo'
 project(':libandfix').projectDir = new File('AndFix/libandfix')
 project(':libandfixtool').projectDir = new File('AndFix/libandfixtool')
 project(':andfixtest').projectDir = new File('AndFix/andfixtest')
@@ -7,4 +7,3 @@ project(':hotfixtest').projectDir = new File('HotFix/hotfixtest')
 project(':libandfixrestool').projectDir = new File('AndFix/libandfixrestool')
 project(':vitamio').projectDir = new File('media/vitamio')
 project(':mediademo').projectDir = new File('media/mediademo')
-project(':vitamio-sample').projectDir = new File('media/vitamio-sample')

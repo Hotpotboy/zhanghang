@@ -26,7 +26,7 @@ public class UserData extends BaseData {
     private int lng;
     private int mapId;
     /**类别*/
-    private int type = UserDataCallBack.SELF;
+    private int type = UserDataCallBack.SELF_OR_OTHER;
 
 
     public long getId() {

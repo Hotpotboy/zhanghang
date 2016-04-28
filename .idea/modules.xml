@@ -17,7 +17,6 @@
       <module fileurl="file://$PROJECT_DIR$/media/mediademo/mediademo.iml" filepath="$PROJECT_DIR$/media/mediademo/mediademo.iml" />
       <module fileurl="file://$PROJECT_DIR$/pulllistview/pulllistview.iml" filepath="$PROJECT_DIR$/pulllistview/pulllistview.iml" />
       <module fileurl="file://$PROJECT_DIR$/media/vitamio/vitamio.iml" filepath="$PROJECT_DIR$/media/vitamio/vitamio.iml" />
-      <module fileurl="file://$PROJECT_DIR$/media/vitamio-sample/vitamio-sample.iml" filepath="$PROJECT_DIR$/media/vitamio-sample/vitamio-sample.iml" />
       <module fileurl="file://$PROJECT_DIR$/zhanghang.iml" filepath="$PROJECT_DIR$/zhanghang.iml" />
     </modules>
   </component>

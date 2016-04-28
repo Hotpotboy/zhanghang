@@ -4,6 +4,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.BaseListener;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sohu.focus.chat.data.StringResponseData;
+import com.sohu.focus.chat.data.user.UserData;
 
 /**
  * Created by hangzhang209526 on 2016/3/25.
@@ -21,6 +22,8 @@ public class StringDataCallBack extends BaseListener<String> {
     public static final int NET_ADD_TRUST = 10;
     /**删除知己*/
     public static final int NET_DELETE_TRUST = 12;
+    /**好友移入陌生人*/
+    public static final int NET_FRIEND_TO_STRANGER = 13;
 
 
     /**
@@ -51,17 +54,21 @@ public class StringDataCallBack extends BaseListener<String> {
         return result;
     }
 
+
     /**
      * 生成添加好友的网络参数
-     * @param id  需要添加为好友的用户ID
+     * @param userData          需要添加为好友的用户
+     * @param description 添加描述
      * @return
      */
-
-    public static Object[] generateAddFriendNetParams(long id){
-        Object[] result = new Object[3];
+    public static Object[] generateAddFriendNetParams(UserData userData,String description){
+        Object[] result = new Object[6];
         result[0] = NET_ADD_FRIEND;
-        result[1] = id;
-        result[2] = true;//此接口强制每次都从网络中获取数据
+        result[1] = userData.getId();
+        result[2] = userData.getUserName();
+        result[3] = userData.getHeadPhoto();
+        result[4] = description;
+        result[5] = true;//此接口强制每次都从网络中获取数据
         return result;
     }
 
@@ -87,6 +94,20 @@ public class StringDataCallBack extends BaseListener<String> {
     public static Object[] generateDeleteTrustNetParams(long id){
         Object[] result = new Object[3];
         result[0] = NET_DELETE_TRUST;
+        result[1] = id;
+        result[2] = true;//此接口强制每次都从网络中获取数据
+        return result;
+    }
+
+    /**
+     * 生成将好友移为陌生人的网络参数
+     * @param id  需要添加为知己的用户ID
+     * @return
+     */
+
+    public static Object[] generateFriendToStrangerNetParams(long id){
+        Object[] result = new Object[3];
+        result[0] = NET_FRIEND_TO_STRANGER;
         result[1] = id;
         result[2] = true;//此接口强制每次都从网络中获取数据
         return result;

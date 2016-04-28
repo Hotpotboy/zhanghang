@@ -1,9 +1,7 @@
 package com.sohu.focus.chat;
 
-import android.graphics.Bitmap;
 import android.text.TextUtils;
 
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.BaseListener;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.UploadRequest;
@@ -13,12 +11,10 @@ import com.sohu.focus.chat.netcallback.UserDataCallBack;
 import com.sohu.focus.eventbus.EventBus;
 import com.sohu.focus.eventbus.subscribe.Subscriber;
 import com.sohu.focus.eventbus.subscribe.ThreadMode;
-import com.zhanghang.self.utils.FileUtils;
 import com.zhanghang.self.utils.PreferenceUtil;
 import com.zhanghang.self.utils.VolleyUtils;
 
 import java.io.File;
-import java.net.URLEncoder;
 import java.util.HashMap;
 
 /**
@@ -83,7 +79,7 @@ public class NetRequestInterfaceUtil {
             url = Const.URL_GET_FRIENDS + "?userId=" + id;
         } else if (type == UserDataCallBack.STRANGER) {//过客
             url = Const.URL_GET_STRANGER_LIST + "?userId=" + id;
-        } else if (type ==UserDataCallBack.SELF){//自己
+        } else if (type ==UserDataCallBack.SELF_OR_OTHER){//自己
             url = Const.URL_GET_USER_INFO + "?userId=" + id;
         }else if (type ==UserDataCallBack.TRUST){//知己
             url = Const.URL_GET_TRUST_LIST + "?userId=" + id;
@@ -126,8 +122,11 @@ public class NetRequestInterfaceUtil {
             url = Const.URL_SEND_LOCATION + "?userId=" + Const.currentId + "&lat=" + ((int)(geoLat * 10000)) + "&lng=" + ((int)(geoLng * 10000));
         }else if(type==StringDataCallBack.NET_ADD_FRIEND) {//添加好友
             long id = (long) params[1];
+            String userName = (String) params[2];
+            String userHead = (String) params[3];
+            String description = (String) params[4];
             key = id+"";
-            url = Const.URL_ADD_FRIEND + "?userId="+Const.currentId+"&friendId="+id;
+            url = Const.URL_ADD_FRIEND + "?userId=3&friendId="+Const.currentId+"&userName="+userName+"&userHead="+userHead+"&description="+description;
         }else if(type==StringDataCallBack.NET_ADD_TRUST) {//添加知己
             long id = (long) params[1];
             key = id+"";
@@ -136,6 +135,10 @@ public class NetRequestInterfaceUtil {
             long id = (long) params[1];
             key = id+"";
             url = Const.URL_DELETE_TRUST + "?userId="+Const.currentId+"&friendId="+id;
+        }else if(type==StringDataCallBack.NET_FRIEND_TO_STRANGER){//好友移为陌生人
+            long id = (long) params[1];
+            key = id+"";
+            url = Const.URL_TO_STRANGER + "?userId="+Const.currentId+"&friendId="+id;
         }
         getDataFromNetOrCache(isNeedGetNetWork?url:"",StringDataCallBack.getStringDataCallBack(type,key));
         return false;

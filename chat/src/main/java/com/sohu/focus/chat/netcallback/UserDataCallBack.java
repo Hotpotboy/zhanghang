@@ -26,8 +26,8 @@ public class UserDataCallBack extends BaseListener<ArrayList<UserData>> {
     public static final int STRANGER = 7;
     /**附近的人*/
     public static final int NEARBY = 11;
-    /*自己**/
-    public static final int SELF = 8;
+    /*自己或者其他**/
+    public static final int SELF_OR_OTHER = 8;
 
     public static UserDataCallBack getInstance(int type){
         UserDataCallBack result  = null;
@@ -49,7 +49,7 @@ public class UserDataCallBack extends BaseListener<ArrayList<UserData>> {
      *
      * @return
      */
-    public static Object[] genrateParams(long id,int type,boolean isFocusGetDataFromNet){
+    public static Object[] genrateParams(long id,int type,boolean isFocusGetDataFromNet) {
         Object[] params = new Object[4];
         params[0] = id;
         params[1] = type;

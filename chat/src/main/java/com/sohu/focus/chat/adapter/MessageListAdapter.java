@@ -31,7 +31,7 @@ public class MessageListAdapter extends BaseViewHolderAdapter {
 
     @Override
     protected void reBindDataAndView(int position, HashMap<String, View> baseViewHolder, View convertView) {
-//        SessionData data = (SessionData) mDatas.get(position);
+//        SessionData data = (SessionData) mGroupDatas.get(position);
 //        MessageData msg = data.getMessages().get(data.getMessages().size() - 1);
 //        if (baseViewHolder.containsKey(KEY_HEAD_IMG)) {
 //            CycleImageView headImag = (CycleImageView) baseViewHolder.get(KEY_HEAD_IMG);
