@@ -1,6 +1,8 @@
 package com.sohu.focus.chat;
 
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -66,7 +68,8 @@ public class ChatApplication extends BaseApplication {
         }
         if(messageData!=null){
             if(messageData.getType()== MessageType.ADD_FRIEND_SURE.id()){//添加盆友确认消息
-                messageData.toString();
+                Log.e("zhanghang",messageData.toString());
+                return true;
             }
         }
         intent.putExtra(DefaultWebSocketUtils.TAG_RECEIVE_TEXT, messageData);

@@ -402,7 +402,7 @@ public class FriendListAdapter extends BaseViewHolderExpandableAdapter implement
             netParams = StringDataCallBack.generateAddFriendNetParams(user, "能添加你为好友吗?");
             interfaceType = StringDataCallBack.NET_ADD_FRIEND;
             isFreashData.put(UserDataCallBack.FRIEND, true);//刷新好友列表
-            tip = "飞鸽已去,静候佳音……";
+            tip = "飞书已传,静候佳音……";
             if (type == OPERA_NEARBY_TO_FRIEND) {
 //                tip = "既为近邻，岂可不约……";
                 isFreashData.put(UserDataCallBack.NEARBY, true);//刷新陌生人列表

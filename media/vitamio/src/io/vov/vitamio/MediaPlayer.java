@@ -59,6 +59,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * android.media.MediaPlayer in most cases. Please see <a
  * href="http://developer.android.com/guide/topics/media/index.html">Audio and
  * Video</a> for additional help using MediaPlayer.
+ *
+ * 该类被用来控制音（视）频文件以及流的回访。此类的功能在大多数情况下android.media.mediaplayer相同
  */
 public class MediaPlayer {
   public static final int CACHE_TYPE_NOT_AVAILABLE = 1;
@@ -90,10 +92,12 @@ public class MediaPlayer {
   /**
    * MediaPlayer is temporarily pausing playback internally in order to buffer
    * more data.
+   * 为了缓冲更多的数据而临时暂停回放
    */
   public static final int MEDIA_INFO_BUFFERING_START = 701;
   /**
    * MediaPlayer is resuming playback after filling buffers.
+   * 缓冲完恢复播放
    */
   public static final int MEDIA_INFO_BUFFERING_END = 702;
   /**
@@ -115,7 +119,7 @@ public class MediaPlayer {
   public static final int VIDEOCHROMA_RGB565 = 0;
   public static final int VIDEOCHROMA_RGBA = 1;
   /**
-   * The subtitle displayed is embeded in the movie
+   * The subtitle（字幕） displayed is embeded（嵌入） in the movie
    */
   public static final int SUBTITLE_INTERNAL = 0;
   /**
@@ -286,7 +290,7 @@ public class MediaPlayer {
   private native void _setVideoSurface(Surface surface);
 
   /**
-   * Sets the SurfaceHolder to use for displaying the video portion of the
+   * Sets the SurfaceHolder to use for displaying the video portion（部分） of the
    * media. This call is optional. Not calling it when playing back a video will
    * result in only the audio track being played.
    *
@@ -322,7 +326,7 @@ public class MediaPlayer {
 
   /**
    * Sets the data source (file-path or http/rtsp URL) to use.
-   *
+   * 设置数据源，是视屏文件还是网络文件
    * @param path the path of the file, or the http/rtsp URL of the stream you want
    *             to play
    * @throws IllegalStateException if it is called in an invalid state
@@ -535,8 +539,8 @@ public class MediaPlayer {
    * {@link #setScreenOnWhilePlaying(boolean)} feature.
    * <p/>
    * This function has the MediaPlayer access the low-level power manager
-   * service to control the device's power usage while playing is occurring. The
-   * parameter is a combination of {@link android.os.PowerManager} wake flags.
+   * service to control the device's power usage（使用） while playing is occurring. The
+   * parameter is a combination（结合） of {@link android.os.PowerManager} wake flags.
    * Use of this method requires {@link android.Manifest.permission#WAKE_LOCK}
    * permission. By default, no attempt is made to keep the device awake during
    * playback.
@@ -783,7 +787,7 @@ public class MediaPlayer {
    * Returns an array of track information.
    *
    * @return Array of track info. The total number of tracks is the array
-   *         length. Must be called again if an external timed text source has
+   *         length. Must be called again if an external（外部） timed text source has
    *         been added after any of the addTimedTextSource methods are called.
    */
   public TrackInfo[] getTrackInfo(String encoding) {

@@ -5,3 +5,7 @@ dependencies {
     compile 'org.apache.directory.studio:org.apache.commons.io:2.4'
     compile 'com.google.android.tools:dx:1.7'
 }
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}

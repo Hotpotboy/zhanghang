@@ -13,7 +13,10 @@ public class DuiPaixu extends BasePaixu {
 
     @Override
     public int[] paixu() {
-        return new int[0];
+       for(int i=0;i<valus.length;i++){
+           sortedByStack(valus,i);
+       }
+        return valus;
     }
 
     /**
@@ -22,6 +25,13 @@ public class DuiPaixu extends BasePaixu {
      * @param start   开始位置
      */
     private void sortedByStack(int[] array,int start){
-        for()
+        if(start==array.length-1) return;
+        for(int i=array.length-1;i>=start;i--){
+            int value = array[i];
+            int rootValue = array[(start+i-1)/2];//父节点
+            if(value<rootValue){//如果子节点小于父节点
+                swap(array,(start+i-1)/2,i);
+            }
+        }
     }
 }

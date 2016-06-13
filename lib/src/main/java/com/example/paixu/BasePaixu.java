@@ -12,14 +12,14 @@ public abstract class BasePaixu {
     /**
      * 交互两个指定索引的值
      * @param array
-     * @param first   较小索引
-     * @param end     较大索引
+     * @param bigIndex   较大值的索引
+     * @param smallIndex 较小值的索引
      */
-    protected void swap(int[] array,int first,int end){
-        if(array[end]<array[first]){
-            int tmp = array[end];
-            array[end] = array[first];
-            array[first] = tmp;
+    protected void swap(int[] array,int bigIndex,int smallIndex){
+        if(array[smallIndex]<array[bigIndex]){
+            int tmp = array[smallIndex];
+            array[smallIndex] = array[bigIndex];
+            array[bigIndex] = tmp;
         }
     }
 

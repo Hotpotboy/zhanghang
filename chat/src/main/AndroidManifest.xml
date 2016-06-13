@@ -13,11 +13,10 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UserInfoActivity"/>
+        <activity android:name=".UserInfoActivity" />
         <activity android:name="com.google.zxing.CaptureActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ChatActivity" android:windowSoftInputMode="adjustPan|stateUnspecified"/>
         <service android:name=".ChatService"/>

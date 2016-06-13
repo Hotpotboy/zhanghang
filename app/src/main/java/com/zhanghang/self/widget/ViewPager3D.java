@@ -79,27 +79,35 @@ public class ViewPager3D extends ViewGroup{
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         mIsLayout = true;
-        super.onMeasure(getDefaultSize(0,widthMeasureSpec),getDefaultSize(0,heightMeasureSpec));
-
-        int measureWidth = getMeasuredWidth();
+        int measureWidth = MeasureSpec.getSize(widthMeasureSpec);
         float totalMarginWidthInChildren = DEAFULT_SPACE_IN_CHILDREN*mDensity*(sChildrenNum-1);//所有子视图之间的间隔的总和
         float resetWidthForChildren = measureWidth -totalMarginWidthInChildren;//出去间隔外的剩余宽度
-        populate();
         int centerChildWidth = (int) (resetWidthForChildren*2/5);//位于中间的子视图的宽度
         int noCenterChildWidth = (int) (resetWidthForChildren*3/10);//非中间的子视图的宽度
         int chilrenCount = getChildCount();
         if(chilrenCount>0){
             if(mCurrPosition ==0){//还未开始转动
-                for(ItemInfo item:mItems){
-                    if(item!=null&&item.index==0){
-                        View childView = getChildAt(0);
-
+                for(int i = 0;i<mItems.length;i++){
+                    int childWidthiMeasureSpec = -1;
+                    int childHeightMeasureSpec = ViewGroup.getChildMeasureSpec(heightMeasureSpec, getPaddingTop() + getPaddingBottom(), LayoutParams.MATCH_PARENT);
+                    View childView=null;
+                    ItemInfo item = mItems[i];
+                    if(item!=null&&item.index==1){
+                        childView = getChildAt(1);
+                        childWidthiMeasureSpec = MeasureSpec.makeMeasureSpec(centerChildWidth, MeasureSpec.EXACTLY);
+                    }else if(item!=null){
+                        childView = getChildAt(item.index);
+                        childWidthiMeasureSpec = MeasureSpec.makeMeasureSpec(noCenterChildWidth, MeasureSpec.EXACTLY);
+                    }
+                    if(childView!=null&&childHeightMeasureSpec!=-1&&childWidthiMeasureSpec!=-1) {
+                        childView.measure(childWidthiMeasureSpec, childHeightMeasureSpec);//测量子视图
                     }
                 }
             }else if(mCurrPosition >0&& mCurrPosition <mAdapter.getCount()){
 
             }
         }
+        super.onMeasure(widthMeasureSpec,heightMeasureSpec);
     }
 
     /**填充(添加)子视图*/
@@ -109,7 +117,17 @@ public class ViewPager3D extends ViewGroup{
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-
+        int childLeft;
+        childLeft = getPaddingLeft();
+        for (ItemInfo itemInfo:mItems){
+            View childView = getChildAt(itemInfo.index);
+            int childWidth = childView.getMeasuredWidth();
+            childView.layout(childLeft,t,childLeft+childWidth,b);
+            childLeft+=childWidth;
+            if(itemInfo.position!=mItems.length-1){
+                childLeft+=DEAFULT_SPACE_IN_CHILDREN*mDensity;//添加间隔
+            }
+        }
         mIsLayout = false;
     }
 
