@@ -1,4 +1,4 @@
-include ':app', ':ebook', ':incoming', ':LibEventBus', ':libandfix', ':libandfixtool', ':chat', ':buildsrc', ':pulllistview', ':andfixtest', ':hotfixlib', ':hotfixtest', ':libandfixrestool', ':vitamio', ':mediademo', ':concurrent', ':lib'
+include ':app', ':ebook', ':incoming', ':LibEventBus', ':libandfix', ':libandfixtool', ':chat', ':buildsrc', ':pulllistview', ':andfixtest', ':hotfixlib', ':hotfixtest', ':libandfixrestool', ':vitamio', ':mediademo', ':concurrent', ':lib', ':myapplication', ':myapplication2'
 project(':libandfix').projectDir = new File('AndFix/libandfix')
 project(':libandfixtool').projectDir = new File('AndFix/libandfixtool')
 project(':andfixtest').projectDir = new File('AndFix/andfixtest')

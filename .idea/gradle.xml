@@ -20,10 +20,14 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/buildsrc" />
             <option value="$PROJECT_DIR$/chat" />
+            <option value="$PROJECT_DIR$/concurrent" />
             <option value="$PROJECT_DIR$/ebook" />
             <option value="$PROJECT_DIR$/incoming" />
+            <option value="$PROJECT_DIR$/lib" />
             <option value="$PROJECT_DIR$/media/mediademo" />
             <option value="$PROJECT_DIR$/media/vitamio" />
+            <option value="$PROJECT_DIR$/myapplication" />
+            <option value="$PROJECT_DIR$/myapplication2" />
             <option value="$PROJECT_DIR$/pulllistview" />
           </set>
         </option>
