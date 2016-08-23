@@ -61,6 +61,18 @@ public class PopupWindowUtils {
      *
      * @param contentViewLayoutId 弹出窗口内容d的布局ID
      * @param activity            弹出窗口对应的activity
+     * @return
+     */
+    public static PopupWindowUtils getInstance(int contentViewLayoutId, Activity activity) {
+        ViewGroup contentView = (ViewGroup) LayoutInflater.from(activity).inflate(contentViewLayoutId, null);
+        return getInstance(contentView, activity, activity.getWindow().getDecorView(), ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+    }
+
+    /**
+     * 获取指定资源ID的弹出窗口
+     *
+     * @param contentViewLayoutId 弹出窗口内容d的布局ID
+     * @param activity            弹出窗口对应的activity
      * @param attachedView        弹出窗口对应的粘贴视图
      * @return
      */

@@ -16,7 +16,7 @@ public class BaseFragmentActivity extends FragmentActivity {
     /**
      * Fragment布局ID
      */
-    private int mResourceId;
+    public int mResourceId;
     /**
      * 当前显示的Fragment的索引
      */

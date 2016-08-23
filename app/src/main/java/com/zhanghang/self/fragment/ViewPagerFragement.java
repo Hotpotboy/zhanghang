@@ -1,6 +1,7 @@
 package com.zhanghang.self.fragment;
 
 import android.support.v4.view.ViewPager;
+import android.view.View;
 
 import com.zhanghang.self.adpter.BaseFragmentPagerAdapter;
 import com.zhanghang.self.base.BaseFragment;
@@ -30,11 +31,11 @@ public abstract class ViewPagerFragement extends BaseFragment implements ViewPag
     /**指定用以切换的Fragment列表，非抽象子类必须继承*/
     protected abstract ArrayList<BaseFragment> specifyFragmentList();
     /**指定ViewPager,非抽象之类必须继承*/
-    protected abstract ViewPager specifyViewPager();
+    protected abstract View specifyViewPager();
 
     @Override
     protected void initView(){
-        mViewPager = specifyViewPager();
+        mViewPager = (ViewPager) specifyViewPager();
     }
 
     @Override
@@ -58,14 +59,18 @@ public abstract class ViewPagerFragement extends BaseFragment implements ViewPag
      * 将指定的Fragment作为当前显示的页面
      * @param index
      */
-    protected void setCurrentFragment(int index){
+    public void setCurrentFragment(int index){
         if(index>=0&&index<mBaseFragmentPagerAdapter.getCount()&&index!=mCurrentItem){
             mCurrentItem = index;
             mViewPager.setCurrentItem(index);
         }
     }
 
-    protected BaseFragment getCurrentFragment(){
+    public int getCurrentItem(){
+        return mCurrentItem;
+    }
+
+    public BaseFragment getCurrentFragment(){
         return getFragmentInList(mCurrentItem);
     }
 
@@ -75,6 +80,11 @@ public abstract class ViewPagerFragement extends BaseFragment implements ViewPag
         mViewPager.removeOnPageChangeListener(this);
     }
 
+    /**
+     * 根据指定的索引位置，返回其对应的Fragment
+     * @param index
+     * @return   如果存在在返回Fragment，否则返回null
+     */
     protected BaseFragment getFragmentInList(int index){
         if(index>=0&&index<mBaseFragmentPagerAdapter.getCount()){
             return (BaseFragment) mBaseFragmentPagerAdapter.getItem(index);

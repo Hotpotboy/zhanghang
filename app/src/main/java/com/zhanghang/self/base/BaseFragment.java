@@ -58,7 +58,7 @@ public abstract class BaseFragment extends Fragment {
 
     }
 
-    protected View findViewById(int viewId){
+    public View findViewById(int viewId){
         return mRootView.findViewById(viewId);
     }
 }

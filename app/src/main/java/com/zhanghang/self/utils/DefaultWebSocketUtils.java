@@ -9,7 +9,6 @@ import com.android.websocket.WebSocket;
 import com.android.websocket.WebSocketConnection;
 import com.android.websocket.WebSocketException;
 import com.android.websocket.WebSocketOptions;
-import com.sohu.focus.eventbus.EventBus;
 import com.zhanghang.zhanghang.R;
 
 import java.util.HashMap;
@@ -112,7 +111,6 @@ public class DefaultWebSocketUtils{
                 receiveTextMessageBradCast.setAction(action);
                 receiveTextMessageBradCast.putExtra(TAG_RECEIVE_TEXT, payload);
                 context.sendBroadcast(receiveTextMessageBradCast);
-                EventBus.getDefault().post(receiveTextMessageBradCast,TAG_RECEIVE_TEXT);
             }
 
             @Override
@@ -122,7 +120,6 @@ public class DefaultWebSocketUtils{
                 receiveRawMessageBradCast.setAction(action);
                 receiveRawMessageBradCast.putExtra(TAG_RECEIVE_RAW, payload);
                 context.sendBroadcast(receiveRawMessageBradCast);
-                EventBus.getDefault().post(receiveRawMessageBradCast, TAG_RECEIVE_RAW);
             }
 
             @Override
@@ -132,7 +129,6 @@ public class DefaultWebSocketUtils{
                 receiveBinaryMessageBradCast.setAction(action);
                 receiveBinaryMessageBradCast.putExtra(TAG_RECEIVE_BIN, payload);
                 context.sendBroadcast(receiveBinaryMessageBradCast);
-                EventBus.getDefault().post(receiveBinaryMessageBradCast, TAG_RECEIVE_BIN);
             }
         };
     }

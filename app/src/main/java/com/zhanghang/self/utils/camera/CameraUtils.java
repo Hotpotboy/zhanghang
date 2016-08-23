@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
 import com.google.zxing.BinaryBitmap;
@@ -19,6 +20,8 @@ import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 import com.zhanghang.self.base.BaseApplication;
+import com.zhanghang.self.base.BaseFragment;
+import com.zhanghang.self.base.BaseFragmentActivity;
 import com.zhanghang.zhanghang.R;
 import com.zhanghang.self.utils.CallBack;
 
@@ -47,6 +50,13 @@ public class CameraUtils {
         intent.setAction(Intent.ACTION_PICK);
         intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         activity.startActivityForResult(intent, PICTURES_REQUEST_CODE);
+    }
+    /**进入二维码扫描页面*/
+    public static void scannerQRCode(BaseFragmentActivity activity,BaseFragment fragment){
+        Intent intent = new Intent(activity,CaptureActivity.class);
+        intent.setAction(Intents.Scan.ACTION);
+        intent.putExtra(Intents.Scan.RESULT_DISPLAY_DURATION_MS, -1L);
+        activity.startActivityFromFragment(fragment,intent,SCANNER_QR_CODE_REQUEST_CODE);
     }
     /**进入二维码扫描页面*/
     public static void scannerQRCode(Activity activity){
