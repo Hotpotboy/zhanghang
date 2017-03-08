@@ -3,10 +3,9 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="distributionType" value="LOCAL" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="F:\Android\AS\android-studio\gradle\gradle-2.8" />
-        <option name="gradleJvm" value="1.7" />
+        <option name="gradleHome" value="$APPLICATION_HOME_DIR$/gradle/gradle-2.10" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -15,15 +14,39 @@
             <option value="$PROJECT_DIR$/AndFix/libandfixrestool" />
             <option value="$PROJECT_DIR$/AndFix/libandfixtool" />
             <option value="$PROJECT_DIR$/HotFix/hotfixlib" />
-            <option value="$PROJECT_DIR$/HotFix/hotfixtest" />
             <option value="$PROJECT_DIR$/LibEventBus" />
+            <option value="$PROJECT_DIR$/algorithm" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/buildsrc" />
             <option value="$PROJECT_DIR$/chat" />
             <option value="$PROJECT_DIR$/concurrent" />
             <option value="$PROJECT_DIR$/ebook" />
+            <option value="$PROJECT_DIR$/hotfixtest" />
             <option value="$PROJECT_DIR$/incoming" />
-            <option value="$PROJECT_DIR$/lib" />
+            <option value="$PROJECT_DIR$/media/mediademo" />
+            <option value="$PROJECT_DIR$/media/vitamio" />
+            <option value="$PROJECT_DIR$/myapplication" />
+            <option value="$PROJECT_DIR$/myapplication2" />
+            <option value="$PROJECT_DIR$/pulllistview" />
+          </set>
+        </option>
+        <option name="myModules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/AndFix/andfixtest" />
+            <option value="$PROJECT_DIR$/AndFix/libandfix" />
+            <option value="$PROJECT_DIR$/AndFix/libandfixrestool" />
+            <option value="$PROJECT_DIR$/AndFix/libandfixtool" />
+            <option value="$PROJECT_DIR$/HotFix/hotfixlib" />
+            <option value="$PROJECT_DIR$/LibEventBus" />
+            <option value="$PROJECT_DIR$/algorithm" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/buildsrc" />
+            <option value="$PROJECT_DIR$/chat" />
+            <option value="$PROJECT_DIR$/concurrent" />
+            <option value="$PROJECT_DIR$/ebook" />
+            <option value="$PROJECT_DIR$/hotfixtest" />
+            <option value="$PROJECT_DIR$/incoming" />
             <option value="$PROJECT_DIR$/media/mediademo" />
             <option value="$PROJECT_DIR$/media/vitamio" />
             <option value="$PROJECT_DIR$/myapplication" />
