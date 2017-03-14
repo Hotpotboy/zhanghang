@@ -1,0 +1,46 @@
+[
+    {
+        "merged": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/res/merged/androidTest/debug/drawable/scrubber_control_selector_holo.xml",
+        "source": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/drawable/scrubber_control_selector_holo.xml"
+    },
+    {
+        "merged": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/res/merged/androidTest/debug/drawable/focus_scrubber_control_selector_holo.xml",
+        "source": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/drawable/focus_scrubber_control_selector_holo.xml"
+    },
+    {
+        "merged": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/res/merged/androidTest/debug/drawable/focus_scrubber_bg_sec.xml",
+        "source": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/drawable/focus_scrubber_bg_sec.xml"
+    },
+    {
+        "merged": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/res/merged/androidTest/debug/drawable/focus_scrubber_bg.xml",
+        "source": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/drawable/focus_scrubber_bg.xml"
+    },
+    {
+        "merged": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/res/merged/androidTest/debug/drawable/scrubber_progress_horizontal_holo_dark.xml",
+        "source": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/drawable/scrubber_progress_horizontal_holo_dark.xml"
+    },
+    {
+        "merged": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/res/merged/androidTest/debug/drawable/focus_full_screen_button.xml",
+        "source": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/drawable/focus_full_screen_button.xml"
+    },
+    {
+        "merged": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/res/merged/androidTest/debug/drawable/focus_soucang_button.xml",
+        "source": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/drawable/focus_soucang_button.xml"
+    },
+    {
+        "merged": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/res/merged/androidTest/debug/drawable/mediacontroller_button.xml",
+        "source": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/drawable/mediacontroller_button.xml"
+    },
+    {
+        "merged": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/res/merged/androidTest/debug/drawable/focus_guanzhu_button.xml",
+        "source": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/drawable/focus_guanzhu_button.xml"
+    },
+    {
+        "merged": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/res/merged/androidTest/debug/drawable/focus_scrubber_bg_first.xml",
+        "source": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/drawable/focus_scrubber_bg_first.xml"
+    },
+    {
+        "merged": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/res/merged/androidTest/debug/drawable/focus_scrubber_progress_horizontal_holo_dark.xml",
+        "source": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/drawable/focus_scrubber_progress_horizontal_holo_dark.xml"
+    }
+]

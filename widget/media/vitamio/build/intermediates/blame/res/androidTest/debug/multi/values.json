@@ -1,0 +1,475 @@
+[
+    {
+        "outputFile": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/res/merged/androidTest/debug/values/values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 60,
+                    "endOffset": 111
+                },
+                "from": {
+                    "file": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 2,
+                        "startColumn": 4,
+                        "startOffset": 55,
+                        "endColumn": 60,
+                        "endOffset": 111
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 116,
+                    "endColumn": 57,
+                    "endOffset": 169
+                },
+                "from": {
+                    "file": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 116,
+                        "endColumn": 57,
+                        "endOffset": 169
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 4,
+                    "startColumn": 4,
+                    "startOffset": 174,
+                    "endColumn": 63,
+                    "endOffset": 233
+                },
+                "from": {
+                    "file": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 174,
+                        "endColumn": 63,
+                        "endOffset": 233
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 5,
+                    "startColumn": 4,
+                    "startOffset": 238,
+                    "endColumn": 54,
+                    "endOffset": 288
+                },
+                "from": {
+                    "file": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 238,
+                        "endColumn": 54,
+                        "endOffset": 288
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 6,
+                    "startColumn": 4,
+                    "startOffset": 293,
+                    "endColumn": 62,
+                    "endOffset": 351
+                },
+                "from": {
+                    "file": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 4,
+                        "startOffset": 293,
+                        "endColumn": 62,
+                        "endOffset": 351
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 7,
+                    "startColumn": 4,
+                    "startOffset": 356,
+                    "endColumn": 47,
+                    "endOffset": 399
+                },
+                "from": {
+                    "file": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 4,
+                        "startOffset": 356,
+                        "endColumn": 47,
+                        "endOffset": 399
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 8,
+                    "startColumn": 4,
+                    "startOffset": 404,
+                    "endColumn": 52,
+                    "endOffset": 452
+                },
+                "from": {
+                    "file": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 4,
+                        "startOffset": 404,
+                        "endColumn": 52,
+                        "endOffset": 452
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 9,
+                    "startColumn": 4,
+                    "startOffset": 457,
+                    "endColumn": 53,
+                    "endOffset": 506
+                },
+                "from": {
+                    "file": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 9,
+                        "startColumn": 4,
+                        "startOffset": 457,
+                        "endColumn": 53,
+                        "endOffset": 506
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 10,
+                    "startColumn": 4,
+                    "startOffset": 511,
+                    "endLine": 12,
+                    "endColumn": 13,
+                    "endOffset": 658
+                },
+                "from": {
+                    "file": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 10,
+                        "startColumn": 4,
+                        "startOffset": 511,
+                        "endLine": 12,
+                        "endColumn": 13,
+                        "endOffset": 658
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 13,
+                    "startColumn": 4,
+                    "startOffset": 663,
+                    "endColumn": 92,
+                    "endOffset": 751
+                },
+                "from": {
+                    "file": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 13,
+                        "startColumn": 4,
+                        "startOffset": 663,
+                        "endColumn": 92,
+                        "endOffset": 751
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 14,
+                    "startColumn": 4,
+                    "startOffset": 756,
+                    "endColumn": 67,
+                    "endOffset": 819
+                },
+                "from": {
+                    "file": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 14,
+                        "startColumn": 4,
+                        "startOffset": 756,
+                        "endColumn": 67,
+                        "endOffset": 819
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 15,
+                    "startColumn": 4,
+                    "startOffset": 824,
+                    "endColumn": 65,
+                    "endOffset": 885
+                },
+                "from": {
+                    "file": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 15,
+                        "startColumn": 4,
+                        "startOffset": 824,
+                        "endColumn": 65,
+                        "endOffset": 885
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 16,
+                    "startColumn": 4,
+                    "startOffset": 890,
+                    "endColumn": 100,
+                    "endOffset": 986
+                },
+                "from": {
+                    "file": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 16,
+                        "startColumn": 4,
+                        "startOffset": 890,
+                        "endColumn": 100,
+                        "endOffset": 986
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 17,
+                    "startColumn": 4,
+                    "startOffset": 991,
+                    "endColumn": 70,
+                    "endOffset": 1057
+                },
+                "from": {
+                    "file": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 17,
+                        "startColumn": 4,
+                        "startOffset": 991,
+                        "endColumn": 70,
+                        "endOffset": 1057
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 18,
+                    "startColumn": 4,
+                    "startOffset": 1062,
+                    "endColumn": 112,
+                    "endOffset": 1170
+                },
+                "from": {
+                    "file": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 18,
+                        "startColumn": 4,
+                        "startOffset": 1062,
+                        "endColumn": 112,
+                        "endOffset": 1170
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 19,
+                    "startColumn": 4,
+                    "startOffset": 1175,
+                    "endColumn": 86,
+                    "endOffset": 1257
+                },
+                "from": {
+                    "file": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 19,
+                        "startColumn": 4,
+                        "startOffset": 1175,
+                        "endColumn": 86,
+                        "endOffset": 1257
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 20,
+                    "startColumn": 4,
+                    "startOffset": 1262,
+                    "endLine": 21,
+                    "endColumn": 13,
+                    "endOffset": 1386
+                },
+                "from": {
+                    "file": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 20,
+                        "startColumn": 4,
+                        "startOffset": 1262,
+                        "endLine": 21,
+                        "endColumn": 13,
+                        "endOffset": 1386
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 22,
+                    "startColumn": 4,
+                    "startOffset": 1391,
+                    "endColumn": 84,
+                    "endOffset": 1471
+                },
+                "from": {
+                    "file": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 22,
+                        "startColumn": 4,
+                        "startOffset": 1391,
+                        "endColumn": 84,
+                        "endOffset": 1471
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 23,
+                    "startColumn": 4,
+                    "startOffset": 1476,
+                    "endColumn": 72,
+                    "endOffset": 1544
+                },
+                "from": {
+                    "file": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 23,
+                        "startColumn": 4,
+                        "startOffset": 1476,
+                        "endColumn": 72,
+                        "endOffset": 1544
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 24,
+                    "startColumn": 4,
+                    "startOffset": 1549,
+                    "endColumn": 67,
+                    "endOffset": 1612
+                },
+                "from": {
+                    "file": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 24,
+                        "startColumn": 4,
+                        "startOffset": 1549,
+                        "endColumn": 67,
+                        "endOffset": 1612
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 25,
+                    "startColumn": 4,
+                    "startOffset": 1617,
+                    "endLine": 29,
+                    "endColumn": 12,
+                    "endOffset": 1935
+                },
+                "from": {
+                    "file": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 25,
+                        "startColumn": 4,
+                        "startOffset": 1617,
+                        "endLine": 29,
+                        "endColumn": 12,
+                        "endOffset": 1935
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 30,
+                    "startColumn": 4,
+                    "startOffset": 1940,
+                    "endLine": 36,
+                    "endColumn": 12,
+                    "endOffset": 2382
+                },
+                "from": {
+                    "file": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 30,
+                        "startColumn": 4,
+                        "startOffset": 1940,
+                        "endLine": 36,
+                        "endColumn": 12,
+                        "endOffset": 2382
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 37,
+                    "startColumn": 4,
+                    "startOffset": 2387,
+                    "endLine": 46,
+                    "endColumn": 12,
+                    "endOffset": 3029
+                },
+                "from": {
+                    "file": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 37,
+                        "startColumn": 4,
+                        "startOffset": 2387,
+                        "endLine": 46,
+                        "endColumn": 12,
+                        "endOffset": 3029
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 47,
+                    "startColumn": 4,
+                    "startOffset": 3034,
+                    "endLine": 51,
+                    "endColumn": 12,
+                    "endOffset": 3239
+                },
+                "from": {
+                    "file": "/home/mi/ym/zhanghang/zhanghang/widget/media/vitamio/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 47,
+                        "startColumn": 4,
+                        "startOffset": 3034,
+                        "endLine": 51,
+                        "endColumn": 12,
+                        "endOffset": 3239
+                    }
+                }
+            }
+        ]
+    }
+]

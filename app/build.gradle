@@ -35,7 +35,6 @@ dependencies {
     compile project(':hotfixlib')
     compile project(':LibEventBus')
     compile files('lib/AMap_Location_V2.4.0_20160308.jar')
-    compile files('lib/rt.jar')
 }
 
 tasks.withType(JavaCompile) {

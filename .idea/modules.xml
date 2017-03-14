@@ -2,25 +2,25 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/LibEventBus/LibEventBus.iml" filepath="$PROJECT_DIR$/LibEventBus/LibEventBus.iml" />
-      <module fileurl="file://$PROJECT_DIR$/algorithm/lib.iml" filepath="$PROJECT_DIR$/algorithm/lib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/AndFix/andfixtest/andfixtest.iml" filepath="$PROJECT_DIR$/AndFix/andfixtest/andfixtest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tools/LibEventBus/LibEventBus.iml" filepath="$PROJECT_DIR$/tools/LibEventBus/LibEventBus.iml" />
+      <module fileurl="file://$PROJECT_DIR$/for_test_or_iv/algorithm/algorithm.iml" filepath="$PROJECT_DIR$/for_test_or_iv/algorithm/algorithm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tools/AndFix/andfixtest/andfixtest.iml" filepath="$PROJECT_DIR$/tools/AndFix/andfixtest/andfixtest.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/buildsrc/buildsrc.iml" filepath="$PROJECT_DIR$/buildsrc/buildsrc.iml" />
-      <module fileurl="file://$PROJECT_DIR$/chat/chat.iml" filepath="$PROJECT_DIR$/chat/chat.iml" />
-      <module fileurl="file://$PROJECT_DIR$/concurrent/concurrent.iml" filepath="$PROJECT_DIR$/concurrent/concurrent.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ebook/ebook.iml" filepath="$PROJECT_DIR$/ebook/ebook.iml" />
-      <module fileurl="file://$PROJECT_DIR$/HotFix/hotfixlib/hotfixlib.iml" filepath="$PROJECT_DIR$/HotFix/hotfixlib/hotfixlib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/my_app/chat/chat.iml" filepath="$PROJECT_DIR$/my_app/chat/chat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tools/concurrent/concurrent.iml" filepath="$PROJECT_DIR$/tools/concurrent/concurrent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/my_app/ebook/ebook.iml" filepath="$PROJECT_DIR$/my_app/ebook/ebook.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tools/HotFix/hotfixlib/hotfixlib.iml" filepath="$PROJECT_DIR$/tools/HotFix/hotfixlib/hotfixlib.iml" />
       <module fileurl="file://$PROJECT_DIR$/hotfixtest/hotfixtest.iml" filepath="$PROJECT_DIR$/hotfixtest/hotfixtest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/incoming/incoming.iml" filepath="$PROJECT_DIR$/incoming/incoming.iml" />
-      <module fileurl="file://$PROJECT_DIR$/AndFix/libandfix/libandfix.iml" filepath="$PROJECT_DIR$/AndFix/libandfix/libandfix.iml" />
-      <module fileurl="file://$PROJECT_DIR$/AndFix/libandfixrestool/libandfixrestool.iml" filepath="$PROJECT_DIR$/AndFix/libandfixrestool/libandfixrestool.iml" />
-      <module fileurl="file://$PROJECT_DIR$/AndFix/libandfixtool/libandfixtool.iml" filepath="$PROJECT_DIR$/AndFix/libandfixtool/libandfixtool.iml" />
-      <module fileurl="file://$PROJECT_DIR$/media/mediademo/mediademo.iml" filepath="$PROJECT_DIR$/media/mediademo/mediademo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/myapplication/myapplication.iml" filepath="$PROJECT_DIR$/myapplication/myapplication.iml" />
-      <module fileurl="file://$PROJECT_DIR$/myapplication2/myapplication2.iml" filepath="$PROJECT_DIR$/myapplication2/myapplication2.iml" />
-      <module fileurl="file://$PROJECT_DIR$/pulllistview/pulllistview.iml" filepath="$PROJECT_DIR$/pulllistview/pulllistview.iml" />
-      <module fileurl="file://$PROJECT_DIR$/media/vitamio/vitamio.iml" filepath="$PROJECT_DIR$/media/vitamio/vitamio.iml" />
+      <module fileurl="file://$PROJECT_DIR$/widget/incoming/incoming.iml" filepath="$PROJECT_DIR$/widget/incoming/incoming.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tools/AndFix/libandfix/libandfix.iml" filepath="$PROJECT_DIR$/tools/AndFix/libandfix/libandfix.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tools/AndFix/libandfixrestool/libandfixrestool.iml" filepath="$PROJECT_DIR$/tools/AndFix/libandfixrestool/libandfixrestool.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tools/AndFix/libandfixtool/libandfixtool.iml" filepath="$PROJECT_DIR$/tools/AndFix/libandfixtool/libandfixtool.iml" />
+      <module fileurl="file://$PROJECT_DIR$/widget/media/mediademo/mediademo.iml" filepath="$PROJECT_DIR$/widget/media/mediademo/mediademo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/my_app/testApp/myapplication/myapplication.iml" filepath="$PROJECT_DIR$/my_app/testApp/myapplication/myapplication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/widget/pulllistview/pulllistview.iml" filepath="$PROJECT_DIR$/widget/pulllistview/pulllistview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/my_app/testApp/testapp/testapp.iml" filepath="$PROJECT_DIR$/my_app/testApp/testapp/testapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/widget/media/vitamio/vitamio.iml" filepath="$PROJECT_DIR$/widget/media/vitamio/vitamio.iml" />
       <module fileurl="file://$PROJECT_DIR$/zhanghang.iml" filepath="$PROJECT_DIR$/zhanghang.iml" />
     </modules>
   </component>

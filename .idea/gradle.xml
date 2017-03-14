@@ -9,49 +9,47 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/AndFix/andfixtest" />
-            <option value="$PROJECT_DIR$/AndFix/libandfix" />
-            <option value="$PROJECT_DIR$/AndFix/libandfixrestool" />
-            <option value="$PROJECT_DIR$/AndFix/libandfixtool" />
-            <option value="$PROJECT_DIR$/HotFix/hotfixlib" />
-            <option value="$PROJECT_DIR$/LibEventBus" />
-            <option value="$PROJECT_DIR$/algorithm" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/buildsrc" />
-            <option value="$PROJECT_DIR$/chat" />
-            <option value="$PROJECT_DIR$/concurrent" />
-            <option value="$PROJECT_DIR$/ebook" />
+            <option value="$PROJECT_DIR$/for_test_or_iv/algorithm" />
             <option value="$PROJECT_DIR$/hotfixtest" />
-            <option value="$PROJECT_DIR$/incoming" />
-            <option value="$PROJECT_DIR$/media/mediademo" />
-            <option value="$PROJECT_DIR$/media/vitamio" />
-            <option value="$PROJECT_DIR$/myapplication" />
-            <option value="$PROJECT_DIR$/myapplication2" />
-            <option value="$PROJECT_DIR$/pulllistview" />
+            <option value="$PROJECT_DIR$/my_app/chat" />
+            <option value="$PROJECT_DIR$/my_app/ebook" />
+            <option value="$PROJECT_DIR$/my_app/testApp/testapp" />
+            <option value="$PROJECT_DIR$/tools/AndFix/andfixtest" />
+            <option value="$PROJECT_DIR$/tools/AndFix/libandfix" />
+            <option value="$PROJECT_DIR$/tools/AndFix/libandfixrestool" />
+            <option value="$PROJECT_DIR$/tools/AndFix/libandfixtool" />
+            <option value="$PROJECT_DIR$/tools/HotFix/hotfixlib" />
+            <option value="$PROJECT_DIR$/tools/LibEventBus" />
+            <option value="$PROJECT_DIR$/tools/concurrent" />
+            <option value="$PROJECT_DIR$/widget/incoming" />
+            <option value="$PROJECT_DIR$/widget/media/mediademo" />
+            <option value="$PROJECT_DIR$/widget/media/vitamio" />
+            <option value="$PROJECT_DIR$/widget/pulllistview" />
           </set>
         </option>
         <option name="myModules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/AndFix/andfixtest" />
-            <option value="$PROJECT_DIR$/AndFix/libandfix" />
-            <option value="$PROJECT_DIR$/AndFix/libandfixrestool" />
-            <option value="$PROJECT_DIR$/AndFix/libandfixtool" />
-            <option value="$PROJECT_DIR$/HotFix/hotfixlib" />
-            <option value="$PROJECT_DIR$/LibEventBus" />
-            <option value="$PROJECT_DIR$/algorithm" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/buildsrc" />
-            <option value="$PROJECT_DIR$/chat" />
-            <option value="$PROJECT_DIR$/concurrent" />
-            <option value="$PROJECT_DIR$/ebook" />
+            <option value="$PROJECT_DIR$/for_test_or_iv/algorithm" />
             <option value="$PROJECT_DIR$/hotfixtest" />
-            <option value="$PROJECT_DIR$/incoming" />
-            <option value="$PROJECT_DIR$/media/mediademo" />
-            <option value="$PROJECT_DIR$/media/vitamio" />
-            <option value="$PROJECT_DIR$/myapplication" />
-            <option value="$PROJECT_DIR$/myapplication2" />
-            <option value="$PROJECT_DIR$/pulllistview" />
+            <option value="$PROJECT_DIR$/my_app/chat" />
+            <option value="$PROJECT_DIR$/my_app/ebook" />
+            <option value="$PROJECT_DIR$/my_app/testApp/testapp" />
+            <option value="$PROJECT_DIR$/tools/AndFix/andfixtest" />
+            <option value="$PROJECT_DIR$/tools/AndFix/libandfix" />
+            <option value="$PROJECT_DIR$/tools/AndFix/libandfixrestool" />
+            <option value="$PROJECT_DIR$/tools/AndFix/libandfixtool" />
+            <option value="$PROJECT_DIR$/tools/HotFix/hotfixlib" />
+            <option value="$PROJECT_DIR$/tools/LibEventBus" />
+            <option value="$PROJECT_DIR$/tools/concurrent" />
+            <option value="$PROJECT_DIR$/widget/incoming" />
+            <option value="$PROJECT_DIR$/widget/media/mediademo" />
+            <option value="$PROJECT_DIR$/widget/media/vitamio" />
+            <option value="$PROJECT_DIR$/widget/pulllistview" />
           </set>
         </option>
       </GradleProjectSettings>
